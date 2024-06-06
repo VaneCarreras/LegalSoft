@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using LegalSoft.Data;
-
+using LegalSoft.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
