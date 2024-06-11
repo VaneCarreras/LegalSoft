@@ -12,14 +12,14 @@ public class ApplicationDbContext : IdentityDbContext
     {
     }
 
-    // public DbSet<Cliente> Clientes { get; set; }
-    // public DbSet<Consulta> Consultas { get; set; }
-    // public DbSet<DocLegal> DocLegales { get; set; }
-    // public DbSet<Documento> Documentos { get; set; }
-    // public DbSet<Equipo> Equipos { get; set; }
-    // public DbSet<Expediente> Expedientes { get; set; }
-    // public DbSet<Pendiente> Pendientes { get; set; }
-    // public DbSet<Persona> Personas { get; set; }
-    // public DbSet<Turno> Turnos { get; set; }
+    public DbSet<Cliente> Clientes { get; set; }
+    public DbSet<Consulta> Consultas { get; set; }
+    public DbSet<DocLegal> DocLegales { get; set; }
+    public DbSet<Documento> Documentos { get; set; }
+    public DbSet<Equipo> Equipos { get; set; }
+    public DbSet<Expediente> Expedientes { get; set; }
+    public DbSet<Pendiente> Pendientes { get; set; }
+    public DbSet<Persona> Personas { get; set; }
+    public DbSet<Turno> Turnos { get; set; }
 
 }
