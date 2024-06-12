@@ -9,11 +9,13 @@ namespace LegalSoft.Models
     {
        [Key]
        public int DocLegalID { get; set;} 
-       public byte Imagen { get; set;}
-       public string Descripcion { get; set;}
+       public int ExpedienteID { get; set;}
+       public byte[]? Imagen { get; set;}
+       public string? TipoImg { get; set;}
+       public string? NombreArchivo { get; set;}
+       public string? Descripcion { get; set;}
+       public virtual Expediente ?Expediente { get; set; }
 
-       [ForeignKey("Expediente")]
-       public int ExpedienteID { get; set; }
-       public Expediente Expediente { get; set; }
+
     } 
 }

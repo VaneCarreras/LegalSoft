@@ -9,12 +9,11 @@ namespace LegalSoft.Models
     {
        [Key]
        public int PendienteID { get; set;} 
-       public DateTime FechaHora { get; set;}
-       public string Motivo { get; set;}
-       public bool RecordatorioAlert { get; set;}
-
-       [ForeignKey("Equipo")]
        public int EquipoID { get; set; }
-       public Equipo Equipo { get; set; }
+       public DateTime FechaHora { get; set;}
+       public string? Motivo { get; set;}
+       public bool RecordatorioAlert { get; set;}
+       public virtual Equipo ?Equipo { get; set; }
+
     }
 }

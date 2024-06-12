@@ -9,12 +9,12 @@ namespace LegalSoft.Models
     {
        [Key]
        public int PersonaID { get; set;} 
-       public string DNI { get; set;}
-       public string Nombre { get; set;}
-       public string Direccion { get; set;}
-       public string Telefono { get; set;}
+       public string? UsuarioID { get; set;}
+       public string? NroTipoDoc { get; set;}
+       public string? NombreCompleto { get; set;}
+       public string? Direccion { get; set;}
+       public string? Telefono { get; set;}
        public DateTime FechaNac { get; set;}
-       public string Cuil_cuit { get; set;}
 
     }
 }

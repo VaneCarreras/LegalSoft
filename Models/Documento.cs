@@ -9,10 +9,9 @@ namespace LegalSoft.Models
     {
        [Key]
        public int DocumentoID { get; set;} 
-       public byte Imagen { get; set;}
-
-       [ForeignKey("Persona")]
        public int PersonaID { get; set; }
-       public Persona Persona { get; set; }
+       public byte[]? Imagen { get; set;}
+       public string? TipoImg { get; set;}
+       public string? NombreArchivo { get; set;}
     } 
 }

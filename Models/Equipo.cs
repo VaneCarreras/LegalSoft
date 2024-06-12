@@ -9,6 +9,14 @@ namespace LegalSoft.Models
     {
        [Key]
        public int EquipoID { get; set;} 
-       public string NroLegajo { get; set;}
+       public int PersonaID { get; set;} 
+       public string? NroLegajo { get; set;}
+       public virtual ICollection<Turno>? Turnos { get; set; }
+       public virtual ICollection<Consulta>? Consultas { get; set; }
+       public virtual ICollection<Expediente>? Expedientes { get; set; }
+       public virtual ICollection<Pendiente>? Pendientes { get; set; }
+
+
+
     }
 }
