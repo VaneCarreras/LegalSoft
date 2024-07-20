@@ -1,8 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+    
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
-<ul class="navbar-nav">
+
+<ul class="navbar-nav derecha">
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">

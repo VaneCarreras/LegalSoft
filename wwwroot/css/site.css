@@ -1,3 +1,4 @@
+/* Ajustes de tamaño de fuente */
 html {
   font-size: 14px;
 }
@@ -8,10 +9,12 @@ html {
   }
 }
 
+/* Estilos de foco */
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
+/* Ajustes generales */
 html {
   position: relative;
   min-height: 100%;
@@ -19,4 +22,39 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+/* Estilos para el carrusel */
+.carousel {
+  width: 800px;
+  height: 400px; 
+}
+
+.imagen1, .imagen2, .imagen3 {
+  width: 800px;
+  height: 400px;
+}
+
+.carousel-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 300px;
+}
+
+.carousel {
+  display: flex;
+  margin-left: 250px;
+  margin-top: 40px;
+}
+
+/* Ajuste de márgenes */
+.derecha {
+  margin-top: 20px;
+  margin-left: auto;
+}
+
+/* Fondo personalizado */
+.fonfoCremita {
+  background-color: rgb(250, 192, 171);
 }

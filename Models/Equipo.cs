@@ -19,4 +19,15 @@ namespace LegalSoft.Models
 
 
     }
+
+    public class VistaEquipo
+    {
+       public int EquipoID { get; set;} 
+       public string? NroLegajo { get; set;}
+       public string? NombreCompleto { get; set;}
+       public string? NroTipoDoc { get; set;}
+       public string? Direccion { get; set;}
+       public string? Telefono { get; set;}
+       public DateTime FechaNac { get; set;}
+    }
 }
