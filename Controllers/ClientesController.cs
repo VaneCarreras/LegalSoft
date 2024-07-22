@@ -26,7 +26,9 @@ public class ClientesController : Controller
     public JsonResult ListadoClientes(int? id)
     {
 
+        // var clientes = _context.Clientes.Include(c => c.Persona).ToList();
         var clientes = _context.Clientes.ToList();
+
 
 
         if (id != null)
@@ -38,14 +40,16 @@ public class ClientesController : Controller
         
         foreach (var cliente in clientes)
         {
-            ////RELLENAR CON LOS DATOS
+            // NroTipoDoc = cliente.NroTipoDoc;
+
+            
         }
 
 
         return Json(clientes);
     }
 
-    public JsonResult GuardarNuevoCliente(string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateTime fechaNac)
+    public JsonResult GuardarNuevoCliente(string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateOnly fechaNac)
     {
         int error = 0; 
 
@@ -76,32 +80,7 @@ public class ClientesController : Controller
 
 
             
-            // else
-            // {
-            //     //QUIERE DECIR QUE VAMOS A EDITAR EL REGISTRO
-            //     var clienteEditar = _context.Clientes.Where(c => c.ClienteID == clienteID).SingleOrDefault();
-
-            //     var personaEditar = _context.Personas.Where(p => p.PersonaID == personaID).SingleOrDefault();
-            //     if (personaEditar != null)
-            //     {
-            //         personaEditar.NombreCompleto = nombreCompleto;
-            //         personaEditar.UsuarioID = usuarioID;
-            //         personaEditar.NroTipoDoc = nroTipoDoc;
-            //         personaEditar.NombreCompleto = nombreCompleto;
-            //         personaEditar.Direccion = direccion;
-            //         personaEditar.Telefono = telefono;
-            //         personaEditar.FechaNac  = fechaNac;
-            //         _context.SaveChanges();
-            //     }
-
-            //     if (clienteEditar != null)
-            //     {
-            //         clienteEditar.PersonaID = personaID; 
-            //         _context.SaveChanges();
-            //     }
-
-
-            // }
+            
         }
 
         return Json(error);
@@ -121,5 +100,8 @@ public class ClientesController : Controller
 
 
 
-///////////////////////////////////EL CONTROLADOR DE CLIENTES ESTA DE MODIFICAR, INVERTIR CREAR PERSONA 1ERO ANTES DE EQUIPO, CAMBIAR EN EQUIPO
+///////////////////////////////////EL CONTROLADOR DE CLIENTES ESTA DE MODIFICAR, INVERTIR CREAR PERSONA 1ERO ANTES DE EQUIPO, 
+///CAMBIAR EN EQUIPO
 ///LOS JS ESTAN DE COMPLETAR, EL CREAR ES DIFERENTE Y HAY Q TERMINARLO Y EL EDITAR VA APARTE Y EN PERSONA//////////
+///EL CONTROLADOR DE PERSONA EN SQL FUNCIONA TODO Y EL DE CLIENTE TAMBIEN, SOLO QUE CLIENTE 
+/////NO ESTA HECHO EL MOSTRAR Y TAMPOCO TIENEN NINGUNO FRONT

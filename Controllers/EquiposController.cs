@@ -45,7 +45,7 @@ public class EquiposController : Controller
         return Json(equiposMostrar);
     }
 
-    public JsonResult GuardarEquipo(int equipoID, int personaID, string nroLegajo, string usuarioID, string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateTime fechaNac)
+    public JsonResult GuardarEquipo(int equipoID, int personaID, string nroLegajo, string usuarioID, string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateOnly fechaNac)
     {
         int error = 0;
 

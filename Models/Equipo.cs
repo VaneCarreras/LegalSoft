@@ -28,6 +28,6 @@ namespace LegalSoft.Models
        public string? NroTipoDoc { get; set;}
        public string? Direccion { get; set;}
        public string? Telefono { get; set;}
-       public DateTime FechaNac { get; set;}
+       public DateOnly FechaNac { get; set;}
     }
 }
