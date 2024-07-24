@@ -7,6 +7,6 @@ namespace LegalSoft.Models
 {
     public class Contacto
     {
-       
+       public int ContactoID { get; set; }
     }
 }
