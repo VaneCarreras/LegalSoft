@@ -21,5 +21,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Pendiente> Pendientes { get; set; }
     public DbSet<Persona> Personas { get; set; }
     public DbSet<Turno> Turnos { get; set; }
+    public DbSet<Contacto> Contactos { get; set; }
+
 
 }

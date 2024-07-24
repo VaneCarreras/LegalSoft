@@ -24,16 +24,13 @@ body {
   margin-bottom: 60px;
 }
 
-/* Estilos para el carrusel */
+/* Estilos para el carrusel
 .carousel {
   width: 800px;
   height: 400px; 
 }
 
-.imagen1, .imagen2, .imagen3 {
-  width: 800px;
-  height: 400px;
-}
+
 
 .carousel-container {
   display: flex;
@@ -42,10 +39,33 @@ body {
   margin-left: 300px;
 }
 
+.imagen1, .imagen2, .imagen3 {
+ height: fit-content;
+ width: 100%;
+}
 .carousel {
   display: flex;
   margin-left: 250px;
   margin-top: 40px;
+} */
+
+carousel-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 300px; /* Tu margen especificado */
+  overflow: hidden; /* Asegura que las imágenes no se salgan del contenedor */
+  background-color: #f0f0f0; /* Color de fondo para visualizar el área del carrusel */
+}
+.carousel {
+  display: flex;
+}
+.carousel img {
+  margin-top: 20px;
+  width: 140vh;
+  height: 70vh;
+  object-fit: contain; /* Ajusta la imagen dentro del contenedor */
+  object-position: center; /* Centra la imagen */
 }
 
 /* Ajuste de márgenes */
@@ -57,4 +77,44 @@ body {
 /* Fondo personalizado */
 .fonfoCremita {
   background-color: rgb(250, 192, 171);
+}
+
+.icono{
+  font-size: 3rem;
+  padding: 0px 15px;
+  color: lightsalmon;
+}
+.icono:active {
+  color: palevioletred;
+}
+.icono2{
+  font-size: 2rem;
+  padding: 0px 15px;
+  color: lightsalmon;
+}
+
+/* .formContacto{
+  width: 400px;
+} */
+.transparenciaImg{
+  background-color: rgba(255, 255, 255, 0.35);
+}
+
+.parrafos{
+  font-size: 1.3rem;
+  line-height: 2;
+}
+textarea{
+  resize: none;
+}
+input.form-control{
+  border: 3px solid lightsalmon;
+  box-shadow: 0px 0px 6px 3px rgba(122, 122, 122, 0.5) !important;
+}
+textarea.form-control{
+  border: 3px solid lightsalmon;
+  box-shadow: 0px 0px 6px 3px rgba(122, 122, 122, 0.5) !important;    
+}
+input.btn:hover{
+  box-shadow: 0px 0px 6px 3px rgba(122, 122, 122, 0.5) !important;
 }
