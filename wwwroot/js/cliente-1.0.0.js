@@ -17,7 +17,7 @@ function ListadoClientes(){
         // la respuesta es pasada como argumento a la función
         success: function (clientes) {
 
-            $("#ModalCliente").modal("hide");
+            $("#ModalClientes").modal("hide");
             LimpiarModal();
             let contenidoTabla = ``;
 

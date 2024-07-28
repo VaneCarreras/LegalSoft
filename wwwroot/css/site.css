@@ -118,3 +118,13 @@ textarea.form-control{
 input.btn:hover{
   box-shadow: 0px 0px 6px 3px rgba(122, 122, 122, 0.5) !important;
 }
+
+.imgIcono {
+  width: 10%;
+}
+
+.juntos {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
