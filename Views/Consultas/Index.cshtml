@@ -4,10 +4,16 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
-<body class="body2 fonfoCremita">
-<div class="text-center">
+<body class="body2 fondoLogo">
+@* <div class="text-center">
     <h1 class="display-4 letra">Consultas por cliente</h1>
+</div> *@
+
+<div class="text-center m-4">
+  <img src="~/img/consultasImg.png" alt="" class="juntos imgIcono">
+    <h1 class="titulos juntos">MIS ATENCIONES</h1>
 </div>
+        <hr class="hrTitulos m-4">
 <div class="row">
 <div class="mb-3 col-3">
   <label for="NombreCompletoBuscar" class="form-label">Nombre Completo</label>
@@ -35,16 +41,15 @@
 <table class="table table-dark table-borderedless table-striped table-condensed">
   <thead>
     <tr>
-      <th>Nombre Completo</th>
-      <th>DNI</th>
-      <th>Dirección</th>
-      <th>Telefono</th>
-      <th>Fecha de Nacimiento</th>
+      <th>Cliente</th>
+      <th>Equipo</th>
+      <th>Descripción</th>
+      <th>Fecha</th>
       <th style="width: 70px"></th>
       <th style="width: 70px"></th>
     </tr>
   </thead>
-  <tbody  id="tbody-clientes">
+  <tbody  id="tbody-consultas">
   </tbody>
 </table>
 
@@ -52,41 +57,38 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="ModalClientes" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ModalConsultas" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content bg-secondary">
       <div class="modal-header bg-dark text-white">
-        <h5 class="modal-title" id="ModalTitulo">Nuevo Cliente</h5>
+        <h5 class="modal-title" id="ModalTitulo">Nueva Consulta</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form>
           <div class="row">
-            <input type="hidden" id="ClienteID" value="0" />
+            <input type="hidden" id="ConsultaID" value="0" />
 
             <div class="mb-3 col-6">
-             <label for="NombreCompleto" class="form-label">Nombre Completo</label>
-             <input type="text" class="form-control" id="NombreCompleto" style="text-transform:uppercase" placeholder="Nombre del cliente">
+             <label for="NombreCompletoCliente" class="form-label">Nombre Cliente</label>
+             <input type="text" class="form-control" id="NombreCompletoCliente" style="text-transform:uppercase" placeholder="Nombre del cliente">
             </div>
 
             <div class="mb-3 col-6">
-             <label for="DNI" class="form-label">DNI</label>
-             <input type="text" class="form-control" id="DNI" style="text-transform:uppercase" placeholder="DNI del cliente">
+             <label for="NombreCompletoEquipo" class="form-label">Nombre Equipo</label>
+             <input type="text" class="form-control" id="NombreCompletoEquipo" style="text-transform:uppercase" placeholder="Nombre del personal">
             </div>
 
             <div class="mb-3 col-6">
-             <label for="Direccion" class="form-label">Dirección</label>
-             <input type="text" class="form-control" id="Direccion" style="text-transform:uppercase" placeholder="Direccion del cliente">
+             <label for="Descripcion" class="form-label">Descripción</label>
+             <input type="text" class="form-control" id="Descripcion" style="text-transform:uppercase" placeholder="Descripción de la Consulta">
             </div>
 
-            <div class="mb-3 col-6">
-             <label for="Telefono" class="form-label">Telefono</label>
-             <input type="text" class="form-control" id="Telefono" style="text-transform:uppercase" placeholder="Telefono del cliente">
-            </div>
+            
 
             <div class="mb-3 col-6">
-              <label for="FechaNac" class="form-label">Fecha de Nacimiento</label>
-              <input type="date" id="FechaNac" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+              <label for="Fecha" class="form-label">Fecha</label>
+              <input type="date" id="Fecha" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
             </div>
 
           </div>
@@ -108,7 +110,7 @@
 @section Scripts {
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
-  <script src="~/js/cliente-1.0.0.js"></script>
+  <script src="~/js/consulta-1.0.0.js"></script>
 }
 
 </body>
