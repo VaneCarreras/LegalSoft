@@ -75,9 +75,25 @@ carousel-container {
 }
 
 /* Fondo personalizado */
-.fonfoCremita {
-  background-color: rgb(250, 192, 171);
+.fondoLogo {
+  background-image: url('../img/fondo.png'); /* Ajusta esta ruta según la ubicación de tu imagen */
+  background-repeat: repeat; /* Repite la imagen tanto en el eje X como en el eje Y */
+  background-position: top center; /* Centra la imagen horizontalmente y la coloca en la parte superior */
+  background-size: auto calc(100vh / 10); /* Ajusta la altura de la imagen para que se repita 10 veces */
+  width: 100vw; /* Ancho del contenedor al 100% del viewport */
+  height: 100vh; /* Altura del contenedor al 100% del viewport */
 }
+
+.fondoMio {
+  background-image: url('../img/fondoMio.png'); /* Ajusta esta ruta según la ubicación de tu imagen */
+  background-repeat: no-repeat; /* Evita que la imagen se repita */
+  background-position: center; /* Centra la imagen */
+  background-size: cover; /* Ajusta la imagen para que cubra todo el contenedor */
+  width: 100vw; /* Ancho del contenedor al 100% del viewport */
+  height: 100vh; /* Altura del contenedor al 100% del viewport */
+}
+
+
 
 .icono{
   font-size: 3rem;
