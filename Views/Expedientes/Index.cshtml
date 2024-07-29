@@ -1,27 +1,27 @@
 @{
-    ViewData["Title"] = "Clientes";
+    ViewData["Title"] = "Expedientes";
 }
 @* ///MODIFICAR TODO LOS EXP SERAN CON LISTA TB// *@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
 <body class="body2 fonfoCremita">
 <div class="text-center m-4">
-  <img src="~/img/clientesImg.png" alt="" class="juntos imgIcono">
-    <h1 class="titulos juntos">CLIENTES</h1>
+  <img src="~/img/ExpedientesImg.png" alt="" class="juntos imgIcono">
+    <h1 class="titulos juntos">EXPEDIENTES</h1>
 </div>
         <hr class="hrTitulos m-4">
 
 <div class="row">
 <div class="mb-3 col-3">
-  <label for="NombreCompletoBuscar" class="form-label">Nombre Completo</label>
-  <input type="text" id="NombreCompletoBuscar" class="form-control"/>
-</div>
-<div class="mb-3 col-3">
-  <label for="NroTipoDocBuscar" class="form-label">DNI</label>
+  <label for="NroTipoDocClienteBuscar" class="form-label">DNI Cliente</label>
   <input type="text" id="NroTipoDocBuscar" class="form-control"/>
 </div>
 <div class="mb-3 col-3">
-  <button style="margin-top: 32px;" type="button" class="btn btn-secondary" onclick="ListadoClientes()">
+  <label for="NroExpBuscar" class="form-label">Número de Expediente</label>
+  <input type="text" id="NombreCompletoBuscar" class="form-control"/>
+</div>
+<div class="mb-3 col-3">
+  <button style="margin-top: 32px;" type="button" class="btn btn-secondary" onclick="ListadoExpedientes()">
     Filtrar
   </button>
 </div>
@@ -29,24 +29,29 @@
 
 <!-- Button trigger modal -->
 <div class="mb-2">
-  <button type="button" class="btn btn-secondary" onclick="NuevoRegistro()" data-bs-toggle="modal" data-bs-target="#ModalClientes">
-    Nuevo Cliente
+  <button type="button" class="btn btn-secondary" onclick="NuevoRegistro()" data-bs-toggle="modal" data-bs-target="#ModalExpedientes">
+    Nuevo Expediente
   </button>
 </div>
 
 <table class="table table-dark table-borderedless table-striped table-condensed">
   <thead>
     <tr>
-      <th>Nombre Completo</th>
-      <th>DNI</th>
-      <th>Dirección</th>
-      <th>Telefono</th>
-      <th>Fecha de Nacimiento</th>
+      <th>Nro</th>
+      <th>Carátula</th>
+      <th>Cliente</th>
+      <th>Abogado</th>
+      <th>Fecha de Inicio</th>
+      <th>Fecha de Fin</th>
+      <th>Último decreto</th>
+      <th>Docs</th>
+      <th>Link</th>
+
       <th style="width: 70px"></th>
       <th style="width: 70px"></th>
     </tr>
   </thead>
-  <tbody  id="tbody-clientes">
+  <tbody  id="tbody-expedientes">
   </tbody>
 </table>
 
@@ -54,42 +59,63 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="ModalClientes" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="ModalExpedientes" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content bg-secondary">
       <div class="modal-header bg-dark text-white">
-        <h5 class="modal-title" id="ModalTitulo">Nuevo Cliente</h5>
+        <h5 class="modal-title" id="ModalTitulo">Nuevo Expediente</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <form>
           <div class="row">
-            <input type="hidden" id="ClienteID" value="0" />
+            <input type="hidden" id="ExpedienteID" value="0" />
 
             <div class="mb-3 col-6">
-             <label for="NombreCompleto" class="form-label">Nombre Completo</label>
-             <input type="text" class="form-control" id="NombreCompleto" style="text-transform:uppercase" placeholder="Nombre del cliente">
+             <label for="Numero" class="form-label">Nro</label>
+             <input type="text" class="form-control" id="Numero" style="text-transform:uppercase" placeholder="Nro de expediente">
             </div>
 
             <div class="mb-3 col-6">
-             <label for="DNI" class="form-label">DNI</label>
-             <input type="text" class="form-control" id="DNI" style="text-transform:uppercase" placeholder="DNI del cliente">
+             <label for="Caratula" class="form-label">Caratula</label>
+             <input type="text" class="form-control" id="Caratula" style="text-transform:uppercase" placeholder="Caratula de expediente">
             </div>
 
             <div class="mb-3 col-6">
-             <label for="Direccion" class="form-label">Dirección</label>
-             <input type="text" class="form-control" id="Direccion" style="text-transform:uppercase" placeholder="Direccion del cliente">
+             <label for="Cliente" class="form-label">Cliente</label>
+             <input type="text" class="form-control" id="Cliente" style="text-transform:uppercase" placeholder="Nombre del cliente">
             </div>
 
             <div class="mb-3 col-6">
-             <label for="Telefono" class="form-label">Telefono</label>
-             <input type="text" class="form-control" id="Telefono" style="text-transform:uppercase" placeholder="Telefono del cliente">
+             <label for="Equipo" class="form-label">Abogado</label>
+             <input type="text" class="form-control" id="Equipo" style="text-transform:uppercase" placeholder="Abogado a cargo">
             </div>
 
             <div class="mb-3 col-6">
-              <label for="FechaNac" class="form-label">Fecha de Nacimiento</label>
-              <input type="date" id="FechaNac" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+              <label for="FechaInicio" class="form-label">Fecha de Inicio</label>
+              <input type="date" id="FechaInicio" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
             </div>
+
+            <div class="mb-3 col-6">
+              <label for="FechaFins="form-label">Fecha de Fin</label>
+              <input type="date" id="FechaFin" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            </div>
+
+            <div class="mb-3 col-6">
+             <label for="UltimoDecreto" class="form-label">Ultimo Decreto</label>
+             <input type="text" class="form-control" id="UltimoDecreto" style="text-transform:uppercase" placeholder="Ultimo Decreto">
+            </div>
+
+            <div class="mb-3 col-6">
+             <label for="DocLegales" class="form-label">Documentos</label>
+             <input type="text" class="form-control" id="DocLegales" style="text-transform:uppercase" placeholder="Documentos del expediente">
+            </div>
+
+            <div class="mb-3 col-6">
+             <label for="LinkContenido" class="form-label">Link al Contenido</label>
+             <input type="text" class="form-control" id="LinkContenido" style="text-transform:uppercase" placeholder="Copiar link SAC">
+            </div>
+
 
           </div>
         </form>        
@@ -110,7 +136,7 @@
 @section Scripts {
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
-  <script src="~/js/cliente-1.0.0.js"></script>
+  <script src="~/js/expediente-1.0.0.js"></script>
 }
 
 </body>
