@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LegalSoft.Controllers;
 
-[Authorize]
+// [Authorize]
 public class PersonasController : Controller
 {
     private ApplicationDbContext _context;

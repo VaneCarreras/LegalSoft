@@ -158,3 +158,42 @@ input.btn:hover{
     2px -2px 0 coral;
   font-size: 20px;
 }
+
+
+
+#calendar {
+  background-color: #f0f0f0;
+}
+
+.fc .fc-col-header-cell-cushion {
+  color: black;
+}
+
+.fc .fc-daygrid-day-top,
+.fc .fc-daygrid-day-number {
+  color: black;
+}
+
+.fc .fc-daygrid-day-frame {
+  border: 1px solid coral;
+  background-color: #f0f0f0;
+}
+
+.fc .fc-daygrid-event {
+  color: black;
+}
+
+/* .fc .fc-daygrid-body {
+  width: 50%;
+} */
+
+/* .fc .fc-daygrid-day {
+  height: 30px; /* Ajusta este valor según sea necesario */
+ /* */
+
+ #calendar {
+  width: 60%;  /* Ajusta el ancho al 60% del contenedor padre */
+  height: 400px;  /* Fija una altura específica más pequeña */
+  margin: auto;  /* Centra el calendario */
+  font-size: 0.6em;  /* Ajusta el tamaño del texto dentro del calendario */
+}
