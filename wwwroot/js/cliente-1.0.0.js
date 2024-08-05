@@ -99,7 +99,7 @@ function GuardarRegistro(){
         url: '../../Clientes/ListadoClientes',
         // la información a enviar
         // (también es posible utilizar una cadena de datos)
-        data: { clienteID: clienteID},
+        data: {nroTipoDoc: nroTipoDoc, nombreCompleto: nombreCompleto, direccion: direccion, telefono: telefono, fechaNac: fechaNac},
         // especifica si será una petición POST o GET
         type: 'POST',
         // el tipo de información que se espera de respuesta

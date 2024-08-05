@@ -22,6 +22,62 @@
 </div>
         <hr class="hrTitulos m-4">
 
-    <div id='calendar'></div>
+    <div class="chico" id='calendar' ></div>
+
+<div class="modal fade" id="ModalPendientes" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-secondary">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title" id="ModalTitulo">Nuevo Pendiente</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="row">
+              <input type="hidden" id="PendienteID" value="0" />
+
+              <div class="mb-3 col-6">
+                <label for="Motivo" class="form-label">Motivo</label>
+                <input type="text" class="form-control" id="Motivo" placeholder="MOTIVO">
+              </div>
+
+              <div class="mb-3 col-6">
+                <label for="EquipoID" class="form-label">Equipo</label>
+                <input type="text" class="form-control" id="EquipoID" placeholder="EQUIPO">
+              </div>
+
+              <div class="mb-3 col-6">
+                <label for="FechaHora" class="form-label">Fecha y Hora</label>
+                <input type="datetime-local" id="FechaHora" class="form-control" />
+              </div>
+
+              <div class="mb-3 col-12 text-center">
+                <br>
+                                <div class="input-group">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" id="RecordatorioAlert" value="false" class="form-check-input mt-0">
+                                    </div>
+                                    <label for="">¿Recordarme?</label>
+                                </div>
+                            </div>
+
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" onclick="LimpiarModal()" class="btn btn-secondary"
+            data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" onclick="GuardarPendiente()" class="btn btn-warning">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+   @section Scripts { 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+  <script src="~/js/pendiente-1.0.0.js"></script>
+} 
+
   </body>
-</html>
+
+</html

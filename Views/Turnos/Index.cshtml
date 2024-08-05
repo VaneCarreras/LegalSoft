@@ -1,10 +1,11 @@
 <html lang='en'>
-  <head>
-    <meta charset='utf-8' />
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
-    <script>
 
-      document.addEventListener('DOMContentLoaded', function() {
+<head>
+  <meta charset='utf-8' />
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+  <script>
+
+     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
           initialView: 'dayGridMonth'
@@ -13,15 +14,62 @@
       });
 
     </script>
-  </head>
-  <body class="body2 fondoLogo">
-    <div class="text-center m-4">
+</head>
+
+<body class="body2 fondoLogo">
+  <div class="text-center m-4">
     <img src="~/img/calendario.png" alt="" class="juntos imgIcono">
 
     <h1 class="titulos juntos">MIS TURNOS</h1>
-</div>
-        <hr class="hrTitulos m-4">
+  </div>
+  <hr class="hrTitulos m-4">
 
-    <div id='calendar'></div>
-  </body>
+  <div class="chico" id='calendar'></div>
+
+  <!-- Modal Personalizado para Turnos -->
+  <div class="modal fade" id="ModalTurnos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-secondary">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title" id="ModalTitulo">Nuevo Turno</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="row">
+              <input type="hidden" id="TurnoID" value="0" />
+
+              <div class="mb-3 col-6">
+                <label for="ClienteID" class="form-label">Cliente</label>
+                <input type="text" class="form-control" id="ClienteID" placeholder="CLIENTE">
+              </div>
+
+              <div class="mb-3 col-6">
+                <label for="EquipoID" class="form-label">Equipo</label>
+                <input type="text" class="form-control" id="EquipoID" placeholder="EQUIPO">
+              </div>
+
+              <div class="mb-3 col-6">
+                <label for="FechaHora" class="form-label">Fecha y Hora</label>
+                <input type="datetime-local" id="FechaHora" class="form-control" />
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" onclick="LimpiarModal()" class="btn btn-secondary"
+            data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" onclick="GuardarTurno()" class="btn btn-warning">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ @section Scripts { 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+  <script src="~/js/turno-1.0.0.js"></script>
+} 
+</body>
+
 </html>

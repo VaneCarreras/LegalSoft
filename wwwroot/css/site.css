@@ -93,8 +93,22 @@ carousel-container {
   height: 100vh; /* Altura del contenedor al 100% del viewport */
 }
 
+.imgIngresar {
+  height: 50vh;
+}
 
+.imgRegistrarse {
+  height: 50vh;
+}
 
+.fondoAes {
+  background-image: url('../img/aestheticFondo.jpg');
+  background-repeat: no-repeat;
+  background-position: center; /* Centra la imagen */
+  background-size: cover; /* Ajusta la imagen para que cubra todo el contenedor */
+  width: 100vw; /* Ancho del contenedor al 100% del viewport */
+  height: 100vh; /* Altura del contenedor al 100% del viewport */
+}
 .icono{
   font-size: 3rem;
   padding: 0px 15px;
@@ -122,21 +136,22 @@ carousel-container {
 }
 textarea{
   resize: none;
+  height: 250px;
 }
 input.form-control{
   border: 3px solid lightsalmon;
-  box-shadow: 0px 0px 6px 3px rgba(122, 122, 122, 0.5) !important;
+  box-shadow: 0px 0px 6px 3px azure !important;
 }
 textarea.form-control{
   border: 3px solid lightsalmon;
-  box-shadow: 0px 0px 6px 3px rgba(122, 122, 122, 0.5) !important;    
+  box-shadow: 0px 0px 6px 3px azure !important;    
 }
 input.btn:hover{
   box-shadow: 0px 0px 6px 3px rgba(122, 122, 122, 0.5) !important;
 }
 
 .imgIcono {
-  width: 10%;
+  width: 4%;
 }
 
 .juntos {
@@ -193,7 +208,60 @@ input.btn:hover{
 
  #calendar {
   width: 60%;  /* Ajusta el ancho al 60% del contenedor padre */
-  height: 400px;  /* Fija una altura específica más pequeña */
+  height: 450px;  /* Fija una altura específica más pequeña */
   margin: auto;  /* Centra el calendario */
   font-size: 0.6em;  /* Ajusta el tamaño del texto dentro del calendario */
 }
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon  {
+    filter: invert(1); /* Cambia el color del icono a negro */
+    width: 70px !important;
+    height: 70px !important;
+}
+
+.titulos {
+  font-size: 28px;
+}
+
+.custom-navbar {
+  background: linear-gradient(90deg, coral 0%, gray 100%);
+  padding: 12px 24px;
+  border-bottom: 4px solid rgb(195, 68, 22);
+  height: 70px;
+}
+
+.custom-navbar .navbar-brand {
+  font-size: 1.5rem;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  color: #fff;
+}
+
+.custom-navbar .navbar-nav .nav-link {
+  color: #fff !important;
+  font-size: 1rem;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 12px 24px;
+  transition: background-color 0.3s ease;
+}
+
+.custom-navbar .navbar-nav .nav-link:hover,
+.custom-navbar .navbar-nav .dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.custom-navbar .dropdown-menu {
+  background-color: coral;
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+} */
+
+ .custom-navbar .dropdown-item {
+  color: #fff !important;
+}
+
+.custom-navbar .dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+} 
+

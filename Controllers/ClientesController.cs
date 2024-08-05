@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using LegalSoft.Models;
 using LegalSoft.Data;
-using Microsoft.AspNetCore.Authorization;
+// using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,33 +22,36 @@ public class ClientesController : Controller
     {
         return View();
     }
-
-    public JsonResult ListadoClientes(int? id)
+public JsonResult ListadoClientes(int? id)
     {
+        //HACER ANTES LOS JS
 
-        // var clientes = _context.Clientes.Include(c => c.Persona).ToList();
-        var clientes = _context.Clientes.ToList();
-
-
-
+        var personas = _context.Personas.ToList();
         if (id != null)
         {
-            clientes = clientes.Where(c => c.ClienteID == id).ToList();
-
+            personas = personas.Where(p => p.PersonaID == id).ToList();
         }
 
-        
-        foreach (var cliente in clientes)
+        var personasMostrar = personas
+        .Select(p => new VistaPersona
+        //
         {
-            // NroTipoDoc = cliente.NroTipoDoc;
+            PersonaID = p.PersonaID,
+            UsuarioID = p.UsuarioID,
+            NombreCompleto = p.NombreCompleto,
+            NroTipoDoc = p.NroTipoDoc,
+            Direccion = p.Direccion,
+            Telefono = p.Telefono,
+            FechaNac = p.FechaNac,
+            FechaString = p.FechaNac.ToString("dd/MM/yyyy"),
+        })
+        .OrderBy(p => p.NombreCompleto).ToList();
 
-            
-        }
 
 
-        return Json(clientes);
+        return Json(personasMostrar);
     }
-
+    
     public JsonResult GuardarNuevoCliente(string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateOnly fechaNac)
     {
         int error = 0; 
@@ -104,4 +107,4 @@ public class ClientesController : Controller
 ///CAMBIAR EN EQUIPO
 ///LOS JS ESTAN DE COMPLETAR, EL CREAR ES DIFERENTE Y HAY Q TERMINARLO Y EL EDITAR VA APARTE Y EN PERSONA//////////
 ///EL CONTROLADOR DE PERSONA EN SQL FUNCIONA TODO Y EL DE CLIENTE TAMBIEN, SOLO QUE CLIENTE 
-/////NO ESTA HECHO EL MOSTRAR Y TAMPOCO TIENEN NINGUNO FRONT
+/////NO ESTA HECHO EL MOSTRAR Y TAMPOCO TIENEN NINGUNO JS

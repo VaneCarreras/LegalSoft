@@ -7,7 +7,9 @@
 <body class="body2 fondoLogo">
 <div class="text-center m-4">
   <img src="~/img/clientesImg.png" alt="" class="juntos imgIcono">
-    <h1 class="titulos juntos">MIS CLIENTES</h1>
+  
+    <h1 class="titulos juntos"> MIS CLIENTES</h1>
+  
 </div>
         <hr class="hrTitulos m-4">
 
@@ -16,6 +18,7 @@
   <label for="NombreCompletoBuscar" class="form-label">Nombre Completo</label>
   <input type="text" id="NombreCompletoBuscar" class="form-control"/>
 </div>
+@* <div class="mb-3 col-1"></div> *@
 <div class="mb-3 col-3">
   <label for="NroTipoDocBuscar" class="form-label">DNI</label>
   <input type="text" id="NroTipoDocBuscar" class="form-control"/>
@@ -54,53 +57,58 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="ModalClientes" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content bg-secondary">
-      <div class="modal-header bg-dark text-white">
-        <h5 class="modal-title" id="ModalTitulo">Nuevo Cliente</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="row">
-            <input type="hidden" id="ClienteID" value="0" />
+  <div class="modal fade" id="ModalClientes" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-secondary">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title" id="ModalTitulo">Nuevo Cliente</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="row">
+              <input type="hidden" id="ClienteID" value="0" />
 
-            <div class="mb-3 col-6">
-             <label for="NombreCompleto" class="form-label">Nombre Completo</label>
-             <input type="text" class="form-control" id="NombreCompleto" style="text-transform:uppercase" placeholder="Nombre del cliente">
+              <div class="mb-3 col-6">
+                <label for="NombreCompleto" class="form-label">Nombre Completo</label>
+                <input type="text" class="form-control" id="NombreCompleto" style="text-transform:uppercase"
+                  placeholder="Nombre del cliente">
+              </div>
+
+              <div class="mb-3 col-6">
+                <label for="DNI" class="form-label">DNI</label>
+                <input type="text" class="form-control" id="DNI" style="text-transform:uppercase"
+                  placeholder="DNI del cliente">
+              </div>
+
+              <div class="mb-3 col-6">
+                <label for="Direccion" class="form-label">Dirección</label>
+                <input type="text" class="form-control" id="Direccion" style="text-transform:uppercase"
+                  placeholder="Direccion del cliente">
+              </div>
+
+              <div class="mb-3 col-6">
+                <label for="Telefono" class="form-label">Telefono</label>
+                <input type="text" class="form-control" id="Telefono" style="text-transform:uppercase"
+                  placeholder="Telefono del cliente">
+              </div>
+
+              <div class="mb-3 col-6">
+                <label for="FechaNac" class="form-label">Fecha de Nacimiento</label>
+                <input type="date" id="FechaNac" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+              </div>
+
             </div>
-
-            <div class="mb-3 col-6">
-             <label for="DNI" class="form-label">DNI</label>
-             <input type="text" class="form-control" id="DNI" style="text-transform:uppercase" placeholder="DNI del cliente">
-            </div>
-
-            <div class="mb-3 col-6">
-             <label for="Direccion" class="form-label">Dirección</label>
-             <input type="text" class="form-control" id="Direccion" style="text-transform:uppercase" placeholder="Direccion del cliente">
-            </div>
-
-            <div class="mb-3 col-6">
-             <label for="Telefono" class="form-label">Telefono</label>
-             <input type="text" class="form-control" id="Telefono" style="text-transform:uppercase" placeholder="Telefono del cliente">
-            </div>
-
-            <div class="mb-3 col-6">
-              <label for="FechaNac" class="form-label">Fecha de Nacimiento</label>
-              <input type="date" id="FechaNac" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-            </div>
-
-          </div>
-        </form>        
-      </div>
-      <div class="modal-footer">
-        <button type="button" onclick="LimpiarModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" onclick="GuardarRegistro()" class="btn btn-warning">Guardar</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" onclick="LimpiarModal()" class="btn btn-secondary"
+            data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" onclick="GuardarRegistro()" class="btn btn-warning">Guardar</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 
 

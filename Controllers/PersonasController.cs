@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using LegalSoft.Models;
 using LegalSoft.Data;
-using Microsoft.AspNetCore.Authorization;
+// using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
