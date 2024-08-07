@@ -24,48 +24,51 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           @if (User.Identity.IsAuthenticated){
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Gestión Trabajo
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li>
-                  <a class="dropdown-item" asp-area="" asp-controller="Clientes" asp-action="Index">Mis Clientes</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" asp-area="" asp-controller="Equipos" asp-action="Index">Mi Equipo</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" asp-area="" asp-controller="Consultas" asp-action="Index">Mis Atenciones</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" asp-area="" asp-controller="Expedientes" asp-action="Index">Mis Expedientes</a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Gestión Agenda
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
-                @* <li>
-                  <a class="dropdown-item" asp-area="" asp-controller="Recordatorios" asp-action="Index">Mis Recordatorios</a>
-                </li> *@
-                <li>
-                  <a class="dropdown-item" asp-area="" asp-controller="Turnos" asp-action="Index">Mis Turnos</a>
-                </li>
-                <li>
-                  <a class="dropdown-item" asp-area="" asp-controller="Pendientes" asp-action="Index">Mi Agenda</a>
-                </li>
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" asp-area="" asp-controller="Contactos" asp-action="Index">Contacto</a>
-            </li>
-            
-          </ul>
+  <!-- Gestión Trabajo -->
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Gestión Trabajo
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown1">
+      <li>
+        <a class="dropdown-item" asp-area="" asp-controller="Clientes" asp-action="Index">Mis Clientes</a>
+      </li>
+      <li>
+        <a class="dropdown-item" asp-area="" asp-controller="Equipos" asp-action="Index">Mi Equipo</a>
+      </li>
+      <li>
+        <a class="dropdown-item" asp-area="" asp-controller="Consultas" asp-action="Index">Mis Atenciones</a>
+      </li>
+      <li>
+        <a class="dropdown-item" asp-area="" asp-controller="Expedientes" asp-action="Index">Mis Expedientes</a>
+      </li>
+    </ul>
+  </li>
+
+  <!-- Gestión Agenda -->
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Gestión Agenda
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+      <!-- <li>
+        <a class="dropdown-item" asp-area="" asp-controller="Recordatorios" asp-action="Index">Mis Recordatorios</a>
+      </li> -->
+      <li>
+        <a class="dropdown-item" asp-area="" asp-controller="Turnos" asp-action="Index">Mis Turnos</a>
+      </li>
+      <li>
+        <a class="dropdown-item" asp-area="" asp-controller="Pendientes" asp-action="Index">Mi Agenda</a>
+      </li>
+    </ul>
+  </li>
+
+  <!-- Contacto -->
+  <li class="nav-item">
+    <a class="nav-link" asp-area="" asp-controller="Contactos" asp-action="Index">Contacto</a>
+  </li>
+</ul>
+
           }
           <partial name="_LoginPartial" />
         </div>
