@@ -1,13 +1,19 @@
 <html lang='sp'>
   <head>
     <meta charset='utf-8' />
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+@section Scripts {
+  
+  <script src="~/lib/fullcalendar-6.1.15/dist/index.global.js"></script>
+  <script src="~/lib/fullcalendar-6.1.15/packages/core/locales/es.global.js"></script>
+}
+
     <script>
 
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth'
+          initialView: 'dayGridMonth',
+          locale: 'es'
         });
         calendar.render();
       });
@@ -72,11 +78,11 @@
       </div>
     </div>
   </div>
-   @section Scripts { 
+   @* @section Scripts { 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
   <script src="~/js/pendiente-1.0.0.js"></script>
-} 
+}  *@
 
   </body>
 
