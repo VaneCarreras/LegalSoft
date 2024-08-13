@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', function() {
   
     var calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
+      locale: 'es',
+
       selectable: true,
       dateClick: function(info) {
         // Mostrar el modal
