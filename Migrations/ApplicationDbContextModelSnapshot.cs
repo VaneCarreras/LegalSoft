@@ -67,6 +67,19 @@ namespace LegalSoft.Migrations
                     b.ToTable("Consultas");
                 });
 
+            modelBuilder.Entity("LegalSoft.Models.Contacto", b =>
+                {
+                    b.Property<int>("ContactoID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ContactoID"));
+
+                    b.HasKey("ContactoID");
+
+                    b.ToTable("Contactos");
+                });
+
             modelBuilder.Entity("LegalSoft.Models.DocLegal", b =>
                 {
                     b.Property<int>("DocLegalID")
@@ -220,8 +233,8 @@ namespace LegalSoft.Migrations
                     b.Property<string>("Direccion")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("FechaNac")
-                        .HasColumnType("datetime2");
+                    b.Property<DateOnly>("FechaNac")
+                        .HasColumnType("date");
 
                     b.Property<string>("NombreCompleto")
                         .HasColumnType("nvarchar(max)");

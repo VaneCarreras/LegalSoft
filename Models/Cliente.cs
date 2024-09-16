@@ -9,10 +9,15 @@ namespace LegalSoft.Models
     {
        [Key]
        public int ClienteID { get; set;} 
-       public int PersonaID { get; set;} 
+       public int PersonaID { get; set;}
        public virtual ICollection<Turno>? Turnos { get; set; }
        public virtual ICollection<Consulta>? Consultas { get; set; }
        public virtual ICollection<Expediente>? Expedientes { get; set; }
+
+
+
+
+   
 
 
 
@@ -25,7 +30,7 @@ namespace LegalSoft.Models
        public string? NroTipoDoc { get; set;}
        public string? Direccion { get; set;}
        public string? Telefono { get; set;}
-       public DateTime FechaNac { get; set;}
+       public DateOnly FechaNac { get; set;}
     }
 
 }

@@ -16,6 +16,8 @@ namespace LegalSoft.Models
        public string? Telefono { get; set;}
        public DateOnly FechaNac { get; set;}
 
+
+
     }
 
     
@@ -29,5 +31,6 @@ namespace LegalSoft.Models
        public string? Telefono { get; set;}
        public DateOnly FechaNac { get; set;}
        public string? FechaString { get; set;}
+
     }
 }
