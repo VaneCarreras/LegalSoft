@@ -7,7 +7,10 @@ html {
   html {
     font-size: 16px;
   }
-}
+  
+  }
+
+
 
 /* Estilos de foco */
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -230,4 +233,69 @@ input.btn:hover {
   text-shadow: 2px 0 0 #000, -2px 0 0 #000, 0 2px 0 #000, 0 -2px 0 #000, 1px 1px #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
 }
 
+@media (max-width: 550px) {
+  .ocultar-en-550px {
+      display: none;
+  }
+}
+@media (max-width: 768px) {
+  .ocultar-en-768px {
+      display: none;
+  }
+  
+}
 
+
+/* Para tablets */
+@media only screen and (max-width: 1024px) {
+  .calendar div {
+      font-size: 0.4em;
+  }
+}
+
+/* Para celulares */
+@media only screen and (max-width: 767px) {
+  .calendar div {
+      font-size: 0.2em;
+  }
+}
+/* Para tablets (pantallas de entre 768px y 1024px) */
+@media only screen and (max-width: 1024px) {
+  .calendar {
+      width: 40%; /* Reduzco el ancho para tablets */
+      height: 300px;
+      margin: auto;
+  }
+}
+
+/* Para celulares (pantallas de hasta 767px) */
+@media only screen and (max-width: 767px) {
+  .calendar {
+      width: 20%; /* Reduzco aún más el ancho para celulares */
+      height: 150px;
+      margin: auto;
+  }
+}
+
+@media (max-width: 992px) {
+  .custom-navbar .navbar-toggler {
+    background-color: rgb(241, 180, 158); /* Fondo claro para el botón hamburguesa */
+    border-color: coral; /* Bordes a juego */
+  }
+  
+  
+  /* Estilos para el menú desplegable cuando está en modo hamburguesa */
+  .custom-navbar .navbar-collapse {
+    background-color: coral; /* Fondo del menú desplegable */
+  }
+}
+
+@media (max-width: 992px){
+  .custom-navbar .navbar-collapse {
+    position: fixed; /* Fijar el menú en toda la pantalla */
+    top: 0;
+    left: 0;
+    z-index: 9999; /* Asegúrate de que esté por encima de todo lo demás */
+    /* overflow-y: auto; Añade scroll si el contenido del menú es largo */
+  }
+}

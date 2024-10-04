@@ -11,7 +11,7 @@
 }
 
   <script>
-
+<div class="calendar">
      document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -20,7 +20,7 @@
         });
         calendar.render();
       });
-
+</div>
     </script>
 </head>
 
@@ -32,7 +32,8 @@
   </div>
   <hr class="hrTitulos m-4">
 
-  <div class="chico" id='calendar'></div>
+<div class="chico" id='calendar'></div>
+  
 
   <!-- Modal Personalizado para Turnos -->
   <div class="modal fade" id="ModalTurnos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

@@ -26,36 +26,29 @@ public JsonResult ListadoClientes(int? id)
     {
         //HACER ANTES LOS JS
 
-        var personas = _context.Personas.ToList();
+        var clientes = _context.Clientes.ToList();
         if (id != null)
         {
-            personas = personas.Where(p => p.PersonaID == id).ToList();
+            clientes = clientes.Where(c => c.ClienteID == id).ToList();
         }
 
-        var personasMostrar = personas
-        .Select(p => new VistaPersona
+        var clientesMostrar = clientes
+        .Select(c => new VistaCliente
         //
         {
-            PersonaID = p.PersonaID,
-            UsuarioID = p.UsuarioID,
-            NombreCompleto = p.NombreCompleto,
-            NroTipoDoc = p.NroTipoDoc,
-            Direccion = p.Direccion,
-            Telefono = p.Telefono,
-            FechaNac = p.FechaNac,
-            FechaString = p.FechaNac.ToString("dd/MM/yyyy"),
+            ClienteID = c.ClienteID,
         })
-        .OrderBy(p => p.NombreCompleto).ToList();
+        .OrderBy(c => c.NombreCompleto).ToList();
 
 
 
-        return Json(personasMostrar);
+        return Json(clientesMostrar);
     }
     
     public JsonResult GuardarNuevoCliente(string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateOnly fechaNac)
     {
         int error = 0; 
-
+        string resultado = "";
         string usuarioID = "";
 
         if(error == 0)
@@ -86,12 +79,12 @@ public JsonResult ListadoClientes(int? id)
             
         }
 
-        return Json(error);
+        return Json(resultado);
     }
 
-    public JsonResult EliminarCliente(int clienteID)
+    public JsonResult EliminarCliente(int ClienteID)
     {
-        var cliente = _context.Clientes.Find(clienteID);
+        var cliente = _context.Clientes.Find(ClienteID);
         _context.Remove(cliente);
         _context.SaveChanges();
 

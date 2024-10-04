@@ -15,7 +15,7 @@
 
 <div class="row">
 <div class="mb-3 col-3">
-  <label for="NombreCompletoBuscar" class="form-label">Nombre Completo</label>
+  <label for="NombreCompletoBuscar" class="form-label">Nombre</label>
   <input type="text" id="NombreCompletoBuscar" class="form-control"/>
 </div>
 @* <div class="mb-3 col-1"></div> *@
@@ -42,9 +42,10 @@
     <tr>
       <th>Nombre Completo</th>
       <th>DNI</th>
-      <th>Dirección</th>
-      <th>Telefono</th>
-      <th>Fecha de Nacimiento</th>
+  
+      <th class="ocultar-en-768px">Dirección</th>
+      <th class="ocultar-en-768px">Telefono</th>
+      <th class="ocultar-en-550px">Fecha de Nac</th>
       <th style="width: 70px"></th>
       <th style="width: 70px"></th>
     </tr>
@@ -76,8 +77,8 @@
               </div>
 
               <div class="mb-3 col-6">
-                <label for="DNI" class="form-label">DNI</label>
-                <input type="text" class="form-control" id="DNI" style="text-transform:uppercase"
+                <label for="NroTipoDoc" class="form-label">DNI</label>
+                <input type="text" class="form-control" id="NroTipoDoc" style="text-transform:uppercase"
                   placeholder="DNI del cliente">
               </div>
 
