@@ -50,6 +50,36 @@ public JsonResult ListadoClientes(int? id)
         return Json(clientesMostrar);
     }
     
+public JsonResult BuscarClientes(string nombreCompleto, string nroTipoDoc)
+        {
+            var clientes = _context.Clientes
+                .Include(c => c.Persona)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(nombreCompleto))
+            {
+                clientes = clientes.Where(c => c.Persona.NombreCompleto.ToLower().Contains(nombreCompleto.ToLower()));
+            }
+
+            if (!string.IsNullOrEmpty(nroTipoDoc))
+            {
+                clientes = clientes.Where(c => c.Persona.NroTipoDoc.Contains(nroTipoDoc));
+            }
+
+            var clientesMostrar = clientes.Select(c => new VistaCliente
+            {
+                ClienteID = c.ClienteID,
+                NombreCompleto = c.Persona.NombreCompleto,
+                NroTipoDoc = c.Persona.NroTipoDoc,
+                Direccion = c.Persona.Direccion,
+                Telefono = c.Persona.Telefono,
+                FechaNac = c.Persona.FechaNac
+            }).OrderBy(c => c.NombreCompleto).ToList();
+
+            return Json(clientesMostrar);
+        }
+
+
     public JsonResult GuardarNuevoCliente(string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateOnly fechaNac)
     {
         int error = 0; 

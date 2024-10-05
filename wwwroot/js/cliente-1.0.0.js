@@ -248,6 +248,62 @@ function GuardarRegistro() {
 
 // }
 
+function BuscarClientes() {
+    // Obtener los valores de búsqueda
+    const nombreCompleto = $('#buscarNombre').val().trim();
+    const dni = $('#buscarDNI').val().trim();
+
+    $.ajax({
+        // URL para la petición
+        url: '../../Clientes/BuscarClientes', // Asegúrate que esta URL es correcta
+        // Datos a enviar
+        data: { nombreCompleto: nombreCompleto, nroTipoDoc: dni },
+        // Especifica si será una petición POST o GET
+        type: 'POST',
+        // Tipo de información que se espera de respuesta
+        dataType: 'json',
+        // Código a ejecutar si la petición es satisfactoria
+        success: function (vistaCliente) {
+            $("#ModalClientes").modal("hide");
+            LimpiarModal(); // Opcional: Si quieres limpiar el modal después de la búsqueda
+
+            let contenidoTabla = ``;
+
+            $.each(vistaCliente, function (index, cliente) {
+                contenidoTabla += `
+                <tr>
+                    <td>${cliente.nombreCompleto}</td>
+                    <td>${cliente.nroTipoDoc}</td>
+                    <td>${cliente.direccion}</td>
+                    <td>${cliente.telefono}</td>
+                    <td>${cliente.fechaNac}</td>
+                    <td class="text-center">
+                        <button type="button" onclick="AbrirModalEditar(${cliente.clienteID})">
+                            <i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i>
+                        </button>
+                    </td>
+                    <td class="text-center">
+                        <button type="button" onclick="EliminarRegistro(${cliente.clienteID})">
+                            <i class="fa-solid fa-poo" style="color: #820d19;"></i>
+                        </button>
+                    </td>
+                </tr>
+             `;
+            });
+
+            // Actualizar el contenido de la tabla
+            document.getElementById("tbody-clientes").innerHTML = contenidoTabla;
+        },
+
+        // Código a ejecutar si la petición falla
+        error: function (xhr, status) {
+            console.log('Disculpe, existió un problema al buscar clientes');
+        }
+    });
+}
+
+
+
 function EliminarRegistro(ClienteID) {
     Swal.fire({
         title: "¿Seguro de eliminar?",

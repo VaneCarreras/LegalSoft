@@ -10,7 +10,7 @@ namespace LegalSoft.Models
        [Key]
        public int ClienteID { get; set;} 
        public int PersonaID { get; set;}
-       public Persona?  Persona { get; set;}
+       public virtual Persona?  Persona { get; set;}
        public virtual ICollection<Turno>? Turnos { get; set; }
        public virtual ICollection<Consulta>? Consultas { get; set; }
        public virtual ICollection<Expediente>? Expedientes { get; set; }
