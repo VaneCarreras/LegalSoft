@@ -25,8 +25,8 @@ public class ClientesController : Controller
 public JsonResult ListadoClientes(int? id)
     {
         //HACER ANTES LOS JS
+        var clientes = _context.Clientes.Include(c => c.Persona).ToList();
 
-        var clientes = _context.Clientes.ToList();
         if (id != null)
         {
             clientes = clientes.Where(c => c.ClienteID == id).ToList();
@@ -37,6 +37,11 @@ public JsonResult ListadoClientes(int? id)
         //
         {
             ClienteID = c.ClienteID,
+            NombreCompleto = c.Persona.NombreCompleto,
+            NroTipoDoc = c.Persona.NroTipoDoc,
+            Direccion = c.Persona.Direccion,
+            Telefono = c.Persona.Telefono,
+            FechaNac = c.Persona.FechaNac
         })
         .OrderBy(c => c.NombreCompleto).ToList();
 
@@ -90,6 +95,38 @@ public JsonResult ListadoClientes(int? id)
 
         return Json(true);
     }
+
+[HttpPost]
+public JsonResult EditarCliente(int ClienteID, string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateOnly fechaNac)
+{
+    // Buscar el cliente por el ID proporcionado
+    var clienteEditar = _context.Clientes
+                                .Include(c => c.Persona) // Incluir la relación Persona
+                                .SingleOrDefault(c => c.ClienteID == ClienteID);
+
+    // Si el cliente existe, actualizamos sus datos
+    if (clienteEditar != null && clienteEditar.Persona != null)
+    {
+        // Actualizamos los datos de la persona asociada al cliente
+        clienteEditar.Persona.NroTipoDoc = nroTipoDoc;
+        clienteEditar.Persona.NombreCompleto = nombreCompleto;
+        clienteEditar.Persona.Direccion = direccion;
+        clienteEditar.Persona.Telefono = telefono;
+        clienteEditar.Persona.FechaNac = fechaNac;
+
+        // Guardamos los cambios en la base de datos
+        _context.SaveChanges();
+
+        return Json("Cliente actualizado correctamente");
+    }
+    else
+    {
+        // Si no se encuentra el cliente o su persona, devolvemos un error
+        return Json("Error: Cliente no encontrado");
+    }
+}
+
+
 
 }
 
