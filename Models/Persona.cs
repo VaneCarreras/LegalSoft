@@ -15,7 +15,7 @@ namespace LegalSoft.Models
        public string? Direccion { get; set;}
        public string? Telefono { get; set;}
        public DateOnly FechaNac { get; set;}
-       public virtual ICollection<Cliente>? Clientes { get; set; }
+       //public virtual ICollection<Cliente>? Clientes { get; set; }
 
 
 

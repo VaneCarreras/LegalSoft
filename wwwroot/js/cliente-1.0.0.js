@@ -251,13 +251,13 @@ function GuardarRegistro() {
 function BuscarClientes() {
     // Obtener los valores de búsqueda
     const nombreCompleto = $('#buscarNombre').val().trim();
-    const dni = $('#buscarDNI').val().trim();
+    const nroTipoDoc = $('#buscarDNI').val().trim();
 
     $.ajax({
         // URL para la petición
         url: '../../Clientes/BuscarClientes', // Asegúrate que esta URL es correcta
         // Datos a enviar
-        data: { nombreCompleto: nombreCompleto, nroTipoDoc: dni },
+        data: { nombreCompleto: nombreCompleto, nroTipoDoc: nroTipoDoc },
         // Especifica si será una petición POST o GET
         type: 'POST',
         // Tipo de información que se espera de respuesta

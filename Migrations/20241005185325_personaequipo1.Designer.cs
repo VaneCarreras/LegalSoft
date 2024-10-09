@@ -4,6 +4,7 @@ using LegalSoft.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LegalSoft.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241005185325_personaequipo1")]
+    partial class personaequipo1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,6 +37,8 @@ namespace LegalSoft.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ClienteID");
+
+                    b.HasIndex("PersonaID");
 
                     b.ToTable("Clientes");
                 });
@@ -142,6 +147,9 @@ namespace LegalSoft.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EquipoID"));
+
+                    b.Property<string>("NroLegajo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PersonaID")
                         .HasColumnType("int");
@@ -478,6 +486,17 @@ namespace LegalSoft.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("LegalSoft.Models.Cliente", b =>
+                {
+                    b.HasOne("LegalSoft.Models.Persona", "Persona")
+                        .WithMany("Clientes")
+                        .HasForeignKey("PersonaID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Persona");
+                });
+
             modelBuilder.Entity("LegalSoft.Models.Consulta", b =>
                 {
                     b.HasOne("LegalSoft.Models.Cliente", "Cliente")
@@ -631,6 +650,11 @@ namespace LegalSoft.Migrations
             modelBuilder.Entity("LegalSoft.Models.Expediente", b =>
                 {
                     b.Navigation("DocLegales");
+                });
+
+            modelBuilder.Entity("LegalSoft.Models.Persona", b =>
+                {
+                    b.Navigation("Clientes");
                 });
 #pragma warning restore 612, 618
         }
