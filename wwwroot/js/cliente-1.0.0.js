@@ -248,7 +248,7 @@ function GuardarRegistro() {
 
 // }
 
-function BuscarClientes() {
+function BuscarCliente() {
     // Obtener los valores de búsqueda
     const nombreCompleto = $('#buscarNombre').val().trim();
     const nroTipoDoc = $('#buscarDNI').val().trim();
@@ -290,13 +290,14 @@ function BuscarClientes() {
                 </tr>
              `;
             });
-
             // Actualizar el contenido de la tabla
             document.getElementById("tbody-clientes").innerHTML = contenidoTabla;
         },
 
         // Código a ejecutar si la petición falla
         error: function (xhr, status) {
+            console.log(nroTipoDoc);
+
             console.log('Disculpe, existió un problema al buscar clientes');
         }
     });

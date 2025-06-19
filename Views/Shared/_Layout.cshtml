@@ -24,8 +24,10 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          @if (User.Identity.IsAuthenticated){
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+@if (User.Identity.IsAuthenticated && User.IsInRole("Equipo") || User.IsInRole("Administrador")){
+
   <!-- Gestión Trabajo -->
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -35,15 +37,21 @@
       <li>
         <a class="dropdown-item" asp-area="" asp-controller="Clientes" asp-action="Index">Mis Clientes</a>
       </li>
+       @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador")){
+
       <li>
         <a class="dropdown-item" asp-area="" asp-controller="Equipos" asp-action="Index">Mi Equipo</a>
       </li>
+      }
       <li>
         <a class="dropdown-item" asp-area="" asp-controller="Consultas" asp-action="Index">Mis Atenciones</a>
       </li>
+       @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador")){
+
       <li>
         <a class="dropdown-item" asp-area="" asp-controller="Expedientes" asp-action="Index">Mis Expedientes</a>
       </li>
+      }
     </ul>
   </li>
 
@@ -59,19 +67,41 @@
       <li>
         <a class="dropdown-item" asp-area="" asp-controller="Turnos" asp-action="Index">Mis Turnos</a>
       </li>
+       @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador")){
+
       <li>
         <a class="dropdown-item" asp-area="" asp-controller="Pendientes" asp-action="Index">Mi Agenda</a>
       </li>
+      }
     </ul>
   </li>
-
+}
+  <!-- Informes -->
+   @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador")){
+  <li class="nav-item">
+    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Graficos">Informes</a>
+  </li>
+  }
   <!-- Contacto -->
+   @if (User.Identity.IsAuthenticated && !User.IsInRole("Administrador") && !User.IsInRole("Equipo")){
   <li class="nav-item">
     <a class="nav-link" asp-area="" asp-controller="Contactos" asp-action="Index">Contacto</a>
   </li>
+  
+  }
+  
 </ul>
 
-          }
+  
+  
+
+
+
+
+ 
+ 
+
+          
           <partial name="_LoginPartial" />
         </div>
       </div>

@@ -16,17 +16,22 @@
         <hr class="hrTitulos m-4">
 <div class="row">
 <div class="mb-3 col-3">
-  <label for="NombreCompletoBuscar" class="form-label">Nombre</label>
-  <input type="text" id="NombreCompletoBuscar" class="form-control"/>
-</div>
-@* <div class="mb-3 col-1"></div> *@
-<div class="mb-3 col-3">
-  <label for="NroTipoDocBuscar" class="form-label">DNI</label>
-  <input type="text" id="NroTipoDocBuscar" class="form-control"/>
+  <label for="NombreCompletoClienteBuscar" class="form-label">Nombre Cliente</label>
+  <input type="text" id="NombreCompletoClienteBuscar" class="form-control"/>
 </div>
 <div class="mb-3 col-3">
-  <button style="margin-top: 32px;" type="button" class="btn btn-secondary" onclick="ListadoConsultas()">
-    Filtrar
+  <button style="margin-top: 32px;" type="button" class="btn btn-secondary" onclick="BuscarConsulta()">
+    Buscar
+  </button>
+</div>
+@* <div class="mb-3 col-3"></div> *@
+<div class="mb-3 col-3">
+  <label for="NombreCompletoEquipoBuscar" class="form-label">Nombre Equipo</label>
+  <input type="text" id="NombreCompletoEquipoBuscar" class="form-control"/>
+</div>
+<div class="mb-3 col-3">
+  <button style="margin-top: 32px;" type="button" class="btn btn-secondary" onclick="BuscarConsulta()">
+    Buscar
   </button>
 </div>
 </div>
@@ -43,7 +48,7 @@
   <thead>
     <tr>
       <th>Cliente</th>
-      <th class="ocultar-en-768px">Equipo</th>
+      <th class="ocultar-en-768px">Empleado</th>
       <th>Descripción</th>
       <th class="ocultar-en-550px">Fecha</th>
       <th style="width: 70px"></th>
@@ -69,15 +74,15 @@
         <form>
           <div class="row">
             <input type="hidden" id="ConsultaID" value="0" />
-
-            <div class="mb-3 col-6">
-             <label for="NombreCompletoCliente" class="form-label">Nombre Cliente</label>
-             <input type="text" class="form-control" id="NombreCompletoCliente" style="text-transform:uppercase" placeholder="Nombre del cliente">
+          
+            <div class="col-6 mb-3">
+              <label for="NombreCompletoCliente" class="control-label labelModal">Nombre Cliente</label>
+              @Html.DropDownList("ClienteID", null, htmlAttributes: new { @class = "form-control inputModalTexto", style = "cursor:pointer;text-align: justify;padding-top: 3px;"})
             </div>
 
-            <div class="mb-3 col-6">
-             <label for="NombreCompletoEquipo" class="form-label">Nombre Equipo</label>
-             <input type="text" class="form-control" id="NombreCompletoEquipo" style="text-transform:uppercase" placeholder="Nombre del personal">
+            <div class="col-6 mb-3">
+              <label for="NombreCompletoEquipo" class="control-label labelModal">Empleado</label>
+              @Html.DropDownList("EquipoID", null, htmlAttributes: new { @class = "form-control inputModalTexto", style = "cursor:pointer;text-align: justify;padding-top: 3px;"})
             </div>
 
             <div class="mb-3 col-6">

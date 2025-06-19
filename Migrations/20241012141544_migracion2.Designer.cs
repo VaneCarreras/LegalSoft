@@ -4,6 +4,7 @@ using LegalSoft.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LegalSoft.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241012141544_migracion2")]
+    partial class migracion2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,20 +52,14 @@ namespace LegalSoft.Migrations
                     b.Property<int>("ClienteID")
                         .HasColumnType("int");
 
-                    b.Property<string>("ClienteNombre")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Descripcion")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("EquipoID")
                         .HasColumnType("int");
 
-                    b.Property<string>("EquipoNombre")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateOnly>("Fecha")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("ConsultaID");
 

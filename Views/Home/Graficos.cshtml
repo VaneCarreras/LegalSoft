@@ -1,0 +1,116 @@
+@{
+    ViewData["Title"] = "Gráficos Page";
+}
+
+<div class="text-center">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Informes</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    </head>
+    <body class="body2 fondoLogo">
+        
+        <div class="text-center">
+          <img src="~/img/grafico.png" alt="" class="juntos imgIcono" style=" width: 10vh;">
+          <h1 class="titulos juntos">INFORMES</h1>
+        </div>
+        <hr class="hrTitulos m-4">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-search me-1"></i>
+                                Métodos de Búsqueda
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <!-- Selector para el tipo de estadística (Consultas, Expedientes, etc.) -->
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
+                                        <label class="control-label">Estadísticas de:</label>
+                                        <select class="form-control" id="TipoGraficoID">
+                                            <option value="consultas" selected>Consultas</option>
+                                            <option value="expedientes">Expedientes</option>
+                                            <option value="turnos">Turnos</option>
+                                            <option value="pendientes">Pendientes</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Selector para el Mes -->
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6 mb-2">
+                                        <label class="control-label">Mes:</label>
+                                        <select class="form-control" id="MesBuscar">
+                                            <option value="1">Enero</option>
+                                            <option value="2">Febrero</option>
+                                            <option value="3">Marzo</option>
+                                            <option value="4">Abril</option>
+                                            <option value="5">Mayo</option>
+                                            <option value="6" selected>Junio</option>
+                                            <option value="7">Julio</option>
+                                            <option value="8">Agosto</option>
+                                            <option value="9">Septiembre</option>
+                                            <option value="10">Octubre</option>
+                                            <option value="11">Noviembre</option>
+                                            <option value="12">Diciembre</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Selector para el Año -->
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-6 mb-2">
+                                        <label class="control-label">Año:</label>
+                                        <select class="form-control" id="AnioBuscar">
+                                            <option value="2023">2023</option>
+                                            <option value="2024" selected>2024</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sección del Gráfico Circular -->
+                    <div class="col-md-8">
+                        <div class="card mb-8">
+                            <div class="card-header">
+                                <i class="fas fa-chart-pie me-1"></i>
+                                Estadísticas<span id="tipo-seleccionado"></span>
+                            </div>
+                            <div class="card-body" style="height: 60vh; margin-left: 24vh;">
+                                <canvas id="grafico-circular"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Incluye Chart.js desde CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <!-- JavaScript personalizado para el gráfico -->
+        <script src="ruta/al/javascript/personalizado.js"></script>
+    </body>
+    </html>
+</div>
+
+
+
+
+
+
+
+
+</html>
+
+    
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/js/graficoConsulta.js"></script>
+
+}

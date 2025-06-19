@@ -248,7 +248,7 @@ function GuardarRegistro() {
 
 // }
 
-function BuscarEquipos() {
+function BuscarEquipo() {
     // Obtener los valores de búsqueda
     const nombreCompleto = $('#buscarNombre').val().trim();
     const nroTipoDoc = $('#buscarDNI').val().trim();
@@ -290,18 +290,18 @@ function BuscarEquipos() {
                 </tr>
              `;
             });
-
             // Actualizar el contenido de la tabla
             document.getElementById("tbody-equipos").innerHTML = contenidoTabla;
         },
 
         // Código a ejecutar si la petición falla
         error: function (xhr, status) {
-            console.log('Disculpe, existió un problema al buscar empleados');
+            console.log(nroTipoDoc);
+
+            console.log('Disculpe, existió un problema al buscar equipo');
         }
     });
 }
-
 
 
 function EliminarRegistro(EquipoID) {
