@@ -31,12 +31,12 @@ function ListadoConsultas(){
                         <td>${consulta.descripcion}</td>
                         <td>${consulta.fecha}</td>
                     <td class="text-center">
-                    <button type="button"  onclick="AbrirModalEditar(${consulta.consultaID})">
+                    <button type="button"  onclick="AbrirModalEditar(${consulta.consultaID})" title="Editar" >
                     <i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i>
                     </button>
                     </td>
                     <td class="text-center">
-                    <button type="button"   onclick="EliminarRegistro(${consulta.consultaID})">
+                    <button type="button"   onclick="EliminarRegistro(${consulta.consultaID})" title="Eliminar">
                     <i class="fa-solid fa-poo" style="color: #820d19;"></i>
                     </button>
                     </td>

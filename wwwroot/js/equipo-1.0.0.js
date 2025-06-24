@@ -31,12 +31,12 @@ function ListadoEquipos(){
                         <td>${equipo.telefono}</td>
                         <td>${equipo.fechaNac}</td>
                     <td class="text-center">
-                    <button type="button"  onclick="AbrirModalEditar(${equipo.equipoID})">
+                    <button type="button"  onclick="AbrirModalEditar(${equipo.equipoID})" title="Editar">
                     <i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i>
                     </button>
                     </td>
                     <td class="text-center">
-                    <button type="button"   onclick="EliminarRegistro(${equipo.equipoID})">
+                    <button type="button"   onclick="EliminarRegistro(${equipo.equipoID})" title="Eliminar">
                     <i class="fa-solid fa-poo" style="color: #820d19;"></i>
                     </button>
                     </td>

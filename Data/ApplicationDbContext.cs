@@ -15,7 +15,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Cliente> Clientes { get; set; }
     public DbSet<Consulta> Consultas { get; set; }
     public DbSet<DocLegal> DocLegales { get; set; }
-    public DbSet<Documento> Documentos { get; set; }
+    public DbSet<ImagenCliente> ImagenClientes { get; set; }
     public DbSet<Equipo> Equipos { get; set; }
     public DbSet<Expediente> Expedientes { get; set; }
     public DbSet<Pendiente> Pendientes { get; set; }

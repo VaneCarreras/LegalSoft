@@ -4,6 +4,8 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
+
+
 <body class="body2 fondoLogo">
 <div class="text-center m-4">
   <img src="~/img/clientesImg.png" alt="" class="juntos imgIcono">
@@ -53,6 +55,8 @@
       <th class="ocultar-en-550px">Fecha de Nac</th>
       <th style="width: 70px"></th>
       <th style="width: 70px"></th>
+            <th style="width: 70px"></th>
+
     </tr>
   </thead>
   <tbody  id="tbody-clientes">
@@ -116,13 +120,81 @@
     </div>
   </div>
 
+<div id="ModalMostrarSubirImagenes" class="modal fade MostrarSubirImagenes" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalScrollableTitle">Imágenes de docs del Cliente</h5>
+                <button type="button" onclick="CerrarCargaImagen();" class="cruzCerrar" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <input type="hidden" id="ClienteID" value="0" />
+
+            <div class="modal-body">
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_1">
+                        <div class="nav nav-tabs" id="myTabs" role="tablist">
+                            <a class="nav-link active" id="tab_1_1-tab" data-bs-toggle="tab" href="#tab_1_1" role="tab" aria-controls="tab_1_1" aria-selected="true">Visualizar</a>
+                            <a class="nav-link" id="tab_1_2-tab" data-bs-toggle="tab" href="#tab_1_2" role="tab" aria-controls="tab_1_2" aria-selected="false">Agregar</a>
+                            <a class="nav-link" id="tab_1_3-tab" data-bs-toggle="tab" href="#tab_1_3" role="tab" aria-controls="tab_1_3" aria-selected="false">Eliminar</a>
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="tab_1_1" role="tabpanel" aria-labelledby="tab_1_1-tab">
+                                <div>
+                                    <div id="ImagenesCliente"></div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tab_1_2" role="tabpanel" aria-labelledby="tab_1_2-tab">
+                                <div>
+                                    <input type="hidden" class="form-control" name="image" id="image" />
+                                    <div class="panel-body">
+                                        <div style="margin-bottom: 15px;">
+                                            <input type="file" class="js-loadfile" accept="image/x-png,image/gif,image/jpeg" value="Upload" />
+                                        </div>
+                                        <div class="crop-wrapper">
+                                            <div class="top-overlay"></div>
+                                            <div class="right-overlay"></div>
+                                            <div class="bottom-overlay"></div>
+                                            <div class="left-overlay"></div>
+
+                                            <div class="overlay">
+                                                <div class="overlay-inner"></div>
+                                            </div>
+
+                                            <img class="resize-image" alt="Imagen a cortar" />
+                                        </div>
+                                    </div>
+                                    <div style="margin-bottom:10px; margin-left:10px; text-align:center;">
+                                        <button id="volver-cortar" class="btn btn-ovalo js-reset">Reiniciar</button>
+                                        <button id="cortar" class="btn btn-ovalo js-crop">Cortar</button>
+                                        <button onclick="GuardarImagen();" class="btn btn-ovalo" type="button">Guardar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="tab_1_3" role="tabpanel" aria-labelledby="tab_1_3-tab">
+                                <div>
+                                    <table id="ImagenesClienteEliminar"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
 @section Scripts {
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script src="~/js/fotorama.js"></script>
+    <script src="~/js/cortarImagenCliente.js"></script>
 
   <script src="~/js/cliente-1.0.0.js"></script>
 }

@@ -183,7 +183,6 @@ public JsonResult EditarCliente(int ClienteID, string nroTipoDoc, string nombreC
 
 
 
-}
 
 
 
@@ -196,3 +195,78 @@ public JsonResult EditarCliente(int ClienteID, string nroTipoDoc, string nombreC
 
 
 //CAMBIAR LISTADO Y EDITAR
+
+
+
+
+
+        public JsonResult BuscarImagenes(int PersonaID)
+        {
+            List<VistaImagenCliente> listaImagenCliente = new List<VistaImagenCliente>();
+
+            var imagenesCli = (from o in _context.ImagenClientes where o.PersonaID == PersonaID select o).ToList();
+
+            foreach (var item in imagenesCli)
+            {
+                string returnValue = System.Convert.ToBase64String(item.Imagen);
+
+                var imagenCliente = new VistaImagenCliente
+                {
+                    ImgClientesID = item.ImagenClienteID,
+                    Base64 = returnValue
+                };
+                listaImagenCliente.Add(imagenCliente);
+            }
+
+            return Json(listaImagenCliente);
+        }
+
+        public JsonResult GuardarImagen(string ImagenAGuardar, int PersonaID)
+        {
+            var resultado = false;
+
+            try
+            {
+                var cantidadImagenes = (from o in _context.ImagenClientes where o.PersonaID == PersonaID select o).Count();
+                if (cantidadImagenes < 3)
+                {
+                    if (ImagenAGuardar != null && ImagenAGuardar.Length > 0)
+                    {
+                        byte[] bytes = Convert.FromBase64String(ImagenAGuardar.Split(',')[1]);
+
+                        var imagenCli = new ImagenCliente
+                        {
+                            Imagen = bytes,
+                            PersonaID = Convert.ToInt32(PersonaID)
+                        };
+                        _context.ImagenClientes.Add(imagenCli);
+                        _context.SaveChanges();
+
+                        resultado = true;
+                    }
+                }
+                else
+                {
+                    resultado = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                resultado = false;
+            }
+
+            return Json(resultado);
+        }
+
+        public JsonResult EliminarImagenCliente(int ImgClientesID)
+        {
+            bool resultado = true;
+
+            ImagenCliente imagenCliente = _context.ImagenClientes.Find(ImgClientesID);
+
+            _context.ImagenClientes.Remove(imagenCliente);
+            _context.SaveChanges();
+
+            return Json(resultado);
+        }
+}

@@ -116,31 +116,6 @@ namespace LegalSoft.Migrations
                     b.ToTable("DocLegales");
                 });
 
-            modelBuilder.Entity("LegalSoft.Models.Documento", b =>
-                {
-                    b.Property<int>("DocumentoID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocumentoID"));
-
-                    b.Property<byte[]>("Imagen")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("NombreArchivo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PersonaID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TipoImg")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("DocumentoID");
-
-                    b.ToTable("Documentos");
-                });
-
             modelBuilder.Entity("LegalSoft.Models.Equipo", b =>
                 {
                     b.Property<int>("EquipoID")
@@ -196,6 +171,36 @@ namespace LegalSoft.Migrations
                     b.HasIndex("EquipoID");
 
                     b.ToTable("Expedientes");
+                });
+
+            modelBuilder.Entity("LegalSoft.Models.ImagenCliente", b =>
+                {
+                    b.Property<int>("ImagenClienteID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ImagenClienteID"));
+
+                    b.Property<int>("ClienteID")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("Imagen")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("NombreArchivo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PersonaID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TipoImg")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ImagenClienteID");
+
+                    b.HasIndex("ClienteID");
+
+                    b.ToTable("ImagenClientes");
                 });
 
             modelBuilder.Entity("LegalSoft.Models.Pendiente", b =>
@@ -533,6 +538,17 @@ namespace LegalSoft.Migrations
                     b.Navigation("Equipo");
                 });
 
+            modelBuilder.Entity("LegalSoft.Models.ImagenCliente", b =>
+                {
+                    b.HasOne("LegalSoft.Models.Cliente", "Cliente")
+                        .WithMany("ImagenesCliente")
+                        .HasForeignKey("ClienteID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+                });
+
             modelBuilder.Entity("LegalSoft.Models.Pendiente", b =>
                 {
                     b.HasOne("LegalSoft.Models.Equipo", "Equipo")
@@ -619,6 +635,8 @@ namespace LegalSoft.Migrations
                     b.Navigation("Consultas");
 
                     b.Navigation("Expedientes");
+
+                    b.Navigation("ImagenesCliente");
 
                     b.Navigation("Turnos");
                 });

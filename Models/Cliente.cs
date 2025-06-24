@@ -15,6 +15,7 @@ namespace LegalSoft.Models
        public virtual ICollection<Consulta>? Consultas { get; set; }
        public virtual ICollection<Expediente>? Expedientes { get; set; }
 
+        public virtual ICollection<ImagenCliente>? ImagenesCliente {  get; set; }
 
 
 
@@ -24,14 +25,17 @@ namespace LegalSoft.Models
 
     }
 
-    public class VistaCliente
-    {
-       public int ClienteID { get; set;} 
-       public string? NombreCompleto { get; set;}
-       public string? NroTipoDoc { get; set;}
-       public string? Direccion { get; set;}
-       public string? Telefono { get; set;}
-       public DateOnly FechaNac { get; set;}
+   public class VistaCliente
+   {
+      public int ClienteID { get; set; }
+      public string? NombreCompleto { get; set; }
+      public string? NroTipoDoc { get; set; }
+      public string? Direccion { get; set; }
+      public string? Telefono { get; set; }
+      public DateOnly FechaNac { get; set; }
+               public string? Base64 { get; set; }
+        public List<string>? ImagenesClientes { get; set; }
+
     }
 
 }
