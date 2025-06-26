@@ -200,11 +200,11 @@ public JsonResult EditarCliente(int ClienteID, string nroTipoDoc, string nombreC
 
 
 
-        public JsonResult BuscarImagenes(int PersonaID)
+        public JsonResult BuscarImagenes(int ClienteID)
         {
             List<VistaImagenCliente> listaImagenCliente = new List<VistaImagenCliente>();
 
-            var imagenesCli = (from o in _context.ImagenClientes where o.PersonaID == PersonaID select o).ToList();
+            var imagenesCli = (from o in _context.ImagenCliente where o.ClienteID == ClienteID select o).ToList();
 
             foreach (var item in imagenesCli)
             {
@@ -221,13 +221,13 @@ public JsonResult EditarCliente(int ClienteID, string nroTipoDoc, string nombreC
             return Json(listaImagenCliente);
         }
 
-        public JsonResult GuardarImagen(string ImagenAGuardar, int PersonaID)
+        public JsonResult GuardarImagen(string ImagenAGuardar, int ClienteID)
         {
             var resultado = false;
 
             try
             {
-                var cantidadImagenes = (from o in _context.ImagenClientes where o.PersonaID == PersonaID select o).Count();
+                var cantidadImagenes = (from o in _context.ImagenCliente where o.ClienteID == ClienteID select o).Count();
                 if (cantidadImagenes < 3)
                 {
                     if (ImagenAGuardar != null && ImagenAGuardar.Length > 0)
@@ -237,9 +237,9 @@ public JsonResult EditarCliente(int ClienteID, string nroTipoDoc, string nombreC
                         var imagenCli = new ImagenCliente
                         {
                             Imagen = bytes,
-                            PersonaID = Convert.ToInt32(PersonaID)
+                            ClienteID = Convert.ToInt32(ClienteID)
                         };
-                        _context.ImagenClientes.Add(imagenCli);
+                        _context.ImagenCliente.Add(imagenCli);
                         _context.SaveChanges();
 
                         resultado = true;
@@ -262,9 +262,9 @@ public JsonResult EditarCliente(int ClienteID, string nroTipoDoc, string nombreC
         {
             bool resultado = true;
 
-            ImagenCliente imagenCliente = _context.ImagenClientes.Find(ImgClientesID);
+            ImagenCliente imagenCliente = _context.ImagenCliente.Find(ImgClientesID);
 
-            _context.ImagenClientes.Remove(imagenCliente);
+            _context.ImagenCliente.Remove(imagenCliente);
             _context.SaveChanges();
 
             return Json(resultado);

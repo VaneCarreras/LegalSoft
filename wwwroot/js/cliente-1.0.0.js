@@ -32,7 +32,7 @@ function ListadoClientes(){
                         <td>${cliente.fechaNac}</td>
 
 
-                    <td class="text-center"><button type="button" onclick="BuscarImagenes(${cliente.personaID})"  data-bs-toggle="modal" data-bs-target=".MostrarSubirImagenes" title="Mostrar Imagenes"><i class="fa-duotone fa-regular fa-images" style="color:rgb(54, 176, 89);"></i></button></td>
+                    <td class="text-center"><button type="button" onclick="BuscarImagenes(${cliente.clienteID})"  data-bs-toggle="modal" data-bs-target=".MostrarSubirImagenes" title="Mostrar Imagenes"><i class="fa-duotone fa-regular fa-images" style="color:rgb(54, 176, 89);"></i></button></td>
 
 
                     <td class="text-center">
@@ -65,7 +65,6 @@ function ListadoClientes(){
 
 function LimpiarModal(){
     document.getElementById("ClienteID").value = 0;
-    // document.getElementById("PersonaID").value = 0; 
     document.getElementById("NombreCompleto").value = ""; 
     document.getElementById("NroTipoDoc").value = ""; 
 
@@ -353,18 +352,24 @@ function EliminarRegistro(ClienteID) {
         //**************************************************************
         //FUNCIÓN PARA BUSCAR LAS IMAGENES CORRESPONDIENTES AL PRODUCTO.
         //**************************************************************
-        function BuscarImagenes(personaID) {
-            $("#PersonaID").val(personaID);
+        function BuscarImagenes(clienteID) {
+    console.log("ClienteID recibido:", clienteID); // <-- VERIFICA QUE SE RECIBE EL ID
+
+
+            $("#ClienteID").val(clienteID);
             $("#ImagenesCliente").empty();
 
             $.ajax({
                 url: '../../Clientes/BuscarImagenes',
-                data: { PersonaID: personaID },
+                data: { ClienteID: clienteID },
                 dataType: 'json',
                 success: function (listaImagenCliente) {
                     var imagenes = "";
                     var botonesEliminar = "";
                     $.each(listaImagenCliente, function (index, imagen) {
+
+                                        console.log("Imagen recibida:", imagen); // <-- VERIFICA CADA IMAGEN INDIVIDUAL
+
                         imagenes += "<img src='data:image/jpeg;base64," + imagen.base64 + "'>";
                     });
 
@@ -384,7 +389,7 @@ function EliminarRegistro(ClienteID) {
                     $('.fotorama').fotorama();
 
                     // LLAMAMOS A LA FUNCION DE BUSCAR LAS IMAGENES PARA PODER ELIMINARLAS.
-                    BuscarImagenesEliminar(personaID);
+                    BuscarImagenesEliminar(clienteID);
 
                 },
                 error: function (resultado) {
@@ -414,56 +419,101 @@ function EliminarRegistro(ClienteID) {
         //****************************************************************************
         //FUNCIÓN PARA GUARDAR EN LA TABLA LAS IMAGENES SELECCIONADAS PARA EL PRODUCTO 
         //****************************************************************************
+        // function GuardarImagen() {
+        //     var clienteID = $("#ClienteID").val();
+        //     var image = $('#inputImagen').val();
+
+        //     $.ajax({
+        //         type: "POST",
+        //         url: '../../Clientes/GuardarImagen',
+        //         data: { ImagenAGuardar: image, ClienteID: clienteID },
+        //         success: function (resultado) {
+        //             if (resultado == 1) {
+        //                 VaciarCampoImagen();
+
+        //                 BuscarImagenes(clienteID);
+
+        //             }
+        //         },
+        //         error: function (result) {
+        //             swal({
+        //                 title: "ATENCIÓN",
+        //                 icon: "error",
+        //                 text: "Ocurrio un error al Guardar",
+
+        //                 dangerMode: true,
+        //                 closeOnClickOutside: false,
+        //                 closeOnEsc: false,
+
+        //                 buttons: {
+        //                     confirm: {
+        //                         text: "Aceptar",
+        //                         value: true,
+        //                         visible: true,
+        //                         className: "botonVerdeSweetAlert",
+        //                         closeModal: true
+        //                     }
+        //                 },
+        //             });
+        //             // alert("Ocurrio un error al Guardar o llego al limite de 3 Imagenes por Producto, pruebe nuevamente más tarde o Elimine alguna Imagen!");
+        //         }
+        //     });
+        // }
+
         function GuardarImagen() {
-            var personaID = $("#PersonaID").val();
-            var image = $('#image').val();
+    console.log("Función GuardarImagen iniciada");
 
-            $.ajax({
-                type: "POST",
-                url: '../../Clientes/GuardarImagen',
-                data: { ImagenAGuardar: image, PersonaID: personaID },
-                success: function (resultado) {
-                    if (resultado == 1) {
-                        VaciarCampoImagen();
+    var input = document.getElementById("inputImagen");
+    var file = input.files[0];
 
-                        BuscarImagenes(personaID);
+    if (!file) {
+        alert("Seleccioná una imagen antes de guardar.");
+        return;
+    }
 
-                    }
-                },
-                error: function (result) {
-                    swal({
-                        title: "ATENCIÓN",
-                        icon: "error",
-                        text: "Ocurrio un error al Guardar",
+    var reader = new FileReader();
 
-                        dangerMode: true,
-                        closeOnClickOutside: false,
-                        closeOnEsc: false,
+    reader.onload = function (e) {
+        var base64Image = e.target.result;
+        console.log("Base64 generado:", base64Image);
 
-                        buttons: {
-                            confirm: {
-                                text: "Aceptar",
-                                value: true,
-                                visible: true,
-                                className: "botonVerdeSweetAlert",
-                                closeModal: true
-                            }
-                        },
-                    });
-                    // alert("Ocurrio un error al Guardar o llego al limite de 3 Imagenes por Producto, pruebe nuevamente más tarde o Elimine alguna Imagen!");
+        var clienteID = $("#ClienteID").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/Clientes/GuardarImagen",
+            data: {
+                ImagenAGuardar: base64Image,
+                ClienteID: clienteID
+            },
+            success: function (resultado) {
+                console.log("Resultado del servidor:", resultado);
+                if (resultado === true) {
+                    alert("Imagen guardada correctamente.");
+                    BuscarImagenes(clienteID);
+                } else {
+                    alert("No se pudo guardar la imagen. ¿Ya hay 3?");
                 }
-            });
-        }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error en la petición AJAX:", error);
+            }
+        });
+    };
+
+    reader.readAsDataURL(file);
+}
+
 
         //******************************************************************************************
         //FUNCIÓN PARA BUSCAR EN LA TABLA LAS IMAGENES CORRESPONDIENTES AL PRODUCTO PARA MOSTRARLAS.
         //******************************************************************************************
-        function BuscarImagenesEliminar(personaID) {
+        function BuscarImagenesEliminar(clienteID) {
             $("#ImagenesClienteEliminar").empty();
 
             $.ajax({
                 url: '../../Clientes/BuscarImagenes',
-                data: { PersonaID: personaID },
+                data: { ClienteID: clienteID },
                 dataType: 'json',
                 success: function (listaImagenCliente) {
                     var imagenes = "";
@@ -509,7 +559,7 @@ function EliminarRegistro(ClienteID) {
         //FUNCIÓN PARA ELIMINAR LA IMAGEN ASOCIADA AL PRODUCTO
         //****************************************************
         function EliminarImagen(imgClientesID) {
-            var personaID = $("#PersonaID").val();
+            var clienteID = $("#ClienteID").val();
 
             $.ajax({
                 url: "../../Clientes/EliminarImagenCliente",
@@ -519,7 +569,7 @@ function EliminarRegistro(ClienteID) {
 
                     VaciarCampoImagen();
 
-                    BuscarImagenes(personaID);
+                    BuscarImagenes(clienteID);
 
                 },
                 error: function (resultado) {
@@ -540,6 +590,7 @@ function EliminarRegistro(ClienteID) {
         function CerrarCargaImagen() {
             $('#ModalMostrarSubirImagenes').modal('hide');
         }
+
 
 
 

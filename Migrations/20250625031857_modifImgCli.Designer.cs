@@ -4,6 +4,7 @@ using LegalSoft.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LegalSoft.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250625031857_modifImgCli")]
+    partial class modifImgCli
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -187,11 +190,17 @@ namespace LegalSoft.Migrations
                     b.Property<byte[]>("Imagen")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<string>("NombreArchivo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TipoImg")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ImagenClienteID");
 
                     b.HasIndex("ClienteID");
 
-                    b.ToTable("ImagenCliente");
+                    b.ToTable("ImagenClientes");
                 });
 
             modelBuilder.Entity("LegalSoft.Models.Pendiente", b =>

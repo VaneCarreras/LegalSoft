@@ -9,10 +9,10 @@ namespace LegalSoft.Models
     {
         [Key]
         public int ImagenClienteID { get; set; }
-        public int PersonaID { get; set; }
+        public int ClienteID { get; set; }
         public byte[]? Imagen { get; set; }
-        public string? TipoImg { get; set; }
-        public string? NombreArchivo { get; set; }
+        // public string? TipoImg { get; set; }
+        // public string? NombreArchivo { get; set; }
         public virtual Cliente Cliente { get; set; }
 
     } 
