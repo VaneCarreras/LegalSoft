@@ -8,7 +8,7 @@
 
 <link rel="stylesheet" href="~/lib/animate.css">
 
-<link rel="stylesheet" href="~/css/style.css">
+@* <link rel="stylesheet" href="~/css/style.css"> *@
 <body class="fondoLogo">
 
   <section id="Contacto">
@@ -26,26 +26,27 @@
         <hr class="hrTitulos m-4">
 
         <div class="col-md-6 col-sm-12 text-center p-5">
-          <form action="">
-            <div class="form-group m-1 ">
-              <input type="text" id="Nombre" class="form-control" placeholder="Nombre">
+          <div id="alerta" class="mt-3"></div>
 
-            </div>
+              <form id="formContacto" class="mt-3">
+        <div class="form-group">
+            <label for="Nombre">Nombre</label>
+            <input name="Nombre" class="form-control" required />
+        </div>
 
-            <div class="form-group m-1">
-              <input type="text" id="Email" class="form-control" placeholder="Email">
+        <div class="form-group">
+            <label for="Email">Email</label>
+            <input name="Email" type="email" class="form-control" required />
+        </div>
 
-            </div>
+        <div class="form-group">
+            <label for="Mensaje">Mensaje</label>
+            <textarea name="Mensaje" class="form-control" rows="5" required></textarea>
+        </div>
 
+        <button type="submit" class="btn btn-primary mt-4">Enviar</button>
+    </form>
 
-            <div class="form-group m-1">
-              <textarea name="Mensaje" id="Mensaje" cols="20" rows="8" placeholder="Mensaje"
-                class="form-control"></textarea>
-
-            </div>
-
-            <input type="submit" class="btn btn-secondary m-1" value="Enviar" id="Enviar">
-          </form>
 
         </div>
         <div class="col-md-6 col-sm-12 text-center p-5">
@@ -84,6 +85,9 @@
 
   <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
   <script src="~/lib/fontawesome/js/all.min.js"></script>
 
   <script src="~/lib/wow.js"></script>
@@ -91,5 +95,38 @@
   <script>
     new WOW().init();
   </script>
+
+  <script>
+        $("#formContacto").on("submit", function (e) {
+            e.preventDefault();
+
+            let datos = {
+                Nombre: $("input[name='Nombre']").val(),
+                Email: $("input[name='Email']").val(),
+                Mensaje: $("textarea[name='Mensaje']").val()
+            };
+
+            $.ajax({
+                url: '@Url.Action("EnviarCorreo", "Contactos")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(datos),
+                success: function (res) {
+                    if (res.exito) {
+                        $("#alerta").html(`<div class="alert alert-success">${res.mensaje}</div>`);
+                        $("#formContacto")[0].reset();
+                    } else if (res.errores) {
+                        let mensajes = Object.values(res.errores).flat().join("<br>");
+                        $("#alerta").html(`<div class="alert alert-danger">${mensajes}</div>`);
+                    } else {
+                        $("#alerta").html(`<div class="alert alert-danger">${res.mensaje}</div>`);
+                    }
+                },
+                error: function () {
+                    $("#alerta").html(`<div class="alert alert-danger">Error inesperado al enviar el mensaje.</div>`);
+                }
+            });
+        });
+    </script>
     </body>
 
