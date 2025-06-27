@@ -122,8 +122,9 @@ public JsonResult ListadoExpedientes(int? id)
             EquipoID = expediente.EquipoID,
             Numero = expediente.Numero,
             Caratula = expediente.Caratula,
-            UltimoDecreto = expediente.UltimoDecreto,
+            // UltimoDecreto = expediente.UltimoDecreto,
             FechaInicio = expediente.FechaInicio,
+            FechaFin = expediente.FechaFin,
             NombreCompletoCliente = clienteNombre, // <-- Este campo ahora existe
             NombreCompletoEquipo = equipoNombre,
             LinkContenido = expediente.LinkContenido,
@@ -165,13 +166,14 @@ public JsonResult BuscarExpedientes(string DniClienteBuscar, string NroExpBuscar
         var expedienteMostrar = new VistaExpediente
         {
             ExpedienteID = expediente.ExpedienteID,
-            ClienteID = expediente.ClienteID,
-            EquipoID = expediente.EquipoID,
             Numero = expediente.Numero,
             Caratula = expediente.Caratula,
-            UltimoDecreto = expediente.UltimoDecreto,
             FechaInicio = expediente.FechaInicio,
             FechaFin = expediente.FechaFin,
+            ClienteID = expediente.ClienteID,
+            EquipoID = expediente.EquipoID,
+            // UltimoDecreto = expediente.UltimoDecreto,
+            
             NombreCompletoCliente = clienteNombre,
             NombreCompletoEquipo = equipoNombre,
             LinkContenido = expediente.LinkContenido,
@@ -204,7 +206,7 @@ public JsonResult BuscarExpedientes(string DniClienteBuscar, string NroExpBuscar
 
 
 
-    public JsonResult GuardarNuevoExpediente(int expedienteID, int clienteID, int equipoID, DateTime fechaInicio, DateTime fechaFin, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoExpediente estadoExpediente, string? numero, string? caratula, string? ultimoDecreto, string? linkContenido)
+    public JsonResult GuardarNuevoExpediente(int expedienteID, int clienteID, int equipoID, DateOnly fechaInicio, DateOnly fechaFin, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoExpediente estadoExpediente, string? numero, string? caratula, string? ultimoDecreto, string? linkContenido)
     {
 
         var error = 0;
@@ -221,7 +223,7 @@ public JsonResult BuscarExpedientes(string DniClienteBuscar, string NroExpBuscar
                 EquipoID = equipoID,
                 Numero = numero,
                 Caratula = caratula,
-                UltimoDecreto = ultimoDecreto,
+                // UltimoDecreto = ultimoDecreto,
                 FechaInicio = fechaInicio,
                 FechaFin = fechaFin,
                 LinkContenido = linkContenido,
@@ -251,7 +253,7 @@ public JsonResult BuscarExpedientes(string DniClienteBuscar, string NroExpBuscar
         return Json(error);
     }
 
-public JsonResult EditarExpediente(int expedienteID, int clienteID, int equipoID, DateTime fechaInicio, DateTime fechaFin, string? numero, string? caratula, string? ultimoDecreto, string? linkContenido, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoExpediente estadoExpediente)
+public JsonResult EditarExpediente(int expedienteID, int clienteID, int equipoID, DateOnly fechaInicio, DateOnly fechaFin, string? numero, string? caratula, string? ultimoDecreto, string? linkContenido, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoExpediente estadoExpediente)
 {
     // Buscar el cliente por el ID proporcionado
     var expedienteEditar = _context.Expedientes.SingleOrDefault(c => c.ExpedienteID == expedienteID);
@@ -268,7 +270,7 @@ public JsonResult EditarExpediente(int expedienteID, int clienteID, int equipoID
             expedienteEditar.Numero = numero;
             expedienteEditar.Caratula = caratula;
             expedienteEditar.LinkContenido = linkContenido;
-            expedienteEditar.UltimoDecreto = ultimoDecreto;
+            // expedienteEditar.UltimoDecreto = ultimoDecreto;
             expedienteEditar.FechaInicio = fechaInicio;
             expedienteEditar.FechaFin = fechaFin;
             expedienteEditar.EstadoExpediente = estadoExpediente;

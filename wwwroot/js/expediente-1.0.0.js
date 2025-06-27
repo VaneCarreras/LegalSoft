@@ -25,14 +25,19 @@ function ListadoExpedientes(){
                 
                 contenidoTabla += `
                 <tr>
-                        <td>${expediente.nombreCompletoCliente}</td>
+                       
+                        <td>${expediente.numero}</td>
+                        <td>${expediente.caratula}</td> 
+                
+                
+                <td>${expediente.nombreCompletoCliente}</td>
                         <td>${expediente.nombreCompletoEquipo}</td>
                         
-                        <td>${expediente.numero}</td>
-                        <td>${expediente.caratula}</td>
-                        <td>${expediente.ultimoDecreto}</td>
+
+
                         <td>${expediente.fechaInicio}</td>
                             <td>${expediente.fechaFin}</td>
+
                             <td>${expediente.linkContenido}</td>
 
                         <td>${expediente.estadoExpedienteString}</td>
@@ -74,13 +79,13 @@ function LimpiarModal(){
     // document.getElementById("NombreCompletoEquipo").value = ""; 
     document.getElementById("Numero").value = ""; 
         document.getElementById("Caratula").value = ""; 
-    document.getElementById("UltimoDecreto").value = ""; 
+    // document.getElementById("UltimoDecreto").value = ""; 
 
     document.getElementById("FechaInicio").value = ""; 
         document.getElementById("FechaFin").value = ""; 
     document.getElementById("LinkContenido").value = ""; 
 
-        document.getElementById("EstadoConsulta").value = 0;
+        document.getElementById("EstadoExpediente").value = 0;
 
 
 
@@ -114,7 +119,7 @@ function AbrirModalEditar(ExpedienteID){
             document.getElementById("EquipoID").value = expediente.equipoID;
             document.getElementById("Numero").value = expediente.numero;
             document.getElementById("Caratula").value = expediente.caratula;
-            document.getElementById("UltimoDecreto").value = expediente.ultimoDecreto;
+            // document.getElementById("UltimoDecreto").value = expediente.ultimoDecreto;
             document.getElementById("LinkContenido").value = expediente.linkContenido;
 
             document.getElementById("EstadoExpediente").value = expediente.estadoExpediente;
@@ -143,7 +148,7 @@ function GuardarRegistro() {
     let equipoID =        document.getElementById("EquipoID").value;
     let numero =        document.getElementById("Numero").value;
         let caratula =        document.getElementById("Caratula").value;
-        let ultimoDecreto =        document.getElementById("UltimoDecreto").value;
+        // let ultimoDecreto =        document.getElementById("UltimoDecreto").value;
     let fechaInicio =        document.getElementById("FechaInicio").value;
         let fechaFin =        document.getElementById("FechaFin").value;
         let linkContenido =        document.getElementById("LinkContenido").value;
@@ -162,7 +167,7 @@ function GuardarRegistro() {
                 equipoID: equipoID,
                 numero: numero,
                 caratula: caratula,
-                ultimoDecreto: ultimoDecreto,
+                // ultimoDecreto: ultimoDecreto,
                 fechaInicio: fechaInicio,
                 fechaFin: fechaFin,
                 linkContenido: linkContenido,
@@ -192,7 +197,7 @@ function GuardarRegistro() {
                 equipoID: equipoID,
                 numero: numero,
                 caratula: caratula,
-                ultimoDecreto: ultimoDecreto,
+                // ultimoDecreto: ultimoDecreto,
                 fechaInicio: fechaInicio,
                 fechaFin: fechaFin,
                 linkContenido: linkContenido,
@@ -224,7 +229,7 @@ function BuscarExpediente() {
 
     $.ajax({
         // URL para la petición
-        url: '../../Expedientes/BuscarExpedientess', // Asegúrate que esta URL es correcta
+        url: '../../Expedientes/BuscarExpedientes', // Asegúrate que esta URL es correcta
         // Datos a enviar
         data: { dniClienteBuscar: dniClienteBuscar, nroExpBuscar: nroExpBuscar },
         // Especifica si será una petición POST o GET
@@ -241,14 +246,15 @@ function BuscarExpediente() {
             $.each(vistaExpediente, function (index, expediente) {
                 contenidoTabla += `
                 <tr>
+                
+                        <td>${expediente.numero}</td>
+                        <td>${expediente.caratula}</td>
                         <td>${expediente.nombreCompletoCliente}</td>
                         <td>${expediente.nombreCompletoEquipo}</td>
                         
-                        <td>${expediente.numero}</td>
-                        <td>${expediente.caratula}</td>
-                        <td>${expediente.ultimoDecreto}</td>
                         <td>${expediente.fechaInicio}</td>
                             <td>${expediente.fechaFin}</td>
+
                             <td>${expediente.linkContenido}</td>
 
                         <td>${expediente.estadoExpedienteString}</td>
@@ -273,7 +279,7 @@ function BuscarExpediente() {
         // Código a ejecutar si la petición falla
         error: function (xhr, status) {
 
-            console.log('Disculpe, existió un problema al buscar consultas');
+            console.log('Disculpe, existió un problema al buscar expedientes');
         }
     });
 }

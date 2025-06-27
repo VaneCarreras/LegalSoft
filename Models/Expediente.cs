@@ -14,8 +14,8 @@ namespace LegalSoft.Models
         public string? Numero { get; set; }
         public string? Caratula { get; set; }
         public string? UltimoDecreto { get; set; }
-        public DateTime FechaInicio { get; set; }
-        public DateTime FechaFin { get; set; }
+        public DateOnly FechaInicio { get; set; }
+        public DateOnly FechaFin { get; set; }
         public string? LinkContenido { get; set; }
         public virtual Cliente? Cliente { get; set; }
         public virtual Equipo? Equipo { get; set; }
@@ -41,8 +41,8 @@ namespace LegalSoft.Models
         public string? Numero { get; set; }
         public string? Caratula { get; set; }
         public string? UltimoDecreto { get; set; }
-        public DateTime FechaInicio { get; set; }
-        public DateTime FechaFin { get; set; }
+        public DateOnly FechaInicio { get; set; }
+        public DateOnly FechaFin { get; set; }
         public string? LinkContenido { get; set; }
         public virtual Cliente? Cliente { get; set; }
         public virtual Equipo? Equipo { get; set; }
