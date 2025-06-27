@@ -30,6 +30,8 @@ function ListadoConsultas(){
                         
                         <td>${consulta.descripcion}</td>
                         <td>${consulta.fecha}</td>
+                        <td>${consulta.estadoConsultaString}</td>
+
                     <td class="text-center">
                     <button type="button"  onclick="AbrirModalEditar(${consulta.consultaID})" title="Editar" >
                     <i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i>
@@ -67,6 +69,8 @@ function LimpiarModal(){
     // document.getElementById("NombreCompletoEquipo").value = ""; 
     document.getElementById("Descripcion").value = ""; 
     document.getElementById("Fecha").value = ""; 
+        document.getElementById("EstadoConsulta").value = 0;
+
 
 
 }
@@ -100,6 +104,7 @@ function AbrirModalEditar(ConsultaID){
             
             document.getElementById("Descripcion").value = consulta.descripcion; 
             document.getElementById("Fecha").value = consulta.fecha; 
+            document.getElementById("EstadoConsulta").value = consulta.estadoConsulta;
 
             $("#ModalConsultas").modal("show");
 
@@ -127,6 +132,7 @@ function GuardarRegistro() {
     // let nombreCompletoEquipo =        document.getElementById("NombreCompletoEquipo").value; 
     let descripcion =        document.getElementById("Descripcion").value; 
     let fecha =        document.getElementById("Fecha").value;
+    let estadoConsulta = document.getElementById("EstadoConsulta").value;
 
     if (consultaID == 0 || consultaID == "") {
         // Llamar al método de creación si ClienteID es 0 o está vacío
@@ -140,6 +146,7 @@ function GuardarRegistro() {
                 equipoID: equipoID,
                 descripcion: descripcion,
                 fecha: fecha,
+                estadoConsulta: estadoConsulta,
 
             },
             dataType: 'json',
@@ -166,6 +173,7 @@ function GuardarRegistro() {
                 
                 descripcion: descripcion,
                 fecha: fecha,
+                estadoConsulta: estadoConsulta,
                 
             },
 
@@ -214,6 +222,8 @@ function BuscarConsulta() {
                     <td>${consulta.nombreCompletoEquipo}</td>
                     <td>${consulta.descripcion}</td>
                     <td>${consulta.fecha}</td>
+                                        <td>${consulta.estadoConsultaString}</td>
+
                     <td class="text-center">
                         <button type="button" onclick="AbrirModalEditar(${consulta.consultaID})">
                             <i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i>

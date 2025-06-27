@@ -51,6 +51,7 @@
       <th class="ocultar-en-768px">Empleado</th>
       <th>Descripción</th>
       <th class="ocultar-en-550px">Fecha</th>
+      <th>Estado</th>
       <th style="width: 70px"></th>
       <th style="width: 70px"></th>
     </tr>
@@ -95,6 +96,12 @@
             <div class="mb-3 col-6">
               <label for="Fecha" class="form-label">Fecha</label>
               <input type="date" id="Fecha" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            </div>
+
+
+            <div class="mb-3 col-6">
+              <label for="EstadoConsulta" class="form-label">Estado</label>
+              @Html.DropDownList("EstadoConsulta", null, htmlAttributes: new { @class = "form-control" })
             </div>
 
           </div>
