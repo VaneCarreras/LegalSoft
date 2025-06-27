@@ -13,21 +13,21 @@
 
 <div class="row">
 <div class="mb-3 col-3">
-  <label for="NroTipoDocClienteBuscar" class="form-label">DNI Cliente</label>
-  <input type="text" id="NroTipoDocBuscar" class="form-control"/>
+  <label for="DniClienteBuscar" class="form-label">Nombre Cliente</label>
+  <input type="text" id="DniClienteBuscar" class="form-control"/>
 </div>
 <div class="mb-3 col-3">
-  <button style="margin-top: 32px;" type="button" class="btn btn-secondary" onclick="ListadoExpedientesDni()">
+  <button style="margin-top: 32px;" type="button" class="btn btn-secondary" onclick="BuscarExpediente()">
     Buscar
   </button>
 </div>
 @* <div class="mb-3 col-1"></div> *@
 <div class="mb-3 col-3">
   <label for="NroExpBuscar" class="form-label">Número</label>
-  <input type="text" id="NombreCompletoBuscar" class="form-control"/>
+  <input type="text" id="NroExpBuscar" class="form-control"/>
 </div>
 <div class="mb-3 col-3">
-  <button style="margin-top: 32px;" type="button" class="btn btn-secondary" onclick="ListadoExpedientesNro()">
+  <button style="margin-top: 32px;" type="button" class="btn btn-secondary" onclick="BuscarExpediente()">
     Buscar
   </button>
 </div>
@@ -50,9 +50,9 @@
       <th class="ocultar-en-768px">Inicio</th>
       <th class="ocultar-en-768px">Fin</th>
       <th >Último Decreto</th>
-      <th class="ocultar-en-768px">Docs</th>
+      @* <th class="ocultar-en-768px">Docs</th> *@
       <th class="ocultar-en-550px">Link</th>
-
+      <th>Estado</th>
       <th style="width: 70px"></th>
       <th style="width: 70px"></th>
     </tr>
@@ -87,14 +87,14 @@
              <input type="text" class="form-control" id="Caratula" style="text-transform:uppercase" placeholder="Caratula de expediente">
             </div>
 
-            <div class="mb-3 col-6">
-             <label for="Cliente" class="form-label">Cliente</label>
-             <input type="text" class="form-control" id="Cliente" style="text-transform:uppercase" placeholder="Nombre del cliente">
+            <div class="col-6 mb-3">
+              <label for="NombreCompletoCliente" class="control-label labelModal">Cliente</label>
+              @Html.DropDownList("ClienteID", null, htmlAttributes: new { @class = "form-control inputModalTexto", style = "cursor:pointer;text-align: justify;padding-top: 3px;"})
             </div>
 
-            <div class="mb-3 col-6">
-             <label for="Equipo" class="form-label">Abogado</label>
-             <input type="text" class="form-control" id="Equipo" style="text-transform:uppercase" placeholder="Abogado a cargo">
+            <div class="col-6 mb-3">
+              <label for="NombreCompletoEquipo" class="control-label labelModal">Abogado</label>
+              @Html.DropDownList("EquipoID", null, htmlAttributes: new { @class = "form-control inputModalTexto", style = "cursor:pointer;text-align: justify;padding-top: 3px;"})
             </div>
 
             <div class="mb-3 col-6">
@@ -112,19 +112,22 @@
              <input type="text" class="form-control" id="UltimoDecreto" style="text-transform:uppercase" placeholder="Ultimo Decreto">
             </div>
 
-            <div class="mb-3 col-6">
+            @* <div class="mb-3 col-6">
              <label for="DocLegales" class="form-label">Documentos</label>
              <input type="text" class="form-control" id="DocLegales" style="text-transform:uppercase" placeholder="Documentos del expediente">
-            </div>
+            </div> *@
 
             <div class="mb-3 col-6">
              <label for="LinkContenido" class="form-label">Link al Contenido</label>
              <input type="text" class="form-control" id="LinkContenido" style="text-transform:uppercase" placeholder="Copiar link SAC">
             </div>
 
-
+            <div class="mb-3 col-6">
+              <label for="EstadoExpediente" class="form-label">Estado</label>
+              @Html.DropDownList("EstadoExpediente", null, htmlAttributes: new { @class = "form-control" })
+            </div>
           </div>
-        </form>        
+        </form>      
       </div>
       <div class="modal-footer">
         <button type="button" onclick="LimpiarModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -146,3 +149,12 @@
 }
 
 </body>
+
+
+
+
+
+
+
+
+
