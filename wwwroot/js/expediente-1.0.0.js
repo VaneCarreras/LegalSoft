@@ -132,6 +132,9 @@ function AbrirModalEditar(ExpedienteID){
             document.getElementById("EquipoID").value = expediente.equipoID;
             document.getElementById("Numero").value = expediente.numero;
             document.getElementById("Caratula").value = expediente.caratula;
+                        document.getElementById("FechaInicio").value = expediente.fechaInicio;
+            document.getElementById("FechaFin").value = expediente.fechaFin;
+
             document.getElementById("UltimoDecreto").value = expediente.ultimoDecreto;
             document.getElementById("LinkContenido").value = expediente.linkContenido;
 
