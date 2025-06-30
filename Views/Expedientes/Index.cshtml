@@ -109,10 +109,7 @@
               <input type="date" id="FechaFin" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
             </div>
 
-            @* <div class="mb-3 col-6">
-             <label for="UltimoDecreto" class="form-label">Ultimo Decreto</label>
-             <input type="text" class="form-control" id="UltimoDecreto" style="text-transform:uppercase" placeholder="Ultimo Decreto">
-            </div> *@
+            
 
             @* <div class="mb-3 col-6">
              <label for="DocLegales" class="form-label">Documentos</label>
@@ -128,6 +125,12 @@
               <label for="EstadoExpediente" class="form-label">Estado</label>
               @Html.DropDownList("EstadoExpediente", null, htmlAttributes: new { @class = "form-control" })
             </div>
+
+            <div class="mb-3 col-12">
+  <label for="UltimoDecreto" class="form-label">Ultimo Decreto</label>
+  <textarea class="form-control" id="UltimoDecreto" style=" height: 180px;" placeholder="Ultimo Decreto"></textarea>
+</div>
+
           </div>
         </form>      
       </div>

@@ -92,7 +92,7 @@ function LimpiarModal(){
     // document.getElementById("NombreCompletoEquipo").value = ""; 
     document.getElementById("Numero").value = ""; 
         document.getElementById("Caratula").value = ""; 
-    // document.getElementById("UltimoDecreto").value = ""; 
+    document.getElementById("UltimoDecreto").value = ""; 
 
     document.getElementById("FechaInicio").value = ""; 
         document.getElementById("FechaFin").value = ""; 
@@ -132,7 +132,7 @@ function AbrirModalEditar(ExpedienteID){
             document.getElementById("EquipoID").value = expediente.equipoID;
             document.getElementById("Numero").value = expediente.numero;
             document.getElementById("Caratula").value = expediente.caratula;
-            // document.getElementById("UltimoDecreto").value = expediente.ultimoDecreto;
+            document.getElementById("UltimoDecreto").value = expediente.ultimoDecreto;
             document.getElementById("LinkContenido").value = expediente.linkContenido;
 
             document.getElementById("EstadoExpediente").value = expediente.estadoExpediente;
@@ -161,7 +161,7 @@ function GuardarRegistro() {
     let equipoID =        document.getElementById("EquipoID").value;
     let numero =        document.getElementById("Numero").value;
         let caratula =        document.getElementById("Caratula").value;
-        // let ultimoDecreto =        document.getElementById("UltimoDecreto").value;
+        let ultimoDecreto =        document.getElementById("UltimoDecreto").value;
     let fechaInicio =        document.getElementById("FechaInicio").value;
         let fechaFin =        document.getElementById("FechaFin").value;
         let linkContenido =        document.getElementById("LinkContenido").value;
@@ -180,7 +180,7 @@ function GuardarRegistro() {
                 equipoID: equipoID,
                 numero: numero,
                 caratula: caratula,
-                // ultimoDecreto: ultimoDecreto,
+                ultimoDecreto: ultimoDecreto,
                 fechaInicio: fechaInicio,
                 fechaFin: fechaFin,
                 linkContenido: linkContenido,
@@ -210,7 +210,7 @@ function GuardarRegistro() {
                 equipoID: equipoID,
                 numero: numero,
                 caratula: caratula,
-                // ultimoDecreto: ultimoDecreto,
+                ultimoDecreto: ultimoDecreto,
                 fechaInicio: fechaInicio,
                 fechaFin: fechaFin,
                 linkContenido: linkContenido,

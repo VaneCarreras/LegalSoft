@@ -124,7 +124,7 @@ public class ExpedientesController : Controller
                 EquipoID = expediente.EquipoID,
                 Numero = expediente.Numero,
                 Caratula = expediente.Caratula,
-                // UltimoDecreto = expediente.UltimoDecreto,
+                UltimoDecreto = expediente.UltimoDecreto,
                 FechaInicio = expediente.FechaInicio,
                 FechaFin = expediente.FechaFin,
                 NombreCompletoCliente = clienteNombre, // <-- Este campo ahora existe
@@ -174,7 +174,7 @@ public class ExpedientesController : Controller
                 FechaFin = expediente.FechaFin,
                 ClienteID = expediente.ClienteID,
                 EquipoID = expediente.EquipoID,
-                // UltimoDecreto = expediente.UltimoDecreto,
+                UltimoDecreto = expediente.UltimoDecreto,
 
                 NombreCompletoCliente = clienteNombre,
                 NombreCompletoEquipo = equipoNombre,
@@ -225,7 +225,7 @@ public class ExpedientesController : Controller
                 EquipoID = equipoID,
                 Numero = numero,
                 Caratula = caratula,
-                // UltimoDecreto = ultimoDecreto,
+                UltimoDecreto = ultimoDecreto,
                 FechaInicio = fechaInicio,
                 FechaFin = fechaFin,
                 LinkContenido = linkContenido,
@@ -272,7 +272,7 @@ public class ExpedientesController : Controller
                 expedienteEditar.Numero = numero;
                 expedienteEditar.Caratula = caratula;
                 expedienteEditar.LinkContenido = linkContenido;
-                // expedienteEditar.UltimoDecreto = ultimoDecreto;
+                expedienteEditar.UltimoDecreto = ultimoDecreto;
                 expedienteEditar.FechaInicio = fechaInicio;
                 expedienteEditar.FechaFin = fechaFin;
                 expedienteEditar.EstadoExpediente = estadoExpediente;
