@@ -398,6 +398,8 @@ function BuscarDocumentos(expedienteID) {
         data: { ExpedienteID: expedienteID },
         dataType: 'json',
         success: function (listaDocs) {
+                console.log("Datos recibidos:", listaDocs);
+
             if (listaDocs.length === 0) {
                 $("#DocsExpediente").append("<p class='text-center'>No hay documentos cargados.</p>");
                 return;
@@ -408,8 +410,8 @@ function BuscarDocumentos(expedienteID) {
             $.each(listaDocs, function (index, doc) {
     $("#DocsExpediente").append(
         "<div class='mb-3'>" +
-            "<p><strong>" + doc.NombreArchivo + "</strong></p>" +
-            "<a href='data:application/octet-stream;base64," + doc.Base64 + "' download='" + doc.NombreArchivo + "' class='btn btn-ovalo'>Descargar</a>" +
+            "<p><strong>" + doc.nombreArchivo + "</strong></p>" +
+            "<a href='data:application/octet-stream;base64," + doc.base64 + "' download='" + doc.nombreArchivo + "' class='btn btn-ovalo'>Descargar</a>" +
         "</div>"
     );
 });
@@ -437,9 +439,9 @@ function BuscarDocumentosEliminar(expedienteID) {
             $.each(listaDocs, function (index, doc) {
     $("#DocsExpedienteEliminar").append(
         "<tr>" +
-            "<td>" + doc.NombreArchivo + "</td>" +
+            "<td>" + doc.nombreArchivo + "</td>" +
             "<td class='text-center'>" +
-                "<a onclick='EliminarDocumento(" + doc.DocID + ");' class='btn-ovaloEliminar' title='Eliminar Documento'>Eliminar</a>" +
+                "<a onclick='EliminarDocumento(" + doc.docID + ");' class='btn-ovaloEliminar' title='Eliminar Documento'>Eliminar</a>" +
             "</td>" +
         "</tr>"
     );

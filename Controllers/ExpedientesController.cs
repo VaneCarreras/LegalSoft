@@ -305,6 +305,8 @@ public class ExpedientesController : Controller
 
     public JsonResult BuscarDocumentos(int ExpedienteID)
     {
+            Console.WriteLine($"[BuscarDocumentos] ExpedienteID recibido: {ExpedienteID}");
+
         List<VistaDocsExpediente> listaDocs = new List<VistaDocsExpediente>();
 
         var docs = _context.DocsExpediente
@@ -321,6 +323,8 @@ public class ExpedientesController : Controller
             };
             listaDocs.Add(vistaDoc);
         }
+
+        
 
         return Json(listaDocs);
     }
