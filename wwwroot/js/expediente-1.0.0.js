@@ -38,9 +38,22 @@ function ListadoExpedientes(){
                         <td>${expediente.fechaInicio}</td>
                             <td>${expediente.fechaFin}</td>
 
-                            <td>${expediente.linkContenido}</td>
+                            <td><a href='  ${expediente.linkContenido}  ' target='_blank' style='text-decoration: underline; color: orange;'> ${expediente.linkContenido} </a></td>
 
                         <td>${expediente.estadoExpedienteString}</td>
+
+<td class="text-center">
+    <button type="button"
+            onclick="AbrirModalDocsExpediente(${expediente.expedienteID})"
+            data-bs-toggle="modal"
+            data-bs-target="#ModalDocsExpediente"
+            title="Mostrar Documentos">
+<i class="fa-regular fa-folder-open" style="color: #63E6BE;"></i>   </button>
+</td>
+
+
+
+
 
                     <td class="text-center">
                     <button type="button"  onclick="AbrirModalEditar(${expediente.expedienteID})" title="Editar" >
@@ -255,9 +268,19 @@ function BuscarExpediente() {
                         <td>${expediente.fechaInicio}</td>
                             <td>${expediente.fechaFin}</td>
 
-                            <td>${expediente.linkContenido}</td>
+                            <td><a href=' ${expediente.linkContenido} ' target='_blank' style='text-decoration: underline; color: orange;'>  ${expediente.linkContenido} </a></td>
 
                         <td>${expediente.estadoExpedienteString}</td>
+
+<td class="text-center">
+    <button type="button"
+            onclick="AbrirModalDocsExpediente(${expediente.expedienteID})"
+            data-bs-toggle="modal"
+            data-bs-target="#ModalDocsExpediente"
+            title="Mostrar Documentos">
+<i class="fa-regular fa-folder-open" style="color: #63E6BE;"></i>  </button>
+</td>
+
 
                     <td class="text-center">
                     <button type="button"  onclick="AbrirModalEditar(${expediente.expedienteID})" title="Editar" >
@@ -318,4 +341,150 @@ function EliminarRegistro(ExpedienteID) {
             });
         }
     });
+}
+
+function GuardarDocumento() {
+    console.log("Función GuardarDocumento iniciada");
+
+    var input = document.getElementById("inputDoc");
+    var file = input.files[0];
+
+    if (!file) {
+        alert("Seleccioná un documento antes de guardar.");
+        return;
+    }
+
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+        var base64Doc = e.target.result;
+        console.log("Base64 generado:", base64Doc);
+
+        var expedienteID = $("#ExpedienteID").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/Expedientes/GuardarDocumento",
+            data: {
+                DocumentoAGuardar: base64Doc,
+                NombreArchivo: file.name,
+                ExpedienteID: expedienteID
+            },
+            success: function(resultado) {
+    if (resultado.resultado === true || resultado === true) {
+        alert("Documento guardado correctamente.");
+        BuscarDocumentos(expedienteID);
+    } else {
+        alert("No se pudo guardar el documento. " + (resultado.error ? resultado.error : ""));
+    }
+
+
+            
+            },
+            error: function (xhr, status, error) {
+                console.error("Error en la petición AJAX:", error);
+            }
+        });
+    };
+
+    reader.readAsDataURL(file);
+}
+
+function BuscarDocumentos(expedienteID) {
+    $("#DocsExpediente").empty();
+
+    $.ajax({
+        url: '/Expedientes/BuscarDocumentos',
+        data: { ExpedienteID: expedienteID },
+        dataType: 'json',
+        success: function (listaDocs) {
+            if (listaDocs.length === 0) {
+                $("#DocsExpediente").append("<p class='text-center'>No hay documentos cargados.</p>");
+                return;
+            }
+
+            
+
+            $.each(listaDocs, function (index, doc) {
+    $("#DocsExpediente").append(
+        "<div class='mb-3'>" +
+            "<p><strong>" + doc.NombreArchivo + "</strong></p>" +
+            "<a href='data:application/octet-stream;base64," + doc.Base64 + "' download='" + doc.NombreArchivo + "' class='btn btn-ovalo'>Descargar</a>" +
+        "</div>"
+    );
+});
+
+        },
+        error: function () {
+            alert("Ocurrió un error al buscar los documentos.");
+        }
+    });
+}
+
+function BuscarDocumentosEliminar(expedienteID) {
+    $("#DocsExpedienteEliminar").empty();
+
+    $.ajax({
+        url: '/Expedientes/BuscarDocumentos',
+        data: { ExpedienteID: expedienteID },
+        dataType: 'json',
+        success: function (listaDocs) {
+            if (listaDocs.length === 0) {
+                $("#DocsExpedienteEliminar").append("<tr><td colspan='2' class='text-center'>No hay documentos cargados.</td></tr>");
+                return;
+            }
+
+            $.each(listaDocs, function (index, doc) {
+    $("#DocsExpedienteEliminar").append(
+        "<tr>" +
+            "<td>" + doc.NombreArchivo + "</td>" +
+            "<td class='text-center'>" +
+                "<a onclick='EliminarDocumento(" + doc.DocID + ");' class='btn-ovaloEliminar' title='Eliminar Documento'>Eliminar</a>" +
+            "</td>" +
+        "</tr>"
+    );
+});
+
+        },
+        error: function () {
+            alert("Ocurrió un error al cargar los documentos.");
+        }
+    });
+}
+
+function EliminarDocumento(docID) {
+    var expedienteID = $("#ExpedienteID").val();
+
+    $.ajax({
+        url: "/Expedientes/EliminarDocumento",
+        type: "POST",
+        data: { docID: docID },
+        success: function (resultado) {
+            console.log("Documento eliminado:", resultado);
+            BuscarDocumentos(expedienteID);
+            BuscarDocumentosEliminar(expedienteID);
+        },
+        error: function () {
+            alert("Ocurrió un error al eliminar el documento.");
+        }
+    });
+}
+
+function CerrarModalDocsExpediente() {
+    $('#ModalDocsExpediente').modal('hide');
+}
+
+
+function AbrirModalDocsExpediente(expedienteID) {
+    console.log("Abriendo modal para expediente:", expedienteID);
+
+    // Asignar el ID al input oculto para que GuardarDocumento() lo use correctamente
+    $("#ExpedienteID").val(expedienteID);
+
+    // Cargar las listas de documentos en las pestañas Ver y Eliminar
+    BuscarDocumentos(expedienteID);
+    BuscarDocumentosEliminar(expedienteID);
+
+    // Mostrar el modal
+    $('#ModalDocsExpediente').modal('show');
 }

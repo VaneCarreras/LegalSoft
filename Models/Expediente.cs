@@ -19,7 +19,7 @@ namespace LegalSoft.Models
         public string? LinkContenido { get; set; }
         public virtual Cliente? Cliente { get; set; }
         public virtual Equipo? Equipo { get; set; }
-        public virtual ICollection<DocLegal>? DocLegales { get; set; }
+        public virtual ICollection<DocsExpediente>? DocExpedientes { get; set; }
         public EstadoExpediente EstadoExpediente { get; set; }
 
 
@@ -46,7 +46,7 @@ namespace LegalSoft.Models
         public string? LinkContenido { get; set; }
         public virtual Cliente? Cliente { get; set; }
         public virtual Equipo? Equipo { get; set; }
-        public virtual ICollection<DocLegal>? DocLegales { get; set; }
+        public virtual ICollection<DocsExpediente>? DocExpedientes { get; set; }
         public EstadoExpediente EstadoExpediente { get; set; }
         public string? EstadoExpedienteString { get; set; }
     }

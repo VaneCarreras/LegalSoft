@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace LegalSoft.Controllers;
 
@@ -23,184 +25,184 @@ public class ExpedientesController : Controller
         _context = context;
         _userManager = userManager;
     }
-    
-  public IActionResult Index()
-{
-    // Obtener personas del contexto correspondiente (el otro contexto si es necesario)
-    var personas = _context.Personas
-        .Select(p => new { p.PersonaID, p.NombreCompleto })
-        .ToList();
 
-    // Obtener clientes del contexto actual
-    var clientes = _context.Clientes
-        .Select(c => new { c.ClienteID, c.PersonaID })
-        .ToList();
+    public IActionResult Index()
+    {
+        // Obtener personas del contexto correspondiente (el otro contexto si es necesario)
+        var personas = _context.Personas
+            .Select(p => new { p.PersonaID, p.NombreCompleto })
+            .ToList();
 
-    // Unir ambas listas manualmente por PersonaID
-    var clientesConNombre = (from c in clientes
-                             join p in personas on c.PersonaID equals p.PersonaID
-                             select new
-                             {
-                                 ClienteID = c.ClienteID,
-                                 NombreCompleto = p.NombreCompleto
-                             }).ToList();
+        // Obtener clientes del contexto actual
+        var clientes = _context.Clientes
+            .Select(c => new { c.ClienteID, c.PersonaID })
+            .ToList();
 
-    var clientesBuscar = clientesConNombre.ToList();
+        // Unir ambas listas manualmente por PersonaID
+        var clientesConNombre = (from c in clientes
+                                 join p in personas on c.PersonaID equals p.PersonaID
+                                 select new
+                                 {
+                                     ClienteID = c.ClienteID,
+                                     NombreCompleto = p.NombreCompleto
+                                 }).ToList();
 
-    clientesConNombre.Add(new { ClienteID = 0, NombreCompleto = "[SELECCIONE...]" });
-    ViewBag.ClienteID = new SelectList(clientesConNombre.OrderBy(c => c.NombreCompleto), "ClienteID", "NombreCompleto");
+        var clientesBuscar = clientesConNombre.ToList();
 
-    clientesBuscar.Add(new { ClienteID = 0, NombreCompleto = "[TODOS]" });
-    ViewBag.NombreCompletoClienteBuscar = new SelectList(clientesBuscar.OrderBy(c => c.NombreCompleto), "ClienteID", "NombreCompleto");
+        clientesConNombre.Add(new { ClienteID = 0, NombreCompleto = "[SELECCIONE...]" });
+        ViewBag.ClienteID = new SelectList(clientesConNombre.OrderBy(c => c.NombreCompleto), "ClienteID", "NombreCompleto");
+
+        clientesBuscar.Add(new { ClienteID = 0, NombreCompleto = "[TODOS]" });
+        ViewBag.NombreCompletoClienteBuscar = new SelectList(clientesBuscar.OrderBy(c => c.NombreCompleto), "ClienteID", "NombreCompleto");
 
 
         var equipos = _context.Equipos
         .Select(e => new { e.EquipoID, e.PersonaID })
         .ToList();
 
-    var equiposConNombre = (from e in equipos
-                            join p in personas on e.PersonaID equals p.PersonaID
-                            select new
-                            {
-                                EquipoID = e.EquipoID,
-                                NombreCompleto = p.NombreCompleto
-                            }).ToList();
+        var equiposConNombre = (from e in equipos
+                                join p in personas on e.PersonaID equals p.PersonaID
+                                select new
+                                {
+                                    EquipoID = e.EquipoID,
+                                    NombreCompleto = p.NombreCompleto
+                                }).ToList();
 
-    var equiposBuscar = equiposConNombre.ToList();
+        var equiposBuscar = equiposConNombre.ToList();
 
-    equiposConNombre.Add(new { EquipoID = 0, NombreCompleto = "[SELECCIONE...]" });
-    ViewBag.EquipoID = new SelectList(equiposConNombre.OrderBy(e => e.NombreCompleto), "EquipoID", "NombreCompleto");
+        equiposConNombre.Add(new { EquipoID = 0, NombreCompleto = "[SELECCIONE...]" });
+        ViewBag.EquipoID = new SelectList(equiposConNombre.OrderBy(e => e.NombreCompleto), "EquipoID", "NombreCompleto");
 
-    equiposBuscar.Add(new { EquipoID = 0, NombreCompleto = "[TODOS]" });
-    ViewBag.NombreCompletoEquipoBuscar = new SelectList(equiposBuscar.OrderBy(e => e.NombreCompleto), "EquipoID", "NombreCompleto");
+        equiposBuscar.Add(new { EquipoID = 0, NombreCompleto = "[TODOS]" });
+        ViewBag.NombreCompletoEquipoBuscar = new SelectList(equiposBuscar.OrderBy(e => e.NombreCompleto), "EquipoID", "NombreCompleto");
 
-    ViewBag.EstadoExpediente = new SelectList(
-    Enum.GetValues(typeof(EstadoExpediente))
-        .Cast<EstadoExpediente>()
-        .Select(e => new { Value = (int)e, Text = e.ToString().ToUpper() }),
-    "Value",
-    "Text"
-);
+        ViewBag.EstadoExpediente = new SelectList(
+        Enum.GetValues(typeof(EstadoExpediente))
+            .Cast<EstadoExpediente>()
+            .Select(e => new { Value = (int)e, Text = e.ToString().ToUpper() }),
+        "Value",
+        "Text"
+    );
 
 
 
-    return View();
-}
-
-public JsonResult ListadoExpedientes(int? id)
-{
-    // Obtener la lista de consultas
-    var expedientes = _context.Expedientes.ToList();
-
-    // Filtrar por ID si es proporcionado
-    if (id.HasValue)
-    {
-        expedientes = expedientes.Where(c => c.ExpedienteID == id.Value).ToList();
+        return View();
     }
 
-    // Crear una lista de consultas para mostrar
-    List<VistaExpediente> expedientesMostrar = new List<VistaExpediente>();
-
-    foreach (var expediente in expedientes)
+    public JsonResult ListadoExpedientes(int? id)
     {
-        // Obtener el nombre completo del cliente
-        var clienteNombre = _context.Clientes
-            .Where(cli => cli.ClienteID == expediente.ClienteID)
-            .Join(_context.Personas, cli => cli.PersonaID, p => p.PersonaID, (cli, p) => p.NombreCompleto)
-            .FirstOrDefault() ?? "[Sin Cliente]";
+        // Obtener la lista de consultas
+        var expedientes = _context.Expedientes.ToList();
 
-        // Obtener el nombre completo del equipo
-        var equipoNombre = _context.Equipos
-            .Where(eq => eq.EquipoID == expediente.EquipoID)
-            .Join(_context.Personas, eq => eq.PersonaID, p => p.PersonaID, (eq, p) => p.NombreCompleto)
-            .FirstOrDefault() ?? "[Sin Equipo]";
-
-        var expedienteMostrar = new VistaExpediente
+        // Filtrar por ID si es proporcionado
+        if (id.HasValue)
         {
-            ExpedienteID = expediente.ExpedienteID,
-            ClienteID = expediente.ClienteID,
-            EquipoID = expediente.EquipoID,
-            Numero = expediente.Numero,
-            Caratula = expediente.Caratula,
-            // UltimoDecreto = expediente.UltimoDecreto,
-            FechaInicio = expediente.FechaInicio,
-            FechaFin = expediente.FechaFin,
-            NombreCompletoCliente = clienteNombre, // <-- Este campo ahora existe
-            NombreCompletoEquipo = equipoNombre,
-            LinkContenido = expediente.LinkContenido,
-            EstadoExpediente = expediente.EstadoExpediente,
-            EstadoExpedienteString = expediente.EstadoExpediente.ToString().ToUpper(),    // <-- Este campo ahora existe
-        };
+            expedientes = expedientes.Where(c => c.ExpedienteID == id.Value).ToList();
+        }
 
-        expedientesMostrar.Add(expedienteMostrar);
-    }
+        // Crear una lista de consultas para mostrar
+        List<VistaExpediente> expedientesMostrar = new List<VistaExpediente>();
 
-    return Json(expedientesMostrar);
-}
-
-
-
-
-public JsonResult BuscarExpedientes(string DniClienteBuscar, string NroExpBuscar)
-{
-    // Obtener la lista de consultas
-    var expedientes = _context.Expedientes.ToList();
-
-    // Crear una lista de consultas para mostrar
-    List<VistaExpediente> expedientesMostrar = new List<VistaExpediente>();
-
-    foreach (var expediente in expedientes)
-    {
-        // Obtener el nombre completo del cliente
-        var clienteNombre = _context.Clientes
-            .Where(cli => cli.ClienteID == expediente.ClienteID)
-            .Join(_context.Personas, cli => cli.PersonaID, p => p.PersonaID, (cli, p) => p.NombreCompleto)
-            .FirstOrDefault() ?? "[Sin Cliente]";
-
-        // Obtener el nombre completo del equipo
-        var equipoNombre = _context.Equipos
-            .Where(eq => eq.EquipoID == expediente.EquipoID)
-            .Join(_context.Personas, eq => eq.PersonaID, p => p.PersonaID, (eq, p) => p.NombreCompleto)
-            .FirstOrDefault() ?? "[Sin Equipo]";
-
-        var expedienteMostrar = new VistaExpediente
+        foreach (var expediente in expedientes)
         {
-            ExpedienteID = expediente.ExpedienteID,
-            Numero = expediente.Numero,
-            Caratula = expediente.Caratula,
-            FechaInicio = expediente.FechaInicio,
-            FechaFin = expediente.FechaFin,
-            ClienteID = expediente.ClienteID,
-            EquipoID = expediente.EquipoID,
-            // UltimoDecreto = expediente.UltimoDecreto,
-            
-            NombreCompletoCliente = clienteNombre,
-            NombreCompletoEquipo = equipoNombre,
-            LinkContenido = expediente.LinkContenido,
-            EstadoExpediente = expediente.EstadoExpediente,
-            EstadoExpedienteString = expediente.EstadoExpediente.ToString().ToUpper(),    // <-- Este campo ahora existe
-        };
+            // Obtener el nombre completo del cliente
+            var clienteNombre = _context.Clientes
+                .Where(cli => cli.ClienteID == expediente.ClienteID)
+                .Join(_context.Personas, cli => cli.PersonaID, p => p.PersonaID, (cli, p) => p.NombreCompleto)
+                .FirstOrDefault() ?? "[Sin Cliente]";
 
-        expedientesMostrar.Add(expedienteMostrar);
+            // Obtener el nombre completo del equipo
+            var equipoNombre = _context.Equipos
+                .Where(eq => eq.EquipoID == expediente.EquipoID)
+                .Join(_context.Personas, eq => eq.PersonaID, p => p.PersonaID, (eq, p) => p.NombreCompleto)
+                .FirstOrDefault() ?? "[Sin Equipo]";
+
+            var expedienteMostrar = new VistaExpediente
+            {
+                ExpedienteID = expediente.ExpedienteID,
+                ClienteID = expediente.ClienteID,
+                EquipoID = expediente.EquipoID,
+                Numero = expediente.Numero,
+                Caratula = expediente.Caratula,
+                // UltimoDecreto = expediente.UltimoDecreto,
+                FechaInicio = expediente.FechaInicio,
+                FechaFin = expediente.FechaFin,
+                NombreCompletoCliente = clienteNombre, // <-- Este campo ahora existe
+                NombreCompletoEquipo = equipoNombre,
+                LinkContenido = expediente.LinkContenido,
+                EstadoExpediente = expediente.EstadoExpediente,
+                EstadoExpedienteString = expediente.EstadoExpediente.ToString().ToUpper(),    // <-- Este campo ahora existe
+            };
+
+            expedientesMostrar.Add(expedienteMostrar);
+        }
+
+        return Json(expedientesMostrar);
     }
 
-    // Ahora sí, aplicar el filtro sobre consultasMostrar, que **sí tiene** NombreCompletoCliente y NombreCompletoEquipo
-    if (!string.IsNullOrEmpty(DniClienteBuscar))
+
+
+
+    public JsonResult BuscarExpedientes(string DniClienteBuscar, string NroExpBuscar)
     {
-        expedientesMostrar = expedientesMostrar
-            .Where(x => x.NombreCompletoCliente.ToLower().Contains(DniClienteBuscar.ToLower()))
-            .ToList();
-    }
+        // Obtener la lista de consultas
+        var expedientes = _context.Expedientes.ToList();
 
-    if (!string.IsNullOrEmpty(NroExpBuscar))
-    {
-        expedientesMostrar = expedientesMostrar
-            .Where(x => x.Numero.ToLower().Contains(NroExpBuscar.ToLower()))
-            .ToList();
-    }
+        // Crear una lista de consultas para mostrar
+        List<VistaExpediente> expedientesMostrar = new List<VistaExpediente>();
 
-    return Json(expedientesMostrar);
-}
+        foreach (var expediente in expedientes)
+        {
+            // Obtener el nombre completo del cliente
+            var clienteNombre = _context.Clientes
+                .Where(cli => cli.ClienteID == expediente.ClienteID)
+                .Join(_context.Personas, cli => cli.PersonaID, p => p.PersonaID, (cli, p) => p.NombreCompleto)
+                .FirstOrDefault() ?? "[Sin Cliente]";
+
+            // Obtener el nombre completo del equipo
+            var equipoNombre = _context.Equipos
+                .Where(eq => eq.EquipoID == expediente.EquipoID)
+                .Join(_context.Personas, eq => eq.PersonaID, p => p.PersonaID, (eq, p) => p.NombreCompleto)
+                .FirstOrDefault() ?? "[Sin Equipo]";
+
+            var expedienteMostrar = new VistaExpediente
+            {
+                ExpedienteID = expediente.ExpedienteID,
+                Numero = expediente.Numero,
+                Caratula = expediente.Caratula,
+                FechaInicio = expediente.FechaInicio,
+                FechaFin = expediente.FechaFin,
+                ClienteID = expediente.ClienteID,
+                EquipoID = expediente.EquipoID,
+                // UltimoDecreto = expediente.UltimoDecreto,
+
+                NombreCompletoCliente = clienteNombre,
+                NombreCompletoEquipo = equipoNombre,
+                LinkContenido = expediente.LinkContenido,
+                EstadoExpediente = expediente.EstadoExpediente,
+                EstadoExpedienteString = expediente.EstadoExpediente.ToString().ToUpper(),    // <-- Este campo ahora existe
+            };
+
+            expedientesMostrar.Add(expedienteMostrar);
+        }
+
+        // Ahora sí, aplicar el filtro sobre consultasMostrar, que **sí tiene** NombreCompletoCliente y NombreCompletoEquipo
+        if (!string.IsNullOrEmpty(DniClienteBuscar))
+        {
+            expedientesMostrar = expedientesMostrar
+                .Where(x => x.NombreCompletoCliente.ToLower().Contains(DniClienteBuscar.ToLower()))
+                .ToList();
+        }
+
+        if (!string.IsNullOrEmpty(NroExpBuscar))
+        {
+            expedientesMostrar = expedientesMostrar
+                .Where(x => x.Numero.ToLower().Contains(NroExpBuscar.ToLower()))
+                .ToList();
+        }
+
+        return Json(expedientesMostrar);
+    }
 
 
 
@@ -211,7 +213,7 @@ public JsonResult BuscarExpedientes(string DniClienteBuscar, string NroExpBuscar
 
         var error = 0;
 
-         if (error == 0)
+        if (error == 0)
 
         {
 
@@ -233,63 +235,63 @@ public JsonResult BuscarExpedientes(string DniClienteBuscar, string NroExpBuscar
             _context.SaveChanges();
 
         }
-            
-            else
-            {
-                // //QUIERE DECIR QUE VAMOS A EDITAR EL REGISTRO
-                // var consultaEditar = _context.Consultas.Where(c => c.ConsultaID == consultaID).SingleOrDefault();
-                // if (consultaEditar != null)
-                // {
-                //     consultaEditar.ConsultaID = consultaID;
-                //     consultaEditar.ClienteID = clienteID;
-                //     consultaEditar.EquipoID = equipoID;
-                //     consultaEditar.Descripcion = descripcion;
-                //     consultaEditar.Fecha = fecha;
-                //     _context.SaveChanges();
-                // }
-            }
-        
+
+        else
+        {
+            // //QUIERE DECIR QUE VAMOS A EDITAR EL REGISTRO
+            // var consultaEditar = _context.Consultas.Where(c => c.ConsultaID == consultaID).SingleOrDefault();
+            // if (consultaEditar != null)
+            // {
+            //     consultaEditar.ConsultaID = consultaID;
+            //     consultaEditar.ClienteID = clienteID;
+            //     consultaEditar.EquipoID = equipoID;
+            //     consultaEditar.Descripcion = descripcion;
+            //     consultaEditar.Fecha = fecha;
+            //     _context.SaveChanges();
+            // }
+        }
+
 
         return Json(error);
     }
 
-public JsonResult EditarExpediente(int expedienteID, int clienteID, int equipoID, DateOnly fechaInicio, DateOnly fechaFin, string? numero, string? caratula, string? ultimoDecreto, string? linkContenido, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoExpediente estadoExpediente)
-{
-    // Buscar el cliente por el ID proporcionado
-    var expedienteEditar = _context.Expedientes.SingleOrDefault(c => c.ExpedienteID == expedienteID);
-
-    // Si el cliente existe, buscamos la persona relacionada
-    if (expedienteEditar != null)
+    public JsonResult EditarExpediente(int expedienteID, int clienteID, int equipoID, DateOnly fechaInicio, DateOnly fechaFin, string? numero, string? caratula, string? ultimoDecreto, string? linkContenido, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoExpediente estadoExpediente)
     {
-        
-        // Si la persona existe, actualizamos sus datos
+        // Buscar el cliente por el ID proporcionado
+        var expedienteEditar = _context.Expedientes.SingleOrDefault(c => c.ExpedienteID == expedienteID);
+
+        // Si el cliente existe, buscamos la persona relacionada
         if (expedienteEditar != null)
         {
-            expedienteEditar.ClienteID = clienteID;
-            expedienteEditar.EquipoID = equipoID;
-            expedienteEditar.Numero = numero;
-            expedienteEditar.Caratula = caratula;
-            expedienteEditar.LinkContenido = linkContenido;
-            // expedienteEditar.UltimoDecreto = ultimoDecreto;
-            expedienteEditar.FechaInicio = fechaInicio;
-            expedienteEditar.FechaFin = fechaFin;
-            expedienteEditar.EstadoExpediente = estadoExpediente;
 
-            // Guardamos los cambios en la base de datos
+            // Si la persona existe, actualizamos sus datos
+            if (expedienteEditar != null)
+            {
+                expedienteEditar.ClienteID = clienteID;
+                expedienteEditar.EquipoID = equipoID;
+                expedienteEditar.Numero = numero;
+                expedienteEditar.Caratula = caratula;
+                expedienteEditar.LinkContenido = linkContenido;
+                // expedienteEditar.UltimoDecreto = ultimoDecreto;
+                expedienteEditar.FechaInicio = fechaInicio;
+                expedienteEditar.FechaFin = fechaFin;
+                expedienteEditar.EstadoExpediente = estadoExpediente;
+
+                // Guardamos los cambios en la base de datos
                 _context.SaveChanges();
 
-            return Json("Expediente actualizada correctamente");
+                return Json("Expediente actualizada correctamente");
+            }
+            else
+            {
+                return Json("Error");
+            }
         }
         else
         {
-            return Json("Error");
+            return Json("Error: Expediente no encontrado");
         }
     }
-    else
-    {
-        return Json("Error: Expediente no encontrado");
-    }
-}
 
     public JsonResult EliminarExpediente(int expedienteID)
     {
@@ -300,5 +302,111 @@ public JsonResult EditarExpediente(int expedienteID, int clienteID, int equipoID
         return Json(true);
     }
 
-    
+
+    public JsonResult BuscarDocumentos(int ExpedienteID)
+    {
+        List<VistaDocsExpediente> listaDocs = new List<VistaDocsExpediente>();
+
+        var docs = _context.DocsExpediente
+                           .Where(d => d.ExpedienteID == ExpedienteID)
+                           .ToList();
+
+        foreach (var doc in docs)
+        {
+            var vistaDoc = new VistaDocsExpediente
+            {
+                DocID = doc.DocID,
+                NombreArchivo = doc.NombreArchivo,
+                Base64 = Convert.ToBase64String(doc.Imagen)
+            };
+            listaDocs.Add(vistaDoc);
+        }
+
+        return Json(listaDocs);
+    }
+
+public JsonResult GuardarDocumento(string DocumentoAGuardar, string NombreArchivo, int ExpedienteID)
+{
+    try
+    {
+        var cantidadDocs = _context.DocsExpediente.Count(d => d.ExpedienteID == ExpedienteID);
+        if (cantidadDocs >= 10)
+            return Json(new { resultado = false, error = "Límite de documentos alcanzado." });
+
+        if (string.IsNullOrEmpty(DocumentoAGuardar) || string.IsNullOrEmpty(NombreArchivo))
+            return Json(new { resultado = false, error = "Faltan datos para guardar." });
+
+        var parts = DocumentoAGuardar.Split(',');
+        if (parts.Length < 2)
+            return Json(new { resultado = false, error = "Formato Base64 inválido." });
+
+        byte[] archivoBytes;
+        try
+        {
+            archivoBytes = Convert.FromBase64String(parts[1]);
+        }
+        catch (FormatException fe)
+        {
+            return Json(new { resultado = false, error = "Error formato Base64: " + fe.Message });
+        }
+
+        var nuevoDoc = new DocsExpediente
+        {
+            ExpedienteID = ExpedienteID,
+            Imagen = archivoBytes,
+            NombreArchivo = NombreArchivo,
+            TipoImg = Path.GetExtension(NombreArchivo)?.ToLower(),
+            Descripcion = null
+        };
+
+        try
+        {
+            _context.DocsExpediente.Add(nuevoDoc);
+            _context.SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            var errorMsg = "Error guardando en base: " + ex.Message;
+            if (ex.InnerException != null)
+            {
+                errorMsg += " | Inner: " + ex.InnerException.Message;
+            }
+            return Json(new { resultado = false, error = errorMsg });
+        }
+
+        return Json(new { resultado = true });
+    }
+    catch (Exception ex)
+    {
+        return Json(new { resultado = false, error = "Error inesperado: " + ex.Message });
+    }
 }
+
+[HttpPost]
+public JsonResult EliminarDocumento(int DocID)
+{
+    bool resultado = false;
+
+    try
+    {
+        var doc = _context.DocsExpediente.FirstOrDefault(d => d.DocID == DocID);
+        if (doc != null)
+        {
+            _context.DocsExpediente.Remove(doc);
+            _context.SaveChanges();
+            resultado = true;
+        }
+    }
+    catch (Exception ex)
+    {
+        resultado = false;
+    }
+
+    return Json(resultado);
+}
+
+
+
+}
+
+

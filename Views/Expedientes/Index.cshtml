@@ -55,6 +55,8 @@
       <th>Estado</th>
       <th style="width: 70px"></th>
       <th style="width: 70px"></th>
+            <th style="width: 70px"></th>
+
     </tr>
   </thead>
   <tbody  id="tbody-expedientes">
@@ -138,14 +140,54 @@
 </div>
 
 
+<div id="ModalDocsExpediente" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="docsExpedienteLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Documentos Legales del Expediente</h5>
+                <button type="button" onclick="CerrarModalDocsExpediente();" class="cruzCerrar" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <input type="hidden" id="ExpedienteID" value="0" />
+
+            <div class="modal-body">
+                <div class="nav nav-tabs" id="tabsDocs" role="tablist">
+                    <a class="nav-link active" id="tab_docs_ver-tab" data-bs-toggle="tab" href="#tab_docs_ver" role="tab" aria-selected="true">Visualizar</a>
+                    <a class="nav-link" id="tab_docs_agregar-tab" data-bs-toggle="tab" href="#tab_docs_agregar" role="tab" aria-selected="false">Agregar</a>
+                    <a class="nav-link" id="tab_docs_eliminar-tab" data-bs-toggle="tab" href="#tab_docs_eliminar" role="tab" aria-selected="false">Eliminar</a>
+                </div>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active" id="tab_docs_ver" role="tabpanel">
+                        <div id="DocsExpediente"></div>
+                    </div>
+                    <div class="tab-pane fade" id="tab_docs_agregar" role="tabpanel">
+                        <div style="margin-top:15px;">
+                            <input type="file" id="inputDoc" accept=".pdf,.doc,.docx" />
+                        </div>
+                        <div style="margin-top:15px; text-align:center;">
+                            <button onclick="GuardarDocumento();" class="btn btn-ovalo">Guardar Documento</button>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tab_docs_eliminar" role="tabpanel">
+                        <table id="DocsExpedienteEliminar" class="table table-bordered"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
 
 @section Scripts {
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script src="~/js/fotorama.js"></script>
 
   <script src="~/js/expediente-1.0.0.js"></script>
+
 }
 
 </body>
