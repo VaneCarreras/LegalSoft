@@ -6,79 +6,189 @@
   
   <script src="~/lib/fullcalendar-6.1.15/dist/index.global.js"></script>
   <script src="~/lib/fullcalendar-6.1.15/packages/core/locales/es.global.js"></script>
-  <script src="~/js/turno-1.0.0.js"></script>
 
 }
 
-  <script>
-<div class="calendar">
-     document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth',
-          locale: 'es'
-        });
-        calendar.render();
-      });
-</div>
-    </script>
+
 </head>
+
+
+
+
+
 
 <body class="body2 fondoLogo">
   <div class="text-center m-4">
     <img src="~/img/calendario.png" alt="" class="juntos imgIcono">
-
     <h1 class="titulos juntos">MIS TURNOS</h1>
   </div>
   <hr class="hrTitulos m-4">
 
-<div class="chico" id='calendar'></div>
-  
+  <div class="chico" id="calendar"></div>
 
-  <!-- Modal Personalizado para Turnos -->
-  <div class="modal fade" id="ModalTurnos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <!-- Modal Turnos -->
+  <div class="modal fade" id="ModalTurnos" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content bg-secondary">
         <div class="modal-header bg-dark text-white">
-          <h5 class="modal-title" id="ModalTitulo">Nuevo Turno</h5>
-          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h5 class="modal-title">Turno</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
           <form>
+            <input type="hidden" id="TurnoID" value="0" />
             <div class="row">
-              <input type="hidden" id="TurnoID" value="0" />
+              <div class="mb-3 col-6">
+  <label for="ClienteID" class="form-label">Cliente</label>
+  <select class="form-select" id="ClienteID">
+    <option value="">Nombre Cliente</option>
+  </select>
+</div>
+
+<div class="mb-3 col-6">
+  <label for="EquipoID" class="form-label">Equipo</label>
+  <select class="form-select" id="EquipoID">
+    <option value="">Empleado</option>
+  </select>
+</div>
 
               <div class="mb-3 col-6">
-                <label for="ClienteID" class="form-label">Cliente</label>
-                <input type="text" class="form-control" id="ClienteID" placeholder="CLIENTE">
+                <label class="form-label">Fecha y Hora</label>
+                <input type="datetime-local" class="form-control" id="FechaHora" />
               </div>
-
               <div class="mb-3 col-6">
-                <label for="EquipoID" class="form-label">Equipo</label>
-                <input type="text" class="form-control" id="EquipoID" placeholder="EQUIPO">
-              </div>
-
-              <div class="mb-3 col-6">
-                <label for="FechaHora" class="form-label">Fecha y Hora</label>
-                <input type="datetime-local" id="FechaHora" class="form-control" />
+                <label class="form-label">Estado</label>
+                <select id="Estado" class="form-select">
+                  <option value="0">Vacante</option>
+                  <option value="1">Asistido</option>
+                  <option value="2">Suspendido</option>
+                </select>
               </div>
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" onclick="LimpiarModal()" class="btn btn-secondary"
-            data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" onclick="GuardarTurno()" class="btn btn-warning">Guardar</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="LimpiarModal()">Cancelar</button>
+          <button type="button" class="btn btn-warning" onclick="GuardarTurno()">Guardar</button>
+          <button type="button" class="btn btn-success" onclick="ImprimirTicket()">Imprimir Ticket</button>
         </div>
       </div>
     </div>
   </div>
+<script>
+  
+    
+    var calendar;
 
- @* @section Scripts { 
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var calendarEl = document.getElementById('calendar');
 
-  <script src="~/js/turno-1.0.0.js"></script>
-}  *@
+      calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'es',
+        selectable: true,
+        dateClick: function (info) {
+  $('#TurnoID').val('0'); // Asegura que sea un nuevo turno
+  $('#FechaHora').val(info.dateStr + 'T09:00'); // horario por defecto
+  $('#ModalTurnos').modal('show');
+},
+        eventClick: function (info) {
+          const evento = info.event;
+          $('#TurnoID').val(evento.extendedProps.turnoID);
+          $('#ClienteID').val(evento.extendedProps.clienteID);
+          $('#EquipoID').val(evento.extendedProps.equipoID);
+          $('#FechaHora').val(evento.startStr.substring(0,16));
+          $('#Estado').val(evento.extendedProps.estado);
+          $('#ModalTurnos').modal('show');
+        },
+        events: '/Turnos/GetEvents'
+      });
+
+      calendar.render();
+
+
+        cargarClientes();
+  cargarEquipos();
+
+
+function cargarClientes() {
+  fetch('/Turnos/GetClientes')
+    .then(response => response.json())
+    .then(data => {
+      const clienteSelect = document.getElementById('ClienteID');
+            console.log('Clientes recibidos:', data); // 👈 agrega esto
+
+      clienteSelect.innerHTML = '<option value="">Nombre Cliente</option>'; 
+      data.forEach(cliente => {
+        const option = document.createElement('option');
+        option.value = cliente.clienteID;
+        option.text = cliente.nombreCompleto; 
+        clienteSelect.appendChild(option);
+      });
+    })
+    .catch(error => console.error('Error al cargar clientes:', error));
+}
+
+function cargarEquipos() {
+  fetch('/Turnos/GetEquipos')
+    .then(response => response.json())
+    .then(data => {
+      const equipoSelect = document.getElementById('EquipoID');
+      equipoSelect.innerHTML = '<option value="">Abogado</option>'; 
+      data.forEach(equipo => {
+        const option = document.createElement('option');
+        option.value = equipo.equipoID;
+        option.text = equipo.nombreCompleto; // 
+        equipoSelect.appendChild(option);
+      });
+    })
+    .catch(error => console.error('Error al cargar equipos:', error));
+}
+
+    });
+
+    function GuardarTurno() {
+      const turno = {
+        TurnoID: $('#TurnoID').val(),
+        ClienteID: $('#ClienteID').val(),
+        EquipoID: $('#EquipoID').val(),
+        FechaHora: $('#FechaHora').val(),
+        Estado: $('#Estado').val()
+      };
+
+      $.ajax({
+        url: '/Turnos/SaveEvent',
+        method: 'POST',
+        data: turno,
+        success: function (res) {
+          if (res.success) {
+            calendar.refetchEvents();
+            $('#ModalTurnos').modal('hide');
+            LimpiarModal();
+            Swal.fire('¡Turno guardado!', '', 'success');
+          } else {
+            Swal.fire('Error', 'No se pudo guardar el turno.', 'error');
+          }
+        }
+      });
+    }
+
+    function LimpiarModal() {
+      $('#TurnoID').val('0');
+      $('#ClienteID').val('');
+      $('#EquipoID').val('');
+      $('#FechaHora').val('');
+      $('#Estado').val('0');
+    }
+
+    function ImprimirTicket() {
+      const turnoID = $('#TurnoID').val();
+      if (turnoID === '0') {
+        Swal.fire('Primero guarda el turno', '', 'warning');
+        return;
+      }
+window.location.href = '/Turnos/ImprimirTicket?turnoID=' + turnoID;
+    }
+</script>
+
 </body>
-
-</html>
