@@ -5,7 +5,7 @@ window.onload = initGrafico;
 let graficoCircular;
 let tipoSeleccionado = "consultas";
 
-// Función inicial de gráficos
+// Inicializar gráficos y eventos
 function initGrafico() {
     // Escuchar cambios en el selector de tipo
     $("#TipoGraficoID").change(function () {
@@ -22,57 +22,64 @@ function initGrafico() {
     actualizarGraficoCircular();
 }
 
-// Función para actualizar el gráfico circular según selección
 function actualizarGraficoCircular() {
     let mesBuscar = $("#MesBuscar").val();
     let anioBuscar = $("#AnioBuscar").val();
 
-    // Generar datos ficticios aleatorios para simular respuesta del servidor
-    const respuestaDatos = generarDatosAleatorios(tipoSeleccionado);
-
-    let labels = [];
-    let data = [];
-    
-    $.each(respuestaDatos, function (index, estado) {
-        labels.push(estado.nombreEstado);
-        data.push(estado.cantidad);
-    });
-
-    // Destruir gráfico existente si existe
-    if (graficoCircular) {
-        graficoCircular.destroy();
-    }
-
-    // Crear nuevo gráfico circular
-    const ctxPie = document.getElementById("grafico-circular").getContext('2d');
-    graficoCircular = new Chart(ctxPie, {
-        type: 'pie',
+    $.ajax({
+        url: '/Graficos/GetDatosEstado',
+        method: 'GET',
         data: {
-            labels: labels,
-            datasets: [{
-                data: data,
-                backgroundColor: generarColores(data.length)
-            }]
+            tipo: tipoSeleccionado,
+            mes: mesBuscar,
+            anio: anioBuscar
         },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top'
+        success: function(respuestaDatos) {
+            let labels = [];
+            let data = [];
+            
+            respuestaDatos.forEach(function (estado) {
+                labels.push(estado.nombreEstado);
+                data.push(estado.cantidad);
+            });
+
+            if (graficoCircular) {
+                graficoCircular.destroy();
+            }
+
+            const ctxPie = document.getElementById("grafico-circular").getContext('2d');
+            graficoCircular = new Chart(ctxPie, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: generarColores(data.length)
+                    }]
                 },
-                tooltip: {
-                    callbacks: {
-                        label: function (tooltipItem) {
-                            return tooltipItem.label + ': ' + tooltipItem.raw + ' casos';
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    return tooltipItem.label + ': ' + tooltipItem.raw + ' casos';
+                                }
+                            }
                         }
                     }
                 }
-            }
+            });
+        },
+        error: function() {
+            console.error("Error al cargar datos del gráfico.");
         }
     });
 }
 
-// Generador de colores aleatorios
 function generarColores(numero) {
     const colores = [];
     for (let i = 0; i < numero; i++) {
@@ -81,33 +88,3 @@ function generarColores(numero) {
     return colores;
 }
 
-// Genera datos aleatorios según el tipo de selección (consultas, expedientes, turnos, pendientes)
-function generarDatosAleatorios(tipo) {
-    let datos = [];
-    
-    if (tipo === "consultas") {
-        datos = [
-            { nombreEstado: "Asesorada", cantidad: Math.floor(Math.random() * 100) },
-            { nombreEstado: "Judicializada", cantidad: Math.floor(Math.random() * 100) },
-            { nombreEstado: "Desestimada", cantidad: Math.floor(Math.random() * 100) }
-        ];
-    } else if (tipo === "expedientes") {
-        datos = [
-            { nombreEstado: "En Curso", cantidad: Math.floor(Math.random() * 100) },
-            { nombreEstado: "Con Sentencia", cantidad: Math.floor(Math.random() * 100) }
-        ];
-    } else if (tipo === "turnos") {
-        datos = [
-            { nombreEstado: "Asistido", cantidad: Math.floor(Math.random() * 100) },
-            { nombreEstado: "Suspendido", cantidad: Math.floor(Math.random() * 100) },
-            { nombreEstado: "Vacante", cantidad: Math.floor(Math.random() * 100) }
-        ];
-    } else if (tipo === "pendientes") {
-        datos = [
-            { nombreEstado: "Realizado", cantidad: Math.floor(Math.random() * 100) },
-            { nombreEstado: "No Realizado", cantidad: Math.floor(Math.random() * 100) }
-        ];
-    }
-    
-    return datos;
-}

@@ -13,7 +13,9 @@ namespace LegalSoft.Models
        public DateTime FechaHora { get; set;}
        public string? Motivo { get; set;}
        public bool RecordatorioAlert { get; set;}
-       public virtual Equipo ?Equipo { get; set; }
+           public string Estado { get; set; } = "No realizado"; 
+
+       public virtual Equipo? Equipo { get; set; }
 
     }
 }
