@@ -1,4 +1,5 @@
-﻿using LegalSoft.Models;
+﻿using LegalSoft.Controllers;
+using LegalSoft.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Persona> Personas { get; set; }
     public DbSet<Turno> Turnos { get; set; }
     public DbSet<Contacto> Contactos { get; set; }
+    public DbSet<Localidad> Localidades { get; set; }
 
 
 }

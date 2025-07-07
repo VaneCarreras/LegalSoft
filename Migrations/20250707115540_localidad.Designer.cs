@@ -4,6 +4,7 @@ using LegalSoft.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LegalSoft.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250707115540_localidad")]
+    partial class localidad
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -210,25 +213,6 @@ namespace LegalSoft.Migrations
                     b.HasIndex("ClienteID");
 
                     b.ToTable("ImagenCliente");
-                });
-
-            modelBuilder.Entity("LegalSoft.Models.Localidad", b =>
-                {
-                    b.Property<int>("LocalidadID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LocalidadID"));
-
-                    b.Property<string>("LocalidadNombre")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Provincia")
-                        .HasColumnType("int");
-
-                    b.HasKey("LocalidadID");
-
-                    b.ToTable("Localidades");
                 });
 
             modelBuilder.Entity("LegalSoft.Models.Pendiente", b =>
