@@ -51,6 +51,8 @@
       <th class="ocultar-en-768px">Dirección</th>
       <th class="ocultar-en-768px">Telefono</th>
       <th class="ocultar-en-550px">Fecha de Nac</th>
+                  <th class="ocultar-en-550px">Localidad</th>
+
       <th style="width: 70px"></th>
       <th style="width: 70px"></th>
     </tr>
@@ -103,6 +105,13 @@
                 <label for="FechaNac" class="form-label">Fecha de Nacimiento</label>
                 <input type="date" id="FechaNac" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
               </div>
+
+              <div class="col-6 mb-3">
+    <label for="LocalidadID" class="control-label labelModal">Localidad</label>
+    <select id="LocalidadID" name="LocalidadID" class="form-control inputModalTexto" style="cursor:pointer;text-align: justify;padding-top: 3px;">
+        <option value="">Seleccione una localidad</option>
+    </select>
+</div>
 
             </div>
           </form>

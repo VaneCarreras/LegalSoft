@@ -20,51 +20,68 @@ public class ClientesController : Controller
     }
     public IActionResult Index()
     {
-        return View();
+        
+
+return View();
     }
+
+
+[HttpGet]
+public JsonResult ObtenerLocalidades()
+{
+    var localidades = _context.Localidades
+        .Select(l => new {
+            localidadID = l.LocalidadID,
+            localidadNombre = l.LocalidadNombre
+        }).ToList();
+
+    return Json(localidades);
+}
 
     public JsonResult ListadoClientes(int? id)
-{
-    // Obtener la lista de clientes
-    var clientes = _context.Clientes.ToList();
-
-    // Filtrar por ID si es proporcionado
-    if (id.HasValue)
     {
-        clientes = clientes.Where(c => c.ClienteID == id.Value).ToList();
-    }
+        // Obtener la lista de clientes
+        var clientes = _context.Clientes.ToList();
 
-    // Crear una lista de clientes para mostrar, accediendo a la entidad Persona por PersonaID
-    List<VistaCliente> clientesMostrar = new List<VistaCliente>();
-    foreach (var cliente in clientes)
-    {
-        // Obtener la persona relacionada a través del PersonaID
-        var persona = _context.Personas.SingleOrDefault(p => p.PersonaID == cliente.PersonaID);
-
-        if (persona != null)
+        // Filtrar por ID si es proporcionado
+        if (id.HasValue)
         {
-            var clienteMostrar = new VistaCliente
-            {
-                ClienteID = cliente.ClienteID,
-                NombreCompleto = persona.NombreCompleto,
-                NroTipoDoc = persona.NroTipoDoc,
-                Direccion = persona.Direccion,
-                Telefono = persona.Telefono,
-                FechaNac = persona.FechaNac
-            };
-
-            clientesMostrar.Add(clienteMostrar);
+            clientes = clientes.Where(c => c.ClienteID == id.Value).ToList();
         }
-    }
 
-    // Ordenar por nombre completo antes de devolver
-    return Json(clientesMostrar.OrderBy(c => c.NombreCompleto).ToList());
-}
+        // Crear una lista de clientes para mostrar, accediendo a la entidad Persona por PersonaID
+        List<VistaCliente> clientesMostrar = new List<VistaCliente>();
+        foreach (var cliente in clientes)
+        {
+            // Obtener la persona relacionada a través del PersonaID
+            var persona = _context.Personas.Include(p => p.Localidad).SingleOrDefault(p => p.PersonaID == cliente.PersonaID);
+
+            if (persona != null)
+            {
+                var clienteMostrar = new VistaCliente
+                {
+                    ClienteID = cliente.ClienteID,
+                    NombreCompleto = persona.NombreCompleto,
+                    NroTipoDoc = persona.NroTipoDoc,
+                    Direccion = persona.Direccion,
+                    Telefono = persona.Telefono,
+                    FechaNac = persona.FechaNac,
+LocalidadNombre = persona.Localidad?.LocalidadNombre,
+
+                };
+
+                clientesMostrar.Add(clienteMostrar);
+            }
+        }
+
+        // Ordenar por nombre completo antes de devolver
+        return Json(clientesMostrar.OrderBy(c => c.NombreCompleto).ToList());
+    }
 
 
     public JsonResult BuscarClientes(string nombreCompleto, string nroTipoDoc)
     {
-        var personas = _context.Personas.ToList();
+        var personas = _context.Personas.Include(p => p.Localidad).ToList();
 
         if (!string.IsNullOrEmpty(nombreCompleto))
         {
@@ -89,7 +106,9 @@ public class ClientesController : Controller
                     NroTipoDoc = persona.NroTipoDoc,
                     Direccion = persona.Direccion,
                     Telefono = persona.Telefono,
-                    FechaNac = persona.FechaNac
+                    FechaNac = persona.FechaNac,
+LocalidadNombre = persona.Localidad?.LocalidadNombre,
+
                 };
                 clientesMostrar.Add(clienteMostrar);
             }
@@ -99,7 +118,7 @@ public class ClientesController : Controller
     }
 
 
-    public JsonResult GuardarNuevoCliente(string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateOnly fechaNac)
+    public JsonResult GuardarNuevoCliente(string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateOnly fechaNac, int localidadID, string localidadNombre)
     {
         int error = 0;
         string resultado = "";
@@ -117,6 +136,8 @@ public class ClientesController : Controller
                 Direccion = direccion,
                 Telefono = telefono,
                 FechaNac = fechaNac,
+                LocalidadID = localidadID,
+
             };
             _context.Add(persona);
             _context.SaveChanges();
@@ -145,128 +166,139 @@ public class ClientesController : Controller
         return Json(true);
     }
 
-[HttpPost]
-public JsonResult EditarCliente(int ClienteID, string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateOnly fechaNac)
-{
-    // Buscar el cliente por el ID proporcionado
-    var clienteEditar = _context.Clientes.SingleOrDefault(c => c.ClienteID == ClienteID);
-
-    // Si el cliente existe, buscamos la persona relacionada
-    if (clienteEditar != null)
+    [HttpPost]
+    public JsonResult EditarCliente(int ClienteID, string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateOnly fechaNac, int localidadID)
     {
-        var personaEditar = _context.Personas.SingleOrDefault(p => p.PersonaID == clienteEditar.PersonaID);
-        
-        // Si la persona existe, actualizamos sus datos
-        if (personaEditar != null)
+        // Buscar el cliente por el ID proporcionado
+        var clienteEditar = _context.Clientes.SingleOrDefault(c => c.ClienteID == ClienteID);
+
+        // Si el cliente existe, buscamos la persona relacionada
+        if (clienteEditar != null)
         {
-            personaEditar.NroTipoDoc = nroTipoDoc;
-            personaEditar.NombreCompleto = nombreCompleto;
-            personaEditar.Direccion = direccion;
-            personaEditar.Telefono = telefono;
-            personaEditar.FechaNac = fechaNac;
+            var personaEditar = _context.Personas.SingleOrDefault(p => p.PersonaID == clienteEditar.PersonaID);
 
-            // Guardamos los cambios en la base de datos
-            _context.SaveChanges();
+            // Si la persona existe, actualizamos sus datos
+            if (personaEditar != null)
+            {
+                personaEditar.NroTipoDoc = nroTipoDoc;
+                personaEditar.NombreCompleto = nombreCompleto;
+                personaEditar.Direccion = direccion;
+                personaEditar.Telefono = telefono;
+                personaEditar.FechaNac = fechaNac;
+                personaEditar.LocalidadID = localidadID;
 
-            return Json("Cliente actualizado correctamente");
+
+                // Guardamos los cambios en la base de datos
+                _context.SaveChanges();
+
+                return Json("Cliente actualizado correctamente");
+            }
+            else
+            {
+                return Json("Error: Persona asociada no encontrada");
+            }
         }
         else
         {
-            return Json("Error: Persona asociada no encontrada");
+            return Json("Error: Cliente no encontrado");
         }
     }
-    else
+
+
+
+
+
+
+
+    ///////////////////////////////////EL CONTROLADOR DE CLIENTES ESTA DE MODIFICAR, INVERTIR CREAR PERSONA 1ERO ANTES DE EQUIPO, 
+    ///CAMBIAR EN EQUIPO
+    ///LOS JS ESTAN DE COMPLETAR, EL CREAR ES DIFERENTE Y HAY Q TERMINARLO Y EL EDITAR VA APARTE Y EN PERSONA//////////
+    ///EL CONTROLADOR DE PERSONA EN SQL FUNCIONA TODO Y EL DE CLIENTE TAMBIEN, SOLO QUE CLIENTE 
+    /////NO ESTA HECHO EL MOSTRAR Y TAMPOCO TIENEN NINGUNO JS
+
+
+    //CAMBIAR LISTADO Y EDITAR
+
+
+
+
+
+    public JsonResult BuscarImagenes(int ClienteID)
     {
-        return Json("Error: Cliente no encontrado");
-    }
-}
+        List<VistaImagenCliente> listaImagenCliente = new List<VistaImagenCliente>();
 
+        var imagenesCli = (from o in _context.ImagenCliente where o.ClienteID == ClienteID select o).ToList();
 
-
-
-
-
-
-///////////////////////////////////EL CONTROLADOR DE CLIENTES ESTA DE MODIFICAR, INVERTIR CREAR PERSONA 1ERO ANTES DE EQUIPO, 
-///CAMBIAR EN EQUIPO
-///LOS JS ESTAN DE COMPLETAR, EL CREAR ES DIFERENTE Y HAY Q TERMINARLO Y EL EDITAR VA APARTE Y EN PERSONA//////////
-///EL CONTROLADOR DE PERSONA EN SQL FUNCIONA TODO Y EL DE CLIENTE TAMBIEN, SOLO QUE CLIENTE 
-/////NO ESTA HECHO EL MOSTRAR Y TAMPOCO TIENEN NINGUNO JS
-
-
-//CAMBIAR LISTADO Y EDITAR
-
-
-
-
-
-        public JsonResult BuscarImagenes(int ClienteID)
+        foreach (var item in imagenesCli)
         {
-            List<VistaImagenCliente> listaImagenCliente = new List<VistaImagenCliente>();
+            string returnValue = System.Convert.ToBase64String(item.Imagen);
 
-            var imagenesCli = (from o in _context.ImagenCliente where o.ClienteID == ClienteID select o).ToList();
-
-            foreach (var item in imagenesCli)
+            var imagenCliente = new VistaImagenCliente
             {
-                string returnValue = System.Convert.ToBase64String(item.Imagen);
-
-                var imagenCliente = new VistaImagenCliente
-                {
-                    ImgClientesID = item.ImagenClienteID,
-                    Base64 = returnValue
-                };
-                listaImagenCliente.Add(imagenCliente);
-            }
-
-            return Json(listaImagenCliente);
+                ImgClientesID = item.ImagenClienteID,
+                Base64 = returnValue
+            };
+            listaImagenCliente.Add(imagenCliente);
         }
 
-        public JsonResult GuardarImagen(string ImagenAGuardar, int ClienteID)
+        return Json(listaImagenCliente);
+    }
+
+    public JsonResult GuardarImagen(string ImagenAGuardar, int ClienteID)
+    {
+        var resultado = false;
+
+        try
         {
-            var resultado = false;
-
-            try
+            var cantidadImagenes = (from o in _context.ImagenCliente where o.ClienteID == ClienteID select o).Count();
+            if (cantidadImagenes < 3)
             {
-                var cantidadImagenes = (from o in _context.ImagenCliente where o.ClienteID == ClienteID select o).Count();
-                if (cantidadImagenes < 3)
+                if (ImagenAGuardar != null && ImagenAGuardar.Length > 0)
                 {
-                    if (ImagenAGuardar != null && ImagenAGuardar.Length > 0)
+                    byte[] bytes = Convert.FromBase64String(ImagenAGuardar.Split(',')[1]);
+
+                    var imagenCli = new ImagenCliente
                     {
-                        byte[] bytes = Convert.FromBase64String(ImagenAGuardar.Split(',')[1]);
+                        Imagen = bytes,
+                        ClienteID = Convert.ToInt32(ClienteID)
+                    };
+                    _context.ImagenCliente.Add(imagenCli);
+                    _context.SaveChanges();
 
-                        var imagenCli = new ImagenCliente
-                        {
-                            Imagen = bytes,
-                            ClienteID = Convert.ToInt32(ClienteID)
-                        };
-                        _context.ImagenCliente.Add(imagenCli);
-                        _context.SaveChanges();
-
-                        resultado = true;
-                    }
-                }
-                else
-                {
-                    resultado = false;
+                    resultado = true;
                 }
             }
-            catch (Exception ex)
+            else
             {
                 resultado = false;
             }
-
-            return Json(resultado);
         }
-
-        public JsonResult EliminarImagenCliente(int ImgClientesID)
+        catch (Exception ex)
         {
-            bool resultado = true;
-
-            ImagenCliente imagenCliente = _context.ImagenCliente.Find(ImgClientesID);
-
-            _context.ImagenCliente.Remove(imagenCliente);
-            _context.SaveChanges();
-
-            return Json(resultado);
+            resultado = false;
         }
+
+        return Json(resultado);
+    }
+
+    public JsonResult EliminarImagenCliente(int ImgClientesID)
+    {
+        bool resultado = true;
+
+        ImagenCliente imagenCliente = _context.ImagenCliente.Find(ImgClientesID);
+
+        _context.ImagenCliente.Remove(imagenCliente);
+        _context.SaveChanges();
+
+        return Json(resultado);
+    }
 }
+
+
+
+
+
+
+
+    
+

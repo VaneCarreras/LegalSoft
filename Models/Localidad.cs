@@ -11,6 +11,8 @@ namespace LegalSoft.Models
         public int LocalidadID { get; set; }
         public string? LocalidadNombre { get; set; }
         public Provincia Provincia { get; set; }
+               public virtual ICollection<Persona>? Personas { get; set; }
+
 
     }
 

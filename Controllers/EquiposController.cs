@@ -23,48 +23,62 @@ public class EquiposController : Controller
         return View();
     }
 
-    public JsonResult ListadoEquipos(int? id)
+[HttpGet]
+public JsonResult ObtenerLocalidades()
 {
-    // Obtener la lista de clientes
-    var equipos = _context.Equipos.ToList();
+    var localidades = _context.Localidades
+        .Select(l => new {
+            localidadID = l.LocalidadID,
+            localidadNombre = l.LocalidadNombre
+        }).ToList();
 
-    // Filtrar por ID si es proporcionado
-    if (id.HasValue)
-    {
-        equipos = equipos.Where(e => e.EquipoID == id.Value).ToList();
-    }
-
-    // Crear una lista de clientes para mostrar, accediendo a la entidad Persona por PersonaID
-    List<VistaEquipo> equiposMostrar = new List<VistaEquipo>();
-    foreach (var equipo in equipos)
-    {
-        // Obtener la persona relacionada a través del PersonaID
-        var persona = _context.Personas.SingleOrDefault(p => p.PersonaID == equipo.PersonaID);
-
-        if (persona != null)
-        {
-            var equipoMostrar = new VistaEquipo
-            {
-                EquipoID = equipo.EquipoID,
-                NombreCompleto = persona.NombreCompleto,
-                NroTipoDoc = persona.NroTipoDoc,
-                Direccion = persona.Direccion,
-                Telefono = persona.Telefono,
-                FechaNac = persona.FechaNac
-            };
-
-            equiposMostrar.Add(equipoMostrar);
-        }
-    }
-
-    // Ordenar por nombre completo antes de devolver
-    return Json(equiposMostrar.OrderBy(e => e.NombreCompleto).ToList());
+    return Json(localidades);
 }
+
+    public JsonResult ListadoEquipos(int? id)
+    {
+        // Obtener la lista de clientes
+        var equipos = _context.Equipos.ToList();
+
+        // Filtrar por ID si es proporcionado
+        if (id.HasValue)
+        {
+            equipos = equipos.Where(e => e.EquipoID == id.Value).ToList();
+        }
+
+        // Crear una lista de clientes para mostrar, accediendo a la entidad Persona por PersonaID
+        List<VistaEquipo> equiposMostrar = new List<VistaEquipo>();
+        foreach (var equipo in equipos)
+        {
+            // Obtener la persona relacionada a través del PersonaID
+            var persona = _context.Personas.Include(p => p.Localidad).SingleOrDefault(p => p.PersonaID == equipo.PersonaID);
+
+            if (persona != null)
+            {
+                var equipoMostrar = new VistaEquipo
+                {
+                    EquipoID = equipo.EquipoID,
+                    NombreCompleto = persona.NombreCompleto,
+                    NroTipoDoc = persona.NroTipoDoc,
+                    Direccion = persona.Direccion,
+                    Telefono = persona.Telefono,
+                    FechaNac = persona.FechaNac,
+                    LocalidadNombre = persona.Localidad?.LocalidadNombre,
+
+                };
+
+                equiposMostrar.Add(equipoMostrar);
+            }
+        }
+
+        // Ordenar por nombre completo antes de devolver
+        return Json(equiposMostrar.OrderBy(e => e.NombreCompleto).ToList());
+    }
 
 
     public JsonResult BuscarEquipos(string nombreCompleto, string nroTipoDoc)
     {
-        var personas = _context.Personas.ToList();
+        var personas = _context.Personas.Include(p => p.Localidad).ToList();
 
         if (!string.IsNullOrEmpty(nombreCompleto))
         {
@@ -89,7 +103,9 @@ public class EquiposController : Controller
                     NroTipoDoc = persona.NroTipoDoc,
                     Direccion = persona.Direccion,
                     Telefono = persona.Telefono,
-                    FechaNac = persona.FechaNac
+                    FechaNac = persona.FechaNac,
+                    LocalidadNombre = persona.Localidad?.LocalidadNombre,
+
                 };
                 equiposMostrar.Add(equipoMostrar);
             }
@@ -99,7 +115,7 @@ public class EquiposController : Controller
     }
 
 
-    public JsonResult GuardarNuevoEquipo(string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateOnly fechaNac)
+    public JsonResult GuardarNuevoEquipo(string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateOnly fechaNac, int localidadID, string localidadNombre)
     {
         int error = 0;
         string resultado = "";
@@ -117,6 +133,8 @@ public class EquiposController : Controller
                 Direccion = direccion,
                 Telefono = telefono,
                 FechaNac = fechaNac,
+                                LocalidadID = localidadID,
+
             };
             _context.Add(persona);
             _context.SaveChanges();
@@ -146,7 +164,7 @@ public class EquiposController : Controller
     }
 
 [HttpPost]
-public JsonResult EditarEquipo(int EquipoID, string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateOnly fechaNac)
+public JsonResult EditarEquipo(int EquipoID, string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateOnly fechaNac, int localidadID)
 {
     // Buscar el cliente por el ID proporcionado
     var equipoEditar = _context.Equipos.SingleOrDefault(e => e.EquipoID == EquipoID);
@@ -164,9 +182,11 @@ public JsonResult EditarEquipo(int EquipoID, string nroTipoDoc, string nombreCom
             personaEditar.Direccion = direccion;
             personaEditar.Telefono = telefono;
             personaEditar.FechaNac = fechaNac;
+                            personaEditar.LocalidadID = localidadID;
+
 
             // Guardamos los cambios en la base de datos
-            _context.SaveChanges();
+                _context.SaveChanges();
 
             return Json("Cliente actualizado correctamente");
         }

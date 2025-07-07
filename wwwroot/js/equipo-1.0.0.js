@@ -1,6 +1,32 @@
 
-window.onload = ListadoEquipos();
+window.onload = function() {
+        CargarLocalidades();
 
+    ListadoEquipos();
+};
+
+
+function CargarLocalidades() {
+    $.ajax({
+        url: '../../Equipos/ObtenerLocalidades', 
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log("Localidades recibidas:", data);
+
+            var select = $('#LocalidadID');
+            select.empty();
+            select.append(`<option value="">Seleccione una localidad</option>`);
+
+            $.each(data, function (index, localidad) {
+                select.append(`<option value="${localidad.localidadID}">${localidad.localidadNombre}</option>`);
+            });
+        },
+        error: function () {
+            console.log("Error al cargar localidades.");
+        }
+    });
+}
 function ListadoEquipos(){
  
     $.ajax({
@@ -30,6 +56,8 @@ function ListadoEquipos(){
                         <td>${equipo.direccion}</td>
                         <td>${equipo.telefono}</td>
                         <td>${equipo.fechaNac}</td>
+                                                    <td>${equipo.localidadNombre}</td>
+
                     <td class="text-center">
                     <button type="button"  onclick="AbrirModalEditar(${equipo.equipoID})" title="Editar">
                     <i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i>
@@ -66,7 +94,9 @@ function LimpiarModal(){
 
     document.getElementById("Direccion").value = ""; 
     document.getElementById("Telefono").value = ""; 
-    document.getElementById("FechaNac").value = ""; 
+    document.getElementById("FechaNac").value = "";
+            document.getElementById("LocalidadID").value = 0; 
+ 
 
 
 }
@@ -99,6 +129,7 @@ function AbrirModalEditar(EquipoID){
             document.getElementById("Direccion").value = equipo.direccion;
             document.getElementById("Telefono").value = equipo.telefono;
             document.getElementById("FechaNac").value = equipo.fechaNac;
+    document.getElementById("LocalidadID").value = equipo.localidadID; 
 
             $("#ModalEquipos").modal("show");
 
@@ -165,6 +196,7 @@ function GuardarRegistro() {
     let direccion = document.getElementById("Direccion").value;
     let telefono = document.getElementById("Telefono").value;
     let fechaNac = document.getElementById("FechaNac").value;
+    let localidadID = document.getElementById("LocalidadID").value;
 
     if (equipoID == 0 || equipoID == "") {
         // Llamar al método de creación si ClienteID es 0 o está vacío
@@ -176,7 +208,9 @@ function GuardarRegistro() {
                 nroTipoDoc: nroTipoDoc,
                 direccion: direccion,
                 telefono: telefono,
-                fechaNac: fechaNac
+                fechaNac: fechaNac,
+                                    localidadID: localidadID
+
             },
             dataType: 'json',
             success: function (resultado) {
@@ -201,7 +235,9 @@ function GuardarRegistro() {
                 nroTipoDoc: nroTipoDoc,
                 direccion: direccion,
                 telefono: telefono,
-                fechaNac: fechaNac
+                fechaNac: fechaNac,
+                                    localidadID: localidadID
+
             },
 
             dataType: 'json',
@@ -277,6 +313,8 @@ function BuscarEquipo() {
                     <td>${equipo.direccion}</td>
                     <td>${equipo.telefono}</td>
                     <td>${equipo.fechaNac}</td>
+                                            <td>${equipo.localidadNombre}</td> 
+
                     <td class="text-center">
                         <button type="button" onclick="AbrirModalEditar(${equipo.equipoID})">
                             <i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i>

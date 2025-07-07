@@ -1,5 +1,31 @@
 
-window.onload = ListadoClientes();
+window.onload = function() {
+        CargarLocalidades();
+
+    ListadoClientes();
+};
+
+function CargarLocalidades() {
+    $.ajax({
+        url: '../../Clientes/ObtenerLocalidades', 
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log("Localidades recibidas:", data);
+
+            var select = $('#LocalidadID');
+            select.empty();
+            select.append(`<option value="">Seleccione una localidad</option>`);
+
+            $.each(data, function (index, localidad) {
+                select.append(`<option value="${localidad.localidadID}">${localidad.localidadNombre}</option>`);
+            });
+        },
+        error: function () {
+            console.log("Error al cargar localidades.");
+        }
+    });
+}
 
 function ListadoClientes(){
  
@@ -30,6 +56,8 @@ function ListadoClientes(){
                         <td>${cliente.direccion}</td>
                         <td>${cliente.telefono}</td>
                         <td>${cliente.fechaNac}</td>
+                            <td>${cliente.localidadNombre}</td>
+
 
 
                     <td class="text-center"><button type="button" onclick="BuscarImagenes(${cliente.clienteID})"  data-bs-toggle="modal" data-bs-target=".MostrarSubirImagenes" title="Mostrar Imagenes"><i class="fa-duotone fa-regular fa-images" style="color:rgb(54, 176, 89);"></i></button></td>
@@ -70,7 +98,9 @@ function LimpiarModal(){
 
     document.getElementById("Direccion").value = ""; 
     document.getElementById("Telefono").value = ""; 
-    document.getElementById("FechaNac").value = ""; 
+    document.getElementById("FechaNac").value = "";
+        document.getElementById("LocalidadID").value = 0; 
+ 
 
 
 }
@@ -103,6 +133,7 @@ function AbrirModalEditar(ClienteID){
             document.getElementById("Direccion").value = cliente.direccion;
             document.getElementById("Telefono").value = cliente.telefono;
             document.getElementById("FechaNac").value = cliente.fechaNac;
+    document.getElementById("LocalidadID").value = cliente.localidadID; 
 
             $("#ModalClientes").modal("show");
 
@@ -169,6 +200,8 @@ function GuardarRegistro() {
     let direccion = document.getElementById("Direccion").value;
     let telefono = document.getElementById("Telefono").value;
     let fechaNac = document.getElementById("FechaNac").value;
+    let localidadID = document.getElementById("LocalidadID").value;
+
 
     if (clienteID == 0 || clienteID == "") {
         // Llamar al método de creación si ClienteID es 0 o está vacío
@@ -180,7 +213,9 @@ function GuardarRegistro() {
                 nroTipoDoc: nroTipoDoc,
                 direccion: direccion,
                 telefono: telefono,
-                fechaNac: fechaNac
+                fechaNac: fechaNac,
+                    localidadID: localidadID
+
             },
             dataType: 'json',
             success: function (resultado) {
@@ -205,7 +240,9 @@ function GuardarRegistro() {
                 nroTipoDoc: nroTipoDoc,
                 direccion: direccion,
                 telefono: telefono,
-                fechaNac: fechaNac
+                fechaNac: fechaNac,
+                    localidadID: localidadID
+
             },
 
             dataType: 'json',
@@ -281,6 +318,8 @@ function BuscarCliente() {
                     <td>${cliente.direccion}</td>
                     <td>${cliente.telefono}</td>
                     <td>${cliente.fechaNac}</td>
+                        <td>${cliente.localidadNombre}</td> 
+
                     <td class="text-center">
                         <button type="button" onclick="AbrirModalEditar(${cliente.clienteID})">
                             <i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i>

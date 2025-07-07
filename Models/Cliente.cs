@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
 using LegalSoft.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LegalSoft.Models
 {
@@ -25,16 +26,19 @@ namespace LegalSoft.Models
 
     }
 
-   public class VistaCliente
-   {
-      public int ClienteID { get; set; }
-      public string? NombreCompleto { get; set; }
-      public string? NroTipoDoc { get; set; }
-      public string? Direccion { get; set; }
-      public string? Telefono { get; set; }
-      public DateOnly FechaNac { get; set; }
-               public string? Base64 { get; set; }
+    public class VistaCliente
+    {
+        public int ClienteID { get; set; }
+        public string? NombreCompleto { get; set; }
+        public string? LocalidadNombre { get; set; }
+        public string? NroTipoDoc { get; set; }
+        public string? Direccion { get; set; }
+        public string? Telefono { get; set; }
+        public DateOnly FechaNac { get; set; }
+        public string? Base64 { get; set; }
         public List<string>? ImagenesClientes { get; set; }
+            public List<SelectListItem>? Localidades { get; set; }
+
 
     }
 

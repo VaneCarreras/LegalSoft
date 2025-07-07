@@ -19,14 +19,18 @@ namespace LegalSoft.Models
 
     }
 
-    public class VistaEquipo
-    {
-       public int EquipoID { get; set;} 
-       public string? NroLegajo { get; set;}
-       public string? NombreCompleto { get; set;}
-       public string? NroTipoDoc { get; set;}
-       public string? Direccion { get; set;}
-       public string? Telefono { get; set;}
-       public DateOnly FechaNac { get; set;}
+   public class VistaEquipo
+   {
+      public int EquipoID { get; set; }
+      public string? LocalidadNombre { get; set; }
+
+      public string? NroLegajo { get; set; }
+      public string? NombreCompleto { get; set; }
+      public string? NroTipoDoc { get; set; }
+      public string? Direccion { get; set; }
+      public string? Telefono { get; set; }
+      public DateOnly FechaNac { get; set; }
+      // public List<SelectListItem>? Localidades { get; set; }
+
     }
 }
