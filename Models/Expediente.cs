@@ -17,10 +17,14 @@ namespace LegalSoft.Models
         public DateOnly FechaInicio { get; set; }
         public DateOnly FechaFin { get; set; }
         public string? LinkContenido { get; set; }
+
         public virtual Cliente? Cliente { get; set; }
         public virtual Equipo? Equipo { get; set; }
         public virtual ICollection<DocsExpediente>? DocExpedientes { get; set; }
         public EstadoExpediente EstadoExpediente { get; set; }
+        public Area Area { get; set; }
+        public Dependencia Dependencia { get; set; }
+        public Ubicacion Ubicacion { get; set; }
 
 
     }
@@ -29,6 +33,27 @@ namespace LegalSoft.Models
    {
       En_Curso= 1,
       Con_Sentencia
+   }
+
+    public enum Area
+    {
+        Civil = 1,
+        Penal,
+        Laboral,
+        Familiar,
+      Comercial
+   }
+    public enum Dependencia
+    {
+        Morteros = 1,
+        San_Francisco,
+        Cordoba,
+      Santa_Fe
+   }
+          public enum Ubicacion
+   {
+      Casillero= 1,
+      Despacho
    }
 
     public class VistaExpediente
@@ -49,5 +74,11 @@ namespace LegalSoft.Models
         public virtual ICollection<DocsExpediente>? DocExpedientes { get; set; }
         public EstadoExpediente EstadoExpediente { get; set; }
         public string? EstadoExpedienteString { get; set; }
+        public Area Area { get; set; }
+        public string? AreaString { get; set; }
+        public Dependencia Dependencia { get; set; }
+        public string? DependenciaString { get; set; }
+        public Ubicacion Ubicacion { get; set; }
+        public string? UbicacionString { get; set; }
     }
 }

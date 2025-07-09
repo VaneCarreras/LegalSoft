@@ -53,6 +53,10 @@
       @* <th class="ocultar-en-768px">Docs</th> *@
       <th class="ocultar-en-550px">Link</th>
       <th>Estado</th>
+      <th>Área</th>
+      <th>Dependencia</th>
+      <th>Ubicación</th>
+
       <th style="width: 70px"></th>
       <th style="width: 70px"></th>
             <th style="width: 70px"></th>
@@ -125,7 +129,18 @@
               <label for="EstadoExpediente" class="form-label">Estado</label>
               @Html.DropDownList("EstadoExpediente", null, htmlAttributes: new { @class = "form-control" })
             </div>
-
+            <div class="mb-3 col-6">
+              <label for="Area" class="form-label">Área</label>
+              @Html.DropDownList("Area", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+            <div class="mb-3 col-6">
+              <label for="Dependencia" class="form-label">Dependencia</label>
+              @Html.DropDownList("Dependencia", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+            <div class="mb-3 col-6">
+              <label for="Ubicacion" class="form-label">Ubicación</label>
+              @Html.DropDownList("Ubicacion", null, htmlAttributes: new { @class = "form-control" })
+            </div>
             <div class="mb-3 col-12">
   <label for="UltimoDecreto" class="form-label">Ultimo Decreto</label>
   <textarea class="form-control" id="UltimoDecreto" style=" height: 180px;" placeholder="Ultimo Decreto"></textarea>

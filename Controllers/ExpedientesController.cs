@@ -82,6 +82,27 @@ public class ExpedientesController : Controller
             .Select(e => new { Value = (int)e, Text = e.ToString().ToUpper() }),
         "Value",
         "Text"
+);
+        ViewBag.Area = new SelectList(
+        Enum.GetValues(typeof(Area))
+            .Cast<Area>()
+            .Select(e => new { Value = (int)e, Text = e.ToString().ToUpper() }),
+        "Value",
+        "Text"
+);
+        ViewBag.Dependencia = new SelectList(
+        Enum.GetValues(typeof(Dependencia))
+            .Cast<Dependencia>()
+            .Select(e => new { Value = (int)e, Text = e.ToString().ToUpper() }),
+        "Value",
+        "Text"
+);
+        ViewBag.Ubicacion = new SelectList(
+        Enum.GetValues(typeof(Ubicacion))
+            .Cast<Ubicacion>()
+            .Select(e => new { Value = (int)e, Text = e.ToString().ToUpper() }),
+        "Value",
+        "Text"
     );
 
 
@@ -131,7 +152,13 @@ public class ExpedientesController : Controller
                 NombreCompletoEquipo = equipoNombre,
                 LinkContenido = expediente.LinkContenido,
                 EstadoExpediente = expediente.EstadoExpediente,
-                EstadoExpedienteString = expediente.EstadoExpediente.ToString().ToUpper(),    // <-- Este campo ahora existe
+                EstadoExpedienteString = expediente.EstadoExpediente.ToString().ToUpper(),
+                Area = expediente.Area,
+                AreaString = expediente.Area.ToString().ToUpper(),
+                Dependencia = expediente.Dependencia,
+                DependenciaString = expediente.Dependencia.ToString().ToUpper(),
+                Ubicacion = expediente.Ubicacion,
+                UbicacionString = expediente.Ubicacion.ToString().ToUpper(),    // <-- Este campo ahora existe
             };
 
             expedientesMostrar.Add(expedienteMostrar);
@@ -180,7 +207,13 @@ public class ExpedientesController : Controller
                 NombreCompletoEquipo = equipoNombre,
                 LinkContenido = expediente.LinkContenido,
                 EstadoExpediente = expediente.EstadoExpediente,
-                EstadoExpedienteString = expediente.EstadoExpediente.ToString().ToUpper(),    // <-- Este campo ahora existe
+                EstadoExpedienteString = expediente.EstadoExpediente.ToString().ToUpper(),
+                Area = expediente.Area,
+                AreaString = expediente.Area.ToString().ToUpper(),
+                Dependencia = expediente.Dependencia,
+                DependenciaString = expediente.Dependencia.ToString().ToUpper(),
+                Ubicacion = expediente.Ubicacion,
+                UbicacionString = expediente.Ubicacion.ToString().ToUpper(),    // <-- Este campo ahora existe
             };
 
             expedientesMostrar.Add(expedienteMostrar);
@@ -208,7 +241,7 @@ public class ExpedientesController : Controller
 
 
 
-    public JsonResult GuardarNuevoExpediente(int expedienteID, int clienteID, int equipoID, DateOnly fechaInicio, DateOnly fechaFin, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoExpediente estadoExpediente, string? numero, string? caratula, string? ultimoDecreto, string? linkContenido)
+    public JsonResult GuardarNuevoExpediente(int expedienteID, int clienteID, int equipoID, DateOnly fechaInicio, DateOnly fechaFin, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoExpediente estadoExpediente,  Area area, Dependencia dependencia, Ubicacion ubicacion, string? numero, string? caratula, string? ultimoDecreto, string? linkContenido)
     {
 
         var error = 0;
@@ -230,6 +263,10 @@ public class ExpedientesController : Controller
                 FechaFin = fechaFin,
                 LinkContenido = linkContenido,
                 EstadoExpediente = estadoExpediente,
+                                Area = area,
+                Dependencia = dependencia,
+                Ubicacion = ubicacion,
+
             };
             _context.Add(expediente);
             _context.SaveChanges();
@@ -255,7 +292,7 @@ public class ExpedientesController : Controller
         return Json(error);
     }
 
-    public JsonResult EditarExpediente(int expedienteID, int clienteID, int equipoID, DateOnly fechaInicio, DateOnly fechaFin, string? numero, string? caratula, string? ultimoDecreto, string? linkContenido, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoExpediente estadoExpediente)
+    public JsonResult EditarExpediente(int expedienteID, int clienteID, int equipoID, DateOnly fechaInicio, DateOnly fechaFin, string? numero, string? caratula, string? ultimoDecreto, string? linkContenido, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoExpediente estadoExpediente, Area area, Dependencia dependencia, Ubicacion ubicacion)
     {
         // Buscar el cliente por el ID proporcionado
         var expedienteEditar = _context.Expedientes.SingleOrDefault(c => c.ExpedienteID == expedienteID);
@@ -276,6 +313,10 @@ public class ExpedientesController : Controller
                 expedienteEditar.FechaInicio = fechaInicio;
                 expedienteEditar.FechaFin = fechaFin;
                 expedienteEditar.EstadoExpediente = estadoExpediente;
+                                expedienteEditar.Area = area;
+                expedienteEditar.Dependencia = dependencia;
+                expedienteEditar.Ubicacion = ubicacion;
+
 
                 // Guardamos los cambios en la base de datos
                 _context.SaveChanges();

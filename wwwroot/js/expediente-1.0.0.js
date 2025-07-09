@@ -41,6 +41,10 @@ function ListadoExpedientes(){
                             <td><a href='  ${expediente.linkContenido}  ' target='_blank' style='text-decoration: underline; color: orange;'> ${expediente.linkContenido} </a></td>
 
                         <td>${expediente.estadoExpedienteString}</td>
+                                                <td>${expediente.areaString}</td>
+                        <td>${expediente.dependenciaString}</td>
+                        <td>${expediente.ubicacionString}</td>
+
 
 <td class="text-center">
     <button type="button"
@@ -99,6 +103,10 @@ function LimpiarModal(){
     document.getElementById("LinkContenido").value = ""; 
 
         document.getElementById("EstadoExpediente").value = 0;
+                document.getElementById("Area").value = 0;
+        document.getElementById("Dependencia").value = 0;
+        document.getElementById("Ubicacion").value = 0;
+
 
 
 
@@ -139,6 +147,10 @@ function AbrirModalEditar(ExpedienteID){
             document.getElementById("LinkContenido").value = expediente.linkContenido;
 
             document.getElementById("EstadoExpediente").value = expediente.estadoExpediente;
+                        document.getElementById("Area").value = expediente.area;
+            document.getElementById("Dependencia").value = expediente.dependencia;
+            document.getElementById("Ubicacion").value = expediente.ubicacion;
+
 
             $("#ModalExpedientes").modal("show");
 
@@ -170,6 +182,10 @@ function GuardarRegistro() {
         let linkContenido =        document.getElementById("LinkContenido").value;
 
     let estadoExpediente = document.getElementById("EstadoExpediente").value;
+        let area = document.getElementById("Area").value;
+    let dependencia = document.getElementById("Dependencia").value;
+    let ubicacion = document.getElementById("Ubicacion").value;
+
 
     if (expedienteID == 0 || expedienteID == "") {
         // Llamar al método de creación si ClienteID es 0 o está vacío
@@ -188,6 +204,10 @@ function GuardarRegistro() {
                 fechaFin: fechaFin,
                 linkContenido: linkContenido,
                 estadoExpediente: estadoExpediente,
+                                area: area,
+                dependencia: dependencia,
+                ubicacion: ubicacion,
+
 
             },
             dataType: 'json',
@@ -218,6 +238,10 @@ function GuardarRegistro() {
                 fechaFin: fechaFin,
                 linkContenido: linkContenido,
                 estadoExpediente: estadoExpediente,
+                                area: area,
+                dependencia: dependencia,
+                ubicacion: ubicacion,
+
                 
             },
 
@@ -274,6 +298,10 @@ function BuscarExpediente() {
                             <td><a href=' ${expediente.linkContenido} ' target='_blank' style='text-decoration: underline; color: orange;'>  ${expediente.linkContenido} </a></td>
 
                         <td>${expediente.estadoExpedienteString}</td>
+                                                <td>${expediente.areaString}</td>
+                        <td>${expediente.dependenciaString}</td>
+                        <td>${expediente.ubicacionString}</td>
+
 
 <td class="text-center">
     <button type="button"
