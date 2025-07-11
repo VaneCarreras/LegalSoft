@@ -1,26 +1,33 @@
-document.addEventListener('DOMContentLoaded', function() {
-  var calendarEl = document.getElementById('calendar');
-  var calendar = new FullCalendar.Calendar(calendarEl, {
+document.addEventListener('DOMContentLoaded', function () {
+  const calendarEl = document.getElementById('calendar');
+
+  // Validar que el div exista
+  if (!calendarEl) {
+    console.warn("No se encontró el div #calendar. Se omite carga de FullCalendar.");
+    return;
+  }
+
+  const calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
     locale: 'es',
     selectable: true,
     events: '/Pendientes/GetPendientes',
 
-    dateClick: function(info) {
+    dateClick: function (info) {
       LimpiarModal();
       $('#PendienteID').val(0);
       $('#FechaHora').val(info.dateStr + 'T00:00');
       $('#ModalPendientes').modal('show');
     },
 
-    eventClick: function(info) {
-      var pendiente = info.event.extendedProps;
+    eventClick: function (info) {
+      const pendiente = info.event.extendedProps;
       $('#PendienteID').val(info.event.id);
       $('#Motivo').val(pendiente.motivo);
       $('#EquipoID').val(pendiente.equipoID);
       $('#FechaHora').val(moment(info.event.start).format('YYYY-MM-DDTHH:mm'));
       $('#RecordatorioAlert').prop('checked', pendiente.recordatorio);
-          $('#Estado').val(pendiente.estado); 
+      $('#Estado').val(pendiente.estado);
 
       $('#ModalPendientes').modal('show');
     }
@@ -30,38 +37,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
   cargarEquipos();
 
-  // Check periódicamente para mostrar alertas
-  setInterval(function() {
-    $.get('/Pendientes/GetPendientes', function(pendientes) {
-      pendientes.forEach(p => {
-        if (p.recordatorio) {
-          let pendienteTime = new Date(p.start);
-          let diffMs = pendienteTime - new Date();
-          let diffMin = diffMs / (1000 * 60);
-
-          if (diffMin > 59 && diffMin <= 60) {
-            Swal.fire({
-              icon: 'warning',
-              title: 'Recordatorio de pendiente',
-              text: `¡Te recordamos: ${p.title}!`,
-              confirmButtonText: 'Aceptar'
-            });
-          }
-        }
-      });
-    });
-  }, 60000); // cada 1 minuto
-
   // Guardar pendiente (crear o editar)
-  window.GuardarPendiente = function() {
-    var pendiente = {
+  window.GuardarPendiente = function () {
+    const pendiente = {
       PendienteID: parseInt($('#PendienteID').val()),
       Motivo: $('#Motivo').val(),
       EquipoID: parseInt($('#EquipoID').val()),
       FechaHora: $('#FechaHora').val(),
       RecordatorioAlert: $('#RecordatorioAlert').is(':checked'),
-          Estado: $('#Estado').val()
-
+      Estado: $('#Estado').val()
     };
 
     $.ajax({
@@ -69,14 +53,14 @@ document.addEventListener('DOMContentLoaded', function() {
       url: '/Pendientes/SavePendiente',
       data: JSON.stringify(pendiente),
       contentType: 'application/json',
-      success: function(response) {
+      success: function (response) {
         if (response.success) {
           $('#ModalPendientes').modal('hide');
 
-          // Si es nuevo, agregar al calendario
           if (pendiente.PendienteID === 0) {
+            // Nuevo
             calendar.addEvent({
-              id: response.id, // asumimos que el backend devuelve el ID nuevo
+              id: response.id,
               title: pendiente.Motivo,
               start: pendiente.FechaHora,
               extendedProps: {
@@ -87,16 +71,15 @@ document.addEventListener('DOMContentLoaded', function() {
               }
             });
           } else {
-            // Si es edición, actualizar el evento en el calendario
-            var existingEvent = calendar.getEventById(pendiente.PendienteID.toString());
+            // Edición
+            const existingEvent = calendar.getEventById(pendiente.PendienteID.toString());
             if (existingEvent) {
               existingEvent.setProp('title', pendiente.Motivo);
               existingEvent.setStart(pendiente.FechaHora);
               existingEvent.setExtendedProp('motivo', pendiente.Motivo);
               existingEvent.setExtendedProp('equipoID', pendiente.EquipoID);
               existingEvent.setExtendedProp('recordatorio', pendiente.RecordatorioAlert);
-                            existingEvent.setExtendedProp('estado', pendiente.Estado);
-
+              existingEvent.setExtendedProp('estado', pendiente.Estado);
             }
           }
         }
@@ -105,11 +88,11 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 });
 
-// Cargar equipos en el combo
+// Cargar equipos
 function cargarEquipos() {
   $('#EquipoID').empty().append('<option value="">Abogado</option>');
-  $.get('/Pendientes/GetEquipos', function(equipos) {
-    equipos.forEach(function(e) {
+  $.get('/Pendientes/GetEquipos', function (equipos) {
+    equipos.forEach(function (e) {
       $('#EquipoID').append(`<option value="${e.equipoID}">${e.nombreCompleto}</option>`);
     });
   });
