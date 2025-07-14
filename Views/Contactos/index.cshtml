@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "Contacto";
+  ViewData["Title"] = "Contacto";
 }
 
 @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
@@ -7,8 +7,11 @@
 <link rel="stylesheet" href="~/lib/fontawesome/css/all.min.css">
 
 <link rel="stylesheet" href="~/lib/animate.css">
+<link href="~/css/leaflet-1.9.4.css" rel="stylesheet" />
+
 
 @* <link rel="stylesheet" href="~/css/style.css"> *@
+
 <body class="fondoLogo">
 
   <section id="Contacto">
@@ -17,9 +20,9 @@
         <div class="col-md-12 col-sm-12 text-center">
 
           <img src="~/img/contactoImg.png" alt="" class="imgIcono juntos">
-        
 
-          <h1 class="titulos text-center juntos"  >CONTACTANOS</h1>
+
+          <h1 class="titulos text-center juntos">CONTACTANOS</h1>
 
         </div>
 
@@ -28,105 +31,146 @@
         <div class="col-md-6 col-sm-12 text-center p-5">
           <div id="alerta" class="mt-3"></div>
 
-              <form id="formContacto" class="mt-3">
-        <div class="form-group">
-            <label for="Nombre">Nombre</label>
-            <input name="Nombre" class="form-control" required />
+          <form id="formContacto" class="mt-3">
+            <div class="form-group">
+              <label for="Nombre">Nombre</label>
+              <input name="Nombre" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+              <label for="Email">Email</label>
+              <input name="Email" type="email" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+              <label for="Mensaje">Mensaje</label>
+              <textarea name="Mensaje" class="form-control" rows="5" required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-4">Enviar</button>
+          </form>
+
+
         </div>
+        <div class="col-md-6 col-sm-12 text-center">
 
-        <div class="form-group">
-            <label for="Email">Email</label>
-            <input name="Email" type="email" class="form-control" required />
-        </div>
-
-        <div class="form-group">
-            <label for="Mensaje">Mensaje</label>
-            <textarea name="Mensaje" class="form-control" rows="5" required></textarea>
-        </div>
-
-        <button type="submit" class="btn btn-primary mt-4">Enviar</button>
-    </form>
-
-
-        </div>
-        <div class="col-md-6 col-sm-12 text-center p-5">
-          <a class="icono" href="https://www.facebook.com/vanecarreras91/" target="_blank"><i
-              class="fa-brands fa-facebook-f"></i></a>
-          <a class="icono" href="https://z-p15.www.instagram.com/carreras.vanessa/?hl=es-la" target="_blank"><i
-              class="fa-brands fa-instagram"></i></a>
-          
-          <a class="icono" href="https://wa.me/3562671294" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
-          <a class="icono" href="https://www.linkedin.com/in/vanessa-carreras/" target="_blank"><i
-              class="fa-brands fa-linkedin-in"></i></a>
+          <div id="leaflet-map" class="info-box" style="height: 320px; border: 3px solid #fff;"></div>
           <br>
-          <br>
-          <br>
-          <div ><i class="fa-solid fa-location-dot icono2"></i>
-            <p class="bco">Sarmiento 97, Morteros, Córdoba, Argentina</p>
+          <div>
+            <a class="icono" href="https://www.facebook.com/vanecarreras91/" target="_blank"><i
+                class="fa-brands fa-facebook-f"></i></a>
+            <a class="icono" href="https://z-p15.www.instagram.com/carreras.vanessa/?hl=es-la" target="_blank"><i
+                class="fa-brands fa-instagram"></i></a>
+
+            <a class="icono" href="https://wa.me/3562671294" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+            <a class="icono" href="https://www.linkedin.com/in/vanessa-carreras/" target="_blank"><i
+                class="fa-brands fa-linkedin-in"></i></a>
+
+            <div><i class="fa-solid fa-location-dot icono2"></i>
+              <p class="bco">Sarmiento 97, Morteros, Córdoba, Argentina</p>
+            </div>
+            <div><i class="fa-solid fa-phone icono2"></i>
+              <p class="bco">3562-671294</p>
+            </div>
+
+
+
+
           </div>
-          <div><i class="fa-solid fa-phone icono2"></i>
-            <p class="bco">3562-671294</p>
-          </div>
-
-
-
 
         </div>
-
       </div>
     </div>
-    
 
   </section>
 
-@*     
+  @*     
 
   <script src="~/lib/jquery-3.5.1.slim.min.js"></script>
 
   <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  @section Scripts{
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
-  <script src="~/lib/fontawesome/js/all.min.js"></script>
+    <script src="~/lib/fontawesome/js/all.min.js"></script>
 
-  <script src="~/lib/wow.js"></script>
+    <script src="~/lib/wow.js"></script>
+    <script src="~/js/leaflet-1.9.4.js"></script>
+    <script>
+      //**************************************************
+      //ARMAMOS EL MAPA DE LEAFLET MAP CON LAS UBICACIONES
+      //**************************************************
+      document.addEventListener('DOMContentLoaded', function () {
+        // Array con las ubicaciones y la información de la marca
+        var locations = [
+          {
+            coordinates: [-30.717785, -62.001500],
+            popupText: '(Estudio CC)'
+          }
+          // Agrega más ubicaciones si es necesario
+        ];
 
-  <script>
-    new WOW().init();
-  </script>
+        // Crea el mapa
+        var map = L.map('leaflet-map').setView([-32.7, -62.0], 14);
+        // var map = L.map('leaflet-map').setView(locations[0].coordinates, 13);
 
-  <script>
-        $("#formContacto").on("submit", function (e) {
-            e.preventDefault();
+        // Agrega un proveedor de mapas (puedes cambiar a otros proveedores)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
 
-            let datos = {
-                Nombre: $("input[name='Nombre']").val(),
-                Email: $("input[name='Email']").val(),
-                Mensaje: $("textarea[name='Mensaje']").val()
-            };
-
-            $.ajax({
-                url: '@Url.Action("EnviarCorreo", "Contactos")',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(datos),
-                success: function (res) {
-                    if (res.exito) {
-                        $("#alerta").html(`<div class="alert alert-success">${res.mensaje}</div>`);
-                        $("#formContacto")[0].reset();
-                    } else if (res.errores) {
-                        let mensajes = Object.values(res.errores).flat().join("<br>");
-                        $("#alerta").html(`<div class="alert alert-danger">${mensajes}</div>`);
-                    } else {
-                        $("#alerta").html(`<div class="alert alert-danger">${res.mensaje}</div>`);
-                    }
-                },
-                error: function () {
-                    $("#alerta").html(`<div class="alert alert-danger">Error inesperado al enviar el mensaje.</div>`);
-                }
-            });
+        // Itera sobre las ubicaciones y agrega las marcas al mapa con el ícono de Bootstrap
+        locations.forEach(function (location) {
+          L.marker(location.coordinates, { icon: L.divIcon({ className: 'bi bi-geo-alt-fill' }) }).addTo(map)
+            .bindPopup(location.popupText)
+            .openPopup();
         });
-    </script>
-    </body>
+      });
 
+    </script>
+    <script>
+      new WOW().init();
+    </script>
+
+    <script>
+      $("#formContacto").on("submit", function (e) {
+        e.preventDefault();
+
+        let datos = {
+          Nombre: $("input[name='Nombre']").val(),
+          Email: $("input[name='Email']").val(),
+          Mensaje: $("textarea[name='Mensaje']").val()
+        };
+
+        $.ajax({
+          url: '@Url.Action("EnviarCorreo", "Contactos")',
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(datos),
+          success: function (res) {
+            if (res.exito) {
+              $("#alerta").html(`<div class="alert alert-success">${res.mensaje}</div>`);
+              $("#formContacto")[0].reset();
+            } else if (res.errores) {
+              let mensajes = Object.values(res.errores).flat().join("<br>");
+              $("#alerta").html(`<div class="alert alert-danger">${mensajes}</div>`);
+            } else {
+              $("#alerta").html(`<div class="alert alert-danger">${res.mensaje}</div>`);
+            }
+          },
+          error: function () {
+            $("#alerta").html(`<div class="alert alert-danger">Error inesperado al enviar el mensaje.</div>`);
+          }
+        });
+      });
+    </script>
+
+
+
+  }
+
+
+</body>
