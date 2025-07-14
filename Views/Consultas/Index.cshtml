@@ -49,7 +49,7 @@
     <tr>
       <th>Cliente</th>
       <th class="ocultar-en-768px">Empleado</th>
-      <th>Descripción</th>
+      <th>Motivo</th>
       <th class="ocultar-en-550px">Fecha</th>
       <th>Estado</th>
       <th style="width: 70px"></th>
@@ -86,12 +86,8 @@
               @Html.DropDownList("EquipoID", null, htmlAttributes: new { @class = "form-control inputModalTexto", style = "cursor:pointer;text-align: justify;padding-top: 3px;"})
             </div>
 
-            <div class="mb-3 col-6">
-             <label for="Descripcion" class="form-label">Descripción</label>
-             <input type="text" class="form-control" id="Descripcion" style="text-transform:uppercase" placeholder="Descripción de la Consulta">
-            </div>
-
             
+
 
             <div class="mb-3 col-6">
               <label for="Fecha" class="form-label">Fecha</label>
@@ -103,7 +99,17 @@
               <label for="EstadoConsulta" class="form-label">Estado</label>
               @Html.DropDownList("EstadoConsulta", null, htmlAttributes: new { @class = "form-control" })
             </div>
+<div class="col-3"></div>
+            <div class="mb-3 col-6">
+             <label for="Motivo" class="form-label">Motivo</label>
+             <input type="text" class="form-control" id="Motivo" style="text-transform:uppercase" placeholder="Motivo de la Consulta">
+            </div>
+<div class="col-3"></div>
 
+            <div class="mb-3 col-12">
+             <label for="Descripcion" class="form-label">Descripción</label>
+  <textarea class="form-control" id="Descripcion" style=" height: 180px;" placeholder="Descripcion"></textarea>
+</div>
           </div>
         </form>        
       </div>

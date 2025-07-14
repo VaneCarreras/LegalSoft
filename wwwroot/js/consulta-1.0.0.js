@@ -27,8 +27,9 @@ function ListadoConsultas(){
                 <tr>
                         <td>${consulta.nombreCompletoCliente}</td>
                         <td>${consulta.nombreCompletoEquipo}</td>
-                        
-                        <td>${consulta.descripcion}</td>
+                                                                        <td>${consulta.motivo}</td>
+
+
                         <td>${consulta.fecha}</td>
                         <td>${consulta.estadoConsultaString}</td>
 
@@ -68,6 +69,8 @@ function LimpiarModal(){
     // document.getElementById("NombreCompletoCliente").value = ""; 
     // document.getElementById("NombreCompletoEquipo").value = ""; 
     document.getElementById("Descripcion").value = ""; 
+        document.getElementById("Motivo").value = ""; 
+
     document.getElementById("Fecha").value = ""; 
         document.getElementById("EstadoConsulta").value = 0;
 
@@ -102,7 +105,9 @@ function AbrirModalEditar(ConsultaID){
             document.getElementById("ClienteID").value = consulta.clienteID;
             document.getElementById("EquipoID").value = consulta.equipoID;
             
-            document.getElementById("Descripcion").value = consulta.descripcion; 
+            document.getElementById("Descripcion").value = consulta.descripcion;
+                        document.getElementById("Motivo").value = consulta.motivo; 
+ 
             document.getElementById("Fecha").value = consulta.fecha; 
             document.getElementById("EstadoConsulta").value = consulta.estadoConsulta;
 
@@ -131,6 +136,8 @@ function GuardarRegistro() {
     // let nombreCompletoCliente =        document.getElementById("NombreCompletoCliente").value; 
     // let nombreCompletoEquipo =        document.getElementById("NombreCompletoEquipo").value; 
     let descripcion =        document.getElementById("Descripcion").value; 
+        let motivo =        document.getElementById("Motivo").value; 
+
     let fecha =        document.getElementById("Fecha").value;
     let estadoConsulta = document.getElementById("EstadoConsulta").value;
 
@@ -145,6 +152,7 @@ function GuardarRegistro() {
                 clienteID: clienteID,
                 equipoID: equipoID,
                 descripcion: descripcion,
+                motivo: motivo,
                 fecha: fecha,
                 estadoConsulta: estadoConsulta,
 
@@ -172,6 +180,7 @@ function GuardarRegistro() {
                 equipoID: equipoID,
                 
                 descripcion: descripcion,
+                motivo: motivo,
                 fecha: fecha,
                 estadoConsulta: estadoConsulta,
                 
@@ -221,6 +230,8 @@ function BuscarConsulta() {
                     <td>${consulta.nombreCompletoCliente}</td>
                     <td>${consulta.nombreCompletoEquipo}</td>
                     <td>${consulta.descripcion}</td>
+                                        <td>${consulta.motivo}</td>
+
                     <td>${consulta.fecha}</td>
                                         <td>${consulta.estadoConsultaString}</td>
 

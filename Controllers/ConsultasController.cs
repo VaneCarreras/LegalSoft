@@ -121,6 +121,8 @@ public JsonResult ListadoConsultas(int? id)
             ClienteID = consulta.ClienteID,
             EquipoID = consulta.EquipoID,
             Descripcion = consulta.Descripcion,
+                        Motivo = consulta.Motivo,
+
             Fecha = consulta.Fecha,
             NombreCompletoCliente = clienteNombre, // <-- Este campo ahora existe
             NombreCompletoEquipo = equipoNombre,
@@ -165,6 +167,8 @@ public JsonResult BuscarConsultas(string NombreCompletoClienteBuscar, string Nom
             ClienteID = consulta.ClienteID,
             EquipoID = consulta.EquipoID,
             Descripcion = consulta.Descripcion,
+                        Motivo = consulta.Motivo,
+
             Fecha = consulta.Fecha,
             NombreCompletoCliente = clienteNombre,
             NombreCompletoEquipo = equipoNombre,
@@ -197,7 +201,7 @@ public JsonResult BuscarConsultas(string NombreCompletoClienteBuscar, string Nom
 
 
 
-    public JsonResult GuardarNuevaConsulta(int consultaID, int clienteID, int equipoID, DateOnly fecha, string? descripcion, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoConsulta estadoConsulta)
+    public JsonResult GuardarNuevaConsulta(int consultaID, int clienteID, int equipoID, DateOnly fecha, string? descripcion, string? motivo, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoConsulta estadoConsulta)
     {
 
         var error = 0;
@@ -214,6 +218,7 @@ public JsonResult BuscarConsultas(string NombreCompletoClienteBuscar, string Nom
                 EquipoID = equipoID,
                 Fecha = fecha,
                 Descripcion = descripcion,
+                Motivo = motivo,
                 EstadoConsulta = estadoConsulta,
             };
             _context.Add(consulta);
@@ -240,7 +245,7 @@ public JsonResult BuscarConsultas(string NombreCompletoClienteBuscar, string Nom
         return Json(error);
     }
 
-public JsonResult EditarConsulta(int consultaID, int clienteID, int equipoID, DateOnly fecha, string? descripcion, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoConsulta estadoConsulta)
+public JsonResult EditarConsulta(int consultaID, int clienteID, int equipoID, DateOnly fecha, string? descripcion, string? motivo, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoConsulta estadoConsulta)
 {
     // Buscar el cliente por el ID proporcionado
     var consultaEditar = _context.Consultas.SingleOrDefault(c => c.ConsultaID == consultaID);
@@ -255,6 +260,7 @@ public JsonResult EditarConsulta(int consultaID, int clienteID, int equipoID, Da
             consultaEditar.ClienteID = clienteID;
             consultaEditar.EquipoID = equipoID;
             consultaEditar.Descripcion = descripcion;
+            consultaEditar.Motivo = motivo;
             consultaEditar.Fecha = fecha;
             consultaEditar.EstadoConsulta = estadoConsulta;
 
