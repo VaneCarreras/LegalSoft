@@ -134,12 +134,24 @@ input.btn:hover {
   width: 4%;
 }
 
+.imgIconoTurno {
+  margin-top: 20vh;
+  width: 30%;
+
+}
+
+.titulos1{
+  font-size: 36px;
+}
+
 .juntos {
   display: inline-block;
   margin: 0;
   padding: 0;
 }
-
+/* .juntos1 {
+  display: inline-block;
+} */
 .bco {
   color: white;
   text-shadow:
@@ -171,10 +183,11 @@ input.btn:hover {
 }
 
 #calendar {
-  width: 60%;
-  height: 450px;
+  width: 70%;
+  height: 550px;
   margin: auto;
-  font-size: 0.6em;
+  margin-top: 4%;
+  font-size: 0.7em;
 }
 
 .carousel-control-prev-icon,

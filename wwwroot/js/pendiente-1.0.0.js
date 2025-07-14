@@ -30,6 +30,35 @@ document.addEventListener('DOMContentLoaded', function () {
       $('#Estado').val(pendiente.estado);
 
       $('#ModalPendientes').modal('show');
+    },
+  
+
+
+  
+    // Personalizar contenido de los eventos
+    eventContent: function (arg) {
+      const estado = arg.event.extendedProps.estado;
+      let color = '#007bff'; // Azul por defecto
+
+      if (estado === "Realizado") {
+        color = 'green'; // Realizado
+      } else if (estado === "No realizado") {
+        color = 'red'; // NoRealizado
+      }
+
+      const dotEl = document.createElement('span');
+      dotEl.style.backgroundColor = color;
+      dotEl.style.borderRadius = '50%';
+      dotEl.style.display = 'inline-block';
+      dotEl.style.width = '10px';
+      dotEl.style.height = '10px';
+      dotEl.style.marginRight = '6px';
+      dotEl.style.verticalAlign = 'middle';
+
+      const textEl = document.createElement('span');
+      textEl.innerText = arg.event.title;
+
+      return { domNodes: [dotEl, textEl] };
     }
   });
 
