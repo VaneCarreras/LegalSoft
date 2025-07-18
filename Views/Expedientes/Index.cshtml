@@ -43,7 +43,7 @@
 <table class="table table-dark table-borderedless table-striped table-condensed">
   <thead>
     <tr>
-      <th class="ocultar-en-550px">Nro</th>
+      @* <th class="ocultar-en-550px">Nro</th> *@
       <th>Carátula</th>
       <th>Cliente</th>
       <th class="ocultar-en-768px">Abogado</th>
@@ -83,30 +83,30 @@
           <div class="row">
             <input type="hidden" id="ExpedienteID" value="0" />
 
-            <div class="mb-3 col-6">
+            @* <div class="mb-3 col-6">
              <label for="Numero" class="form-label">Nro</label>
              <input type="text" class="form-control" id="Numero" style="text-transform:uppercase" placeholder="Nro de expediente">
-            </div>
+            </div> *@
 
             <div class="mb-3 col-6">
              <label for="Caratula" class="form-label">Caratula</label>
              <input type="text" class="form-control" id="Caratula" style="text-transform:uppercase" placeholder="Caratula de expediente">
             </div>
-
-            <div class="col-6 mb-3">
-              <label for="NombreCompletoCliente" class="control-label labelModal">Cliente</label>
-              @Html.DropDownList("ClienteID", null, htmlAttributes: new { @class = "form-control inputModalTexto", style = "cursor:pointer;text-align: justify;padding-top: 3px;"})
-            </div>
-
-            <div class="col-6 mb-3">
-              <label for="NombreCompletoEquipo" class="control-label labelModal">Abogado</label>
-              @Html.DropDownList("EquipoID", null, htmlAttributes: new { @class = "form-control inputModalTexto", style = "cursor:pointer;text-align: justify;padding-top: 3px;"})
-            </div>
-
-            <div class="mb-3 col-6">
+<div class="mb-3 col-6">
               <label for="FechaInicio" class="form-label">Fecha de Inicio</label>
               <input type="date" id="FechaInicio" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
             </div>
+            <div class="mb-3 col-6 ">
+              <label for="NombreCompletoCliente" class="control-label labelModal">Cliente</label>
+              @Html.DropDownList("ClienteID", null, htmlAttributes: new { @class = "form-control inputModalTexto", style = "cursor:pointer;text-align: justify;padding-top: 3px; text-transform:uppercase"})
+            </div>
+
+            <div class=" mb-3 col-6">
+              <label for="NombreCompletoEquipo" class="control-label labelModal">Abogado</label>
+              @Html.DropDownList("EquipoID", null, htmlAttributes: new { @class = "form-control inputModalTexto", style = "cursor:pointer;text-align: justify;padding-top: 3px; text-transform:uppercase"})
+            </div>
+
+            
 
             <div class="mb-3 col-6">
               <label for="FechaFin" class="form-label">Fecha de Fin</label>
@@ -122,7 +122,7 @@
 
             <div class="mb-3 col-6">
              <label for="LinkContenido" class="form-label">Link al Contenido</label>
-             <input type="text" class="form-control" id="LinkContenido" style="text-transform:uppercase" placeholder="Copiar link SAC">
+             <input type="text" class="form-control" id="LinkContenido"  placeholder="Copiar link SAC">
             </div>
 
             <div class="mb-3 col-6">
@@ -152,6 +152,8 @@
       <div class="modal-footer">
         <button type="button" onclick="LimpiarModal()" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
         <button type="button" onclick="GuardarRegistro()" class="btn btn-warning">Guardar</button>
+                  <button type="button" class="btn btn-success" onclick="ImprimirExpediente()">IMPRIMIR</button>
+
       </div>
     </div>
   </div>

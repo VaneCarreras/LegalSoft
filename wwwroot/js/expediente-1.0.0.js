@@ -26,7 +26,6 @@ function ListadoExpedientes(){
                 contenidoTabla += `
                 <tr>
                        
-                        <td>${expediente.numero}</td>
                         <td>${expediente.caratula}</td> 
                 
                 
@@ -94,7 +93,7 @@ function LimpiarModal(){
     // document.getElementById("PersonaID").value = 0; 
     // document.getElementById("NombreCompletoCliente").value = ""; 
     // document.getElementById("NombreCompletoEquipo").value = ""; 
-    document.getElementById("Numero").value = ""; 
+    // document.getElementById("Numero").value = ""; 
         document.getElementById("Caratula").value = ""; 
     document.getElementById("UltimoDecreto").value = ""; 
 
@@ -138,7 +137,7 @@ function AbrirModalEditar(ExpedienteID){
 
             document.getElementById("ClienteID").value = expediente.clienteID;
             document.getElementById("EquipoID").value = expediente.equipoID;
-            document.getElementById("Numero").value = expediente.numero;
+            // document.getElementById("Numero").value = expediente.numero;
             document.getElementById("Caratula").value = expediente.caratula;
                         document.getElementById("FechaInicio").value = expediente.fechaInicio;
             document.getElementById("FechaFin").value = expediente.fechaFin;
@@ -174,7 +173,7 @@ function GuardarRegistro() {
 
     let clienteID =        document.getElementById("ClienteID").value;
     let equipoID =        document.getElementById("EquipoID").value;
-    let numero =        document.getElementById("Numero").value;
+    // let numero =        document.getElementById("Numero").value;
         let caratula =        document.getElementById("Caratula").value;
         let ultimoDecreto =        document.getElementById("UltimoDecreto").value;
     let fechaInicio =        document.getElementById("FechaInicio").value;
@@ -197,7 +196,6 @@ function GuardarRegistro() {
                 // nombreCompletoEquipo: nombreCompletoEquipo,
                 clienteID: clienteID,
                 equipoID: equipoID,
-                numero: numero,
                 caratula: caratula,
                 ultimoDecreto: ultimoDecreto,
                 fechaInicio: fechaInicio,
@@ -231,7 +229,6 @@ function GuardarRegistro() {
                 expedienteID: expedienteID,
                 clienteID: clienteID,
                 equipoID: equipoID,
-                numero: numero,
                 caratula: caratula,
                 ultimoDecreto: ultimoDecreto,
                 fechaInicio: fechaInicio,
@@ -287,7 +284,6 @@ function BuscarExpediente() {
                 contenidoTabla += `
                 <tr>
                 
-                        <td>${expediente.numero}</td>
                         <td>${expediente.caratula}</td>
                         <td>${expediente.nombreCompletoCliente}</td>
                         <td>${expediente.nombreCompletoEquipo}</td>
@@ -521,3 +517,12 @@ function AbrirModalDocsExpediente(expedienteID) {
     // Mostrar el modal
     $('#ModalDocsExpediente').modal('show');
 }
+
+function ImprimirExpediente() {
+      const expedienteID = $('#ExpedienteID').val();
+      if (expedienteID === '0') {
+        Swal.fire('Primero guarda el expediente', '', 'warning');
+        return;
+      }
+      window.location.href = '/Expedientes/ImprimirExpediente?expedienteID=' + expedienteID;
+    }

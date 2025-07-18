@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using LegalSoft.Models;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using LegalSoft.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -448,6 +450,137 @@ public JsonResult EliminarDocumento(int DocID)
     }
 
     return Json(resultado);
+}
+public IActionResult ImprimirExpediente(int expedienteID)
+{
+    var expediente = _context.Expedientes
+        .Where(e => e.ExpedienteID == expedienteID)
+        .Join(_context.Clientes, e => e.ClienteID, c => c.ClienteID,
+            (e, c) => new { Expediente = e, Cliente = c })
+        .Join(_context.Personas, ec => ec.Cliente.PersonaID, p => p.PersonaID,
+            (ec, p) => new { ec.Expediente, ClienteNombre = p.NombreCompleto })
+        .FirstOrDefault();
+
+    if (expediente == null) return NotFound();
+
+    var equipoNombre = _context.Equipos
+        .Where(eq => eq.EquipoID == expediente.Expediente.EquipoID)
+        .Join(_context.Personas, e => e.PersonaID, p => p.PersonaID,
+            (e, p) => p.NombreCompleto)
+        .FirstOrDefault();
+
+    using var ms = new MemoryStream();
+    var doc = new Document(PageSize.A4, 30f, 30f, 30f, 30f);
+    var writer = PdfWriter.GetInstance(doc, ms);
+    doc.Open();
+
+    var green = new BaseColor(119, 221, 119);
+    var pink = new BaseColor(255, 105, 180);
+    var fontPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "calibri.ttf");
+    var baseFont = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+    var blackFont = new iTextSharp.text.Font(baseFont, 12, iTextSharp.text.Font.NORMAL, BaseColor.Black);
+    var greenTitleFont = new iTextSharp.text.Font(baseFont, 16, iTextSharp.text.Font.BOLD, green);
+    var pinkFooterFont = new iTextSharp.text.Font(baseFont, 10, iTextSharp.text.Font.NORMAL, pink);
+
+    var table = new PdfPTable(1) { WidthPercentage = 100 };
+
+    string logoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "logo.png");
+    if (System.IO.File.Exists(logoPath))
+    {
+        var logo = iTextSharp.text.Image.GetInstance(logoPath);
+        logo.ScaleToFit(80f, 80f);
+        logo.Alignment = Element.ALIGN_CENTER;
+        table.AddCell(new PdfPCell(logo)
+        {
+            Border = Rectangle.NO_BORDER,
+            HorizontalAlignment = Element.ALIGN_CENTER,
+            PaddingBottom = 10f
+        });
+    }
+
+    table.AddCell(new PdfPCell(new Phrase("INFORMACIÓN DE EXPEDIENTE:", greenTitleFont))
+    {
+        Border = Rectangle.NO_BORDER,
+        HorizontalAlignment = Element.ALIGN_CENTER,
+        PaddingBottom = 20f
+    });
+
+    void AddLine(string label, string value)
+    {
+        table.AddCell(new PdfPCell(new Phrase($"{label}: {value}", blackFont))
+        {
+            Border = Rectangle.NO_BORDER,
+            PaddingBottom = 5f,
+            HorizontalAlignment = Element.ALIGN_LEFT
+        });
+
+        table.AddCell(new PdfPCell(new Phrase(" ", blackFont))
+        {
+            Border = Rectangle.NO_BORDER,
+            PaddingBottom = 5f
+        });
+    }
+
+// Contenido de la Carátula en mayúsculas como un título aparte en negro
+table.AddCell(new PdfPCell(new Phrase((expediente.Expediente.Caratula ?? "").ToUpper(), blackFont))
+{
+    Border = Rectangle.NO_BORDER,
+    PaddingBottom = 10f,
+    HorizontalAlignment = Element.ALIGN_LEFT
+});
+
+        // Línea vacía
+        table.AddCell(new PdfPCell(new Phrase(" ", blackFont))
+        {
+            Border = Rectangle.NO_BORDER,
+            PaddingBottom = 5f
+        });
+
+        AddLine("Cliente", expediente.ClienteNombre ?? "Desconocido");
+    AddLine("Área", expediente.Expediente.Area.ToString());
+    AddLine("Dependencia", expediente.Expediente.Dependencia.ToString());
+    AddLine("Ubicación", expediente.Expediente.Ubicacion.ToString());
+    AddLine("Fecha de Inicio", expediente.Expediente.FechaInicio.ToString("dd/MM/yyyy"));
+
+    // Contenido del último decreto en bloque separado
+    table.AddCell(new PdfPCell(new Phrase("Contenido del Último Decreto:", blackFont))
+    {
+        Border = Rectangle.NO_BORDER,
+        PaddingBottom = 2f,
+        HorizontalAlignment = Element.ALIGN_LEFT
+    });
+
+    table.AddCell(new PdfPCell(new Phrase(expediente.Expediente.UltimoDecreto ?? "Sin contenido", blackFont))
+    {
+        Border = Rectangle.NO_BORDER,
+        PaddingBottom = 10f,
+        HorizontalAlignment = Element.ALIGN_LEFT
+    });
+
+    table.AddCell(new PdfPCell(new Phrase(" ", blackFont))
+    {
+        Border = Rectangle.NO_BORDER,
+        PaddingBottom = 5f
+    });
+
+    doc.Add(table);
+
+    // Pie de página con línea y texto rosa a la derecha
+    var cb = writer.DirectContent;
+    cb.SetLineWidth(1f);
+    cb.SetColorStroke(green);
+    cb.MoveTo(30, 40);
+    cb.LineTo(doc.PageSize.Width - 30, 40);
+    cb.Stroke();
+
+    var footer = new ColumnText(cb);
+    footer.SetSimpleColumn(new Phrase("caporaliab.com", pinkFooterFont),
+        30, 25, doc.PageSize.Width - 30, 40, 10, Element.ALIGN_RIGHT);
+    footer.Go();
+
+    doc.Close();
+
+    return File(ms.ToArray(), "application/pdf", $"Expediente-{expedienteID}.pdf");
 }
 
 
