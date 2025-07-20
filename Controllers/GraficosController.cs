@@ -36,7 +36,7 @@ public class GraficosController : Controller
         {
             var datos = _context.Expedientes
     .Where(c => c.FechaInicio.Month == mes && c.FechaInicio.Year == anio)
-    .GroupBy(c => c.EstadoExpediente)
+    .GroupBy(c => c.Ubicacion)
     .Select(g => new {
         nombreEstado = g.Key.ToString(),  // Convierte enum a string legible
         cantidad = g.Count()

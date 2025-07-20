@@ -165,13 +165,20 @@ public IActionResult ImprimirTicket(int turnoID)
 
     // Colores y fuente
     var greenPastel = new BaseColor(119, 221, 119); // #77DD77
+        var green = new BaseColor(119, 221, 119);
+    var pink = new BaseColor(255, 105, 180);
+
     var fontPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "calibri.ttf");
     var baseFont = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
     var font = new iTextSharp.text.Font(baseFont, 14, iTextSharp.text.Font.NORMAL, greenPastel);
+        var blackFont = new iTextSharp.text.Font(baseFont, 12, iTextSharp.text.Font.NORMAL, BaseColor.Black);
+
     var titleFont = new iTextSharp.text.Font(baseFont, 18, iTextSharp.text.Font.BOLD, greenPastel);
+        var pinkFooterFont = new iTextSharp.text.Font(baseFont, 10, iTextSharp.text.Font.NORMAL, pink);
+
 
     // Contenedor (recuadro)
-    var table = new PdfPTable(1)
+        var table = new PdfPTable(1)
     {
         WidthPercentage = 100
     };
@@ -204,7 +211,7 @@ public IActionResult ImprimirTicket(int turnoID)
     // Info turno
     void AddLine(string label, string value)
     {
-        var p = new Phrase($"{label}: {value}", font);
+        var p = new Phrase($"{label}: {value}", blackFont);
         var cell = new PdfPCell(p)
         {
             Border = Rectangle.NO_BORDER,
@@ -221,7 +228,20 @@ public IActionResult ImprimirTicket(int turnoID)
     // Agregar tabla al documento
     doc.Add(table);
 
-    doc.Close();
+// Pie de página con línea y texto rosa a la derecha
+    var cb = writer.DirectContent;
+    cb.SetLineWidth(1f);
+    cb.SetColorStroke(green);
+    cb.MoveTo(30, 40);
+    cb.LineTo(doc.PageSize.Width - 30, 40);
+    cb.Stroke();
+
+    var footer = new ColumnText(cb);
+    footer.SetSimpleColumn(new Phrase("caporaliab.com", pinkFooterFont),
+        30, 25, doc.PageSize.Width - 30, 40, 10, Element.ALIGN_RIGHT);
+    footer.Go();
+
+        doc.Close();
 return File(ms.ToArray(), "application/pdf", $"Ticket-Turno-{turnoID}.pdf");
 }
 

@@ -81,7 +81,6 @@ public IActionResult InicioSistema()
 
 
 
-    // Ejemplo URL: /Admin/AsignarRol?email=admin@email.com&rol=administrador
     //http://localhost:5025/Home/AsignarRol?email=sofia@gmail.com&rol=equipo
     public async Task<IActionResult> AsignarRol(string email, string rol)
     {
