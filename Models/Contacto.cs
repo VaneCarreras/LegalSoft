@@ -10,7 +10,7 @@ namespace LegalSoft.Models
     {
 
         public int ContactoID { get; set; }
-       
+
         [Required(ErrorMessage = "El nombre es obligatorio.")]
         public string Nombre { get; set; }
 
@@ -18,7 +18,26 @@ namespace LegalSoft.Models
         [EmailAddress(ErrorMessage = "Ingrese un email válido.")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "El mensaje es obligatorio.")]
-        public string Mensaje { get; set; }
+
+
+        public string? AreaSeleccionada { get; set; }  // Para saber qué área eligió
+
+        // Campos opcionales según el área
+        public string? Empleador { get; set; }
+        public string? Horas { get; set; }
+        public string? Situacion { get; set; }
+        public string? Sueldo { get; set; }
+
+        public string? Vinculo { get; set; }
+        public string? Datos { get; set; }
+        public string? Datos2 { get; set; }
+
+        public string? Motivo { get; set; }
+        public string? Detalle { get; set; }
+        public string? Delito { get; set; }
+    public string? Tipo { get; set; }
+
+
+
     }
 }

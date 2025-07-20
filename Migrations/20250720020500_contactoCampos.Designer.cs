@@ -4,6 +4,7 @@ using LegalSoft.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LegalSoft.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250720020500_contactoCampos")]
+    partial class contactoCampos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,6 +105,9 @@ namespace LegalSoft.Migrations
                     b.Property<string>("Detalle")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Detalle2")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -110,6 +116,10 @@ namespace LegalSoft.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Horas")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Mensaje")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Motivo")

@@ -118,7 +118,7 @@ body {
 
 textarea {
   resize: none;
-  height: 250px;
+  height: 80px;
 }
 
 input.form-control, textarea.form-control {

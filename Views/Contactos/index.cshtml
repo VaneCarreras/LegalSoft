@@ -14,44 +14,59 @@
 
 <body class="fondoLogo">
 
+
+
   <section id="Contacto">
     <div class="p-4">
       <div class="row">
-        <div class="col-md-12 col-sm-12 text-center">
-
+        <div class="col-md-12 text-center">
           <img src="~/img/contactoImg.png" alt="" class="imgIcono juntos">
-
-
           <h1 class="titulos text-center juntos">CONTACTANOS</h1>
-
         </div>
 
         <hr class="hrTitulos m-4">
 
-        <div class="col-md-6 col-sm-12 text-center p-5">
-          <div id="alerta" class="mt-3"></div>
+        <div class="col-md-6 text-center">
 
-          <form id="formContacto" class="mt-3">
+          <!-- Selección de Área -->
+          <div class="form-group">
+            <label for="areaSeleccionada">SELECCIONA EL AREA POR LA QUE CONSULTA</label>
+            <select id="areaSeleccionada" class="form-control" required>
+              <option value="" selected disabled>Elegí un área</option>
+              <option value="civil">Civil</option>
+              <option value="penal">Penal</option>
+              <option value="laboral">Laboral</option>
+              <option value="comercial">Comercial</option>
+              <option value="familiar">Familiar</option>
+              <option value="otra">Otra</option>
+            </select>
+          </div>
+
+          <!-- Formulario oculto al principio -->
+          <form id="formContacto" class="mt-3" style="display: none;">
+            <div id="alerta" class="mt-3"></div>
+
             <div class="form-group">
               <label for="Nombre">Nombre</label>
-              <input name="Nombre" class="form-control" required />
+              <input id="Nombre" name="Nombre" class="form-control" required />
             </div>
 
             <div class="form-group">
               <label for="Email">Email</label>
-              <input name="Email" type="email" class="form-control" required />
+              <input id="Email" name="Email" type="email" class="form-control" required />
             </div>
 
-            <div class="form-group">
-              <label for="Mensaje">Mensaje</label>
-              <textarea name="Mensaje" class="form-control" rows="5" required></textarea>
-            </div>
+            <!-- Aquí van los campos dinámicos -->
+            <div id="camposArea"></div>
+
+
 
             <button type="submit" class="btn btn-primary mt-4">Enviar</button>
           </form>
 
-
         </div>
+
+
         <div class="col-md-6 col-sm-12 text-center">
 
           <div id="leaflet-map" class="info-box" style="height: 320px; border: 3px solid #fff;"></div>
@@ -76,13 +91,16 @@
 
 
 
-          </div>
 
+          </div>
         </div>
       </div>
     </div>
-
   </section>
+
+
+
+
 
   @*     
 
@@ -135,39 +153,141 @@
       new WOW().init();
     </script>
 
+<script>
+  $("#formContacto").on("submit", function (e) {
+  e.preventDefault();
+
+  let datos = {
+    Nombre: $("input[name='Nombre']").val(),
+    Email: $("input[name='Email']").val(),
+    AreaSeleccionada: $("#areaSeleccionada").val()
+  };
+
+  const camposDinamicos = ["Empleador", "Horas", "Situacion", "Sueldo", "Vinculo", "Datos", "Datos2", "Motivo", "Delito", "Tipo", "Detalle"];
+
+  camposDinamicos.forEach(campo => {
+    const elemento = $(`[name='${campo}']`);
+    if (elemento.length && elemento.val()) {
+      datos[campo] = elemento.val();
+    }
+  });
+
+  $.ajax({
+    url: '@Url.Action("EnviarCorreo", "Contactos")',
+    type: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(datos),
+    success: function (res) {
+      if (res.exito) {
+        $("#alerta").html(`<div class="alert alert-success">${res.mensaje}</div>`);
+        $("#formContacto")[0].reset();
+        $("#formContacto").slideUp();
+        setTimeout(() => {
+          $("#alerta").fadeOut();
+        }, 500000000000000000);
+      } else if (res.errores) {
+        let mensajes = Object.values(res.errores).flat().join("<br>");
+        $("#alerta").html(`<div class="alert alert-danger">${mensajes}</div>`);
+      } else {
+        $("#alerta").html(`<div class="alert alert-danger">${res.mensaje}</div>`);
+      }
+    },
+    error: function () {
+      $("#alerta").html(`<div class="alert alert-danger">Error inesperado al enviar el mensaje.</div>`);
+    }
+  });
+
+});
+
+</script>
+
+
     <script>
-      $("#formContacto").on("submit", function (e) {
-        e.preventDefault();
+      document.getElementById('areaSeleccionada').addEventListener('change', function () {
+        const area = this.value;
+        const form = document.getElementById('formContacto');
+        const camposArea = document.getElementById('camposArea');
 
-        let datos = {
-          Nombre: $("input[name='Nombre']").val(),
-          Email: $("input[name='Email']").val(),
-          Mensaje: $("textarea[name='Mensaje']").val()
-        };
+        // Mostrar el formulario
+        form.style.display = 'block';
+        camposArea.innerHTML = ''; // Limpiar campos anteriores
 
-        $.ajax({
-          url: '@Url.Action("EnviarCorreo", "Contactos")',
-          type: 'POST',
-          contentType: 'application/json',
-          data: JSON.stringify(datos),
-          success: function (res) {
-            if (res.exito) {
-              $("#alerta").html(`<div class="alert alert-success">${res.mensaje}</div>`);
-              $("#formContacto")[0].reset();
-            } else if (res.errores) {
-              let mensajes = Object.values(res.errores).flat().join("<br>");
-              $("#alerta").html(`<div class="alert alert-danger">${mensajes}</div>`);
-            } else {
-              $("#alerta").html(`<div class="alert alert-danger">${res.mensaje}</div>`);
-            }
-          },
-          error: function () {
-            $("#alerta").html(`<div class="alert alert-danger">Error inesperado al enviar el mensaje.</div>`);
-          }
-        });
+        if (area === 'laboral') {
+          camposArea.innerHTML = `
+          <div class="row">
+          <div class="form-group col-md-6">
+            <label for="Empleador">Empleador</label>
+            <input id= "Empleador" name="Empleador" class="form-control" required />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="Horas">Horas semanales</label>
+            <input id= "Horas" name="Horas" class="form-control" required />
+          </div>        
+          <div class="form-group col-md-6">
+            <label for="Situacion">Situación (Recibo, Contrato, Negro)</label>
+            <input id= "Situacion" name="Situacion" class="form-control" required />
+          </div>        
+          <div class="form-group col-md-6">
+            <label for="Sueldo">Sueldo</label>
+            <input id= "Sueldo" name="Sueldo" class="form-control" />
+          </div>
+          <div class="form-group col-md-12">
+            <label for="Detalle">Detalle del caso</label>
+            <textarea id= "Detalle" name="Detalle" class="form-control" rows="1" required></textarea>
+          </div>
+          </div>`;
+        } else if (area === 'familiar') {
+          camposArea.innerHTML = `
+                <div class="row">
+
+          <div class="form-group col-md-12">
+            <label for="Vinculo">Vínculo Familiar</label>
+            <input id= "Vinculo" name="Vinculo" class="form-control" required />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="Datos">Detalle de datos personales</label>
+            <textarea id= "Datos" name="Datos" class="form-control" rows="1" required></textarea>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="Datos2">Datos del hijo, expareja, etc</label>
+            <textarea id= "Datos2" name="Datos2" class="form-control" rows="1" required></textarea>
+          </div>
+          <div class="form-group col-md-12">
+            <label for="Detalle">Detalle del caso</label>
+            <textarea id= "Detalle" name="Detalle" class="form-control" rows="1" required></textarea>
+          </div>
+                  </div>`;
+        } else if (area === 'civil' || area === 'comercial' || area === 'otra') {
+          camposArea.innerHTML = `
+          <div class="form-group">
+            <label for="Motivo">Motivo que amerita la intervención legal</label>
+            <input id= "Motivo" name="Motivo" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label for="Detalle">Detalle del caso</label>
+            <textarea id= "Detalle" name="Detalle" class="form-control" rows="1" required></textarea>
+          </div>`;
+        } else if (area === 'penal') {
+          camposArea.innerHTML = `
+          <div class="form-group">
+            <label for="Delito">Tipo de delito</label>
+            <input id= "Delito" name="Delito" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label for="Tipo">Tipo de intervención (denunciante/ denunciado)</label>
+            <input id= "Tipo" name="Tipo" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label for="Detalle">Detalle del caso</label>
+            <textarea id= "Detalle" name="Detalle" class="form-control" rows="1" required></textarea>
+          </div>`;
+        }
+        else {
+          form.style.display = 'none';
+        }
+
       });
     </script>
-
 
 
   }
