@@ -149,7 +149,6 @@ public class ExpedientesController : Controller
                 Caratula = expediente.Caratula,
                 UltimoDecreto = expediente.UltimoDecreto,
                 FechaInicio = expediente.FechaInicio,
-                FechaFin = expediente.FechaFin,
                 NombreCompletoCliente = clienteNombre, // <-- Este campo ahora existe
                 NombreCompletoEquipo = equipoNombre,
                 LinkContenido = expediente.LinkContenido,
@@ -200,7 +199,6 @@ public class ExpedientesController : Controller
                 Numero = expediente.Numero,
                 Caratula = expediente.Caratula,
                 FechaInicio = expediente.FechaInicio,
-                FechaFin = expediente.FechaFin,
                 ClienteID = expediente.ClienteID,
                 EquipoID = expediente.EquipoID,
                 UltimoDecreto = expediente.UltimoDecreto,
@@ -243,7 +241,7 @@ public class ExpedientesController : Controller
 
 
 
-    public JsonResult GuardarNuevoExpediente(int expedienteID, int clienteID, int equipoID, DateOnly fechaInicio, DateOnly fechaFin, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoExpediente estadoExpediente,  Area area, Dependencia dependencia, Ubicacion ubicacion, string? numero, string? caratula, string? ultimoDecreto, string? linkContenido)
+    public JsonResult GuardarNuevoExpediente(int expedienteID, int clienteID, int equipoID, DateOnly fechaInicio,  string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoExpediente estadoExpediente,  Area area, Dependencia dependencia, Ubicacion ubicacion, string? numero, string? caratula, string? ultimoDecreto, string? linkContenido)
     {
 
         var error = 0;
@@ -262,7 +260,6 @@ public class ExpedientesController : Controller
                 Caratula = caratula,
                 UltimoDecreto = ultimoDecreto,
                 FechaInicio = fechaInicio,
-                FechaFin = fechaFin,
                 LinkContenido = linkContenido,
                 EstadoExpediente = estadoExpediente,
                                 Area = area,
@@ -294,7 +291,7 @@ public class ExpedientesController : Controller
         return Json(error);
     }
 
-    public JsonResult EditarExpediente(int expedienteID, int clienteID, int equipoID, DateOnly fechaInicio, DateOnly fechaFin, string? numero, string? caratula, string? ultimoDecreto, string? linkContenido, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoExpediente estadoExpediente, Area area, Dependencia dependencia, Ubicacion ubicacion)
+    public JsonResult EditarExpediente(int expedienteID, int clienteID, int equipoID, DateOnly fechaInicio,  string? numero, string? caratula, string? ultimoDecreto, string? linkContenido, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoExpediente estadoExpediente, Area area, Dependencia dependencia, Ubicacion ubicacion)
     {
         // Buscar el cliente por el ID proporcionado
         var expedienteEditar = _context.Expedientes.SingleOrDefault(c => c.ExpedienteID == expedienteID);
@@ -313,7 +310,6 @@ public class ExpedientesController : Controller
                 expedienteEditar.LinkContenido = linkContenido;
                 expedienteEditar.UltimoDecreto = ultimoDecreto;
                 expedienteEditar.FechaInicio = fechaInicio;
-                expedienteEditar.FechaFin = fechaFin;
                 expedienteEditar.EstadoExpediente = estadoExpediente;
                                 expedienteEditar.Area = area;
                 expedienteEditar.Dependencia = dependencia;

@@ -77,13 +77,13 @@
             <input type="hidden" id="ConsultaID" value="0" />
           
             <div class="col-6 mb-3">
-              <label for="NombreCompletoCliente" class="control-label labelModal">Nombre Cliente</label>
-              @Html.DropDownList("ClienteID", null, htmlAttributes: new { @class = "form-control inputModalTexto", style = "cursor:pointer;text-align: justify;padding-top: 3px;"})
+              <label for="NombreCompletoCliente" class="form-label">Nombre Cliente</label>
+              @Html.DropDownList("ClienteID", null, htmlAttributes: new { @class = "form-control"})
             </div>
 
             <div class="col-6 mb-3">
-              <label for="NombreCompletoEquipo" class="control-label labelModal">Empleado</label>
-              @Html.DropDownList("EquipoID", null, htmlAttributes: new { @class = "form-control inputModalTexto", style = "cursor:pointer;text-align: justify;padding-top: 3px;"})
+              <label for="NombreCompletoEquipo" class="form-label">Empleado</label>
+              @Html.DropDownList("EquipoID", null, htmlAttributes: new { @class = "form-control"})
             </div>
 
             

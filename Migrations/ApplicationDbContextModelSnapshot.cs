@@ -208,9 +208,6 @@ namespace LegalSoft.Migrations
                     b.Property<int>("EstadoExpediente")
                         .HasColumnType("int");
 
-                    b.Property<DateOnly>("FechaFin")
-                        .HasColumnType("date");
-
                     b.Property<DateOnly>("FechaInicio")
                         .HasColumnType("date");
 

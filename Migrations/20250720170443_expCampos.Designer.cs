@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LegalSoft.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250627120309_modifExpediente1")]
-    partial class modifExpediente1
+    [Migration("20250720170443_expCampos")]
+    partial class expCampos
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -70,6 +70,9 @@ namespace LegalSoft.Migrations
                     b.Property<DateOnly>("Fecha")
                         .HasColumnType("date");
 
+                    b.Property<string>("Motivo")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ConsultaID");
 
                     b.HasIndex("ClienteID");
@@ -87,16 +90,48 @@ namespace LegalSoft.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ContactoID"));
 
+                    b.Property<string>("AreaSeleccionada")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Datos")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Datos2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Delito")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Detalle")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Mensaje")
-                        .IsRequired()
+                    b.Property<string>("Empleador")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Horas")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Motivo")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Situacion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Sueldo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tipo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Vinculo")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ContactoID");
@@ -104,13 +139,13 @@ namespace LegalSoft.Migrations
                     b.ToTable("Contactos");
                 });
 
-            modelBuilder.Entity("LegalSoft.Models.DocLegal", b =>
+            modelBuilder.Entity("LegalSoft.Models.DocsExpediente", b =>
                 {
-                    b.Property<int>("DocLegalID")
+                    b.Property<int>("DocID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocLegalID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocID"));
 
                     b.Property<string>("Descripcion")
                         .HasColumnType("nvarchar(max)");
@@ -127,11 +162,11 @@ namespace LegalSoft.Migrations
                     b.Property<string>("TipoImg")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("DocLegalID");
+                    b.HasKey("DocID");
 
                     b.HasIndex("ExpedienteID");
 
-                    b.ToTable("DocLegales");
+                    b.ToTable("DocsExpediente");
                 });
 
             modelBuilder.Entity("LegalSoft.Models.Equipo", b =>
@@ -158,10 +193,16 @@ namespace LegalSoft.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExpedienteID"));
 
+                    b.Property<int>("Area")
+                        .HasColumnType("int");
+
                     b.Property<string>("Caratula")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ClienteID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Dependencia")
                         .HasColumnType("int");
 
                     b.Property<int>("EquipoID")
@@ -169,9 +210,6 @@ namespace LegalSoft.Migrations
 
                     b.Property<int>("EstadoExpediente")
                         .HasColumnType("int");
-
-                    b.Property<DateOnly>("FechaFin")
-                        .HasColumnType("date");
 
                     b.Property<DateOnly>("FechaInicio")
                         .HasColumnType("date");
@@ -181,6 +219,9 @@ namespace LegalSoft.Migrations
 
                     b.Property<string>("Numero")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Ubicacion")
+                        .HasColumnType("int");
 
                     b.Property<string>("UltimoDecreto")
                         .HasColumnType("nvarchar(max)");
@@ -215,6 +256,25 @@ namespace LegalSoft.Migrations
                     b.ToTable("ImagenCliente");
                 });
 
+            modelBuilder.Entity("LegalSoft.Models.Localidad", b =>
+                {
+                    b.Property<int>("LocalidadID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LocalidadID"));
+
+                    b.Property<string>("LocalidadNombre")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Provincia")
+                        .HasColumnType("int");
+
+                    b.HasKey("LocalidadID");
+
+                    b.ToTable("Localidades");
+                });
+
             modelBuilder.Entity("LegalSoft.Models.Pendiente", b =>
                 {
                     b.Property<int>("PendienteID")
@@ -225,6 +285,10 @@ namespace LegalSoft.Migrations
 
                     b.Property<int>("EquipoID")
                         .HasColumnType("int");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("FechaHora")
                         .HasColumnType("datetime2");
@@ -256,6 +320,9 @@ namespace LegalSoft.Migrations
                     b.Property<DateOnly>("FechaNac")
                         .HasColumnType("date");
 
+                    b.Property<int?>("LocalidadID")
+                        .HasColumnType("int");
+
                     b.Property<string>("NombreCompleto")
                         .HasColumnType("nvarchar(max)");
 
@@ -269,6 +336,8 @@ namespace LegalSoft.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PersonaID");
+
+                    b.HasIndex("LocalidadID");
 
                     b.ToTable("Personas");
                 });
@@ -285,6 +354,9 @@ namespace LegalSoft.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("EquipoID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Estado")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("FechaHora")
@@ -520,10 +592,10 @@ namespace LegalSoft.Migrations
                     b.Navigation("Equipo");
                 });
 
-            modelBuilder.Entity("LegalSoft.Models.DocLegal", b =>
+            modelBuilder.Entity("LegalSoft.Models.DocsExpediente", b =>
                 {
                     b.HasOne("LegalSoft.Models.Expediente", "Expediente")
-                        .WithMany("DocLegales")
+                        .WithMany("DocExpedientes")
                         .HasForeignKey("ExpedienteID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -570,6 +642,15 @@ namespace LegalSoft.Migrations
                         .IsRequired();
 
                     b.Navigation("Equipo");
+                });
+
+            modelBuilder.Entity("LegalSoft.Models.Persona", b =>
+                {
+                    b.HasOne("LegalSoft.Models.Localidad", "Localidad")
+                        .WithMany("Personas")
+                        .HasForeignKey("LocalidadID");
+
+                    b.Navigation("Localidad");
                 });
 
             modelBuilder.Entity("LegalSoft.Models.Turno", b =>
@@ -666,7 +747,12 @@ namespace LegalSoft.Migrations
 
             modelBuilder.Entity("LegalSoft.Models.Expediente", b =>
                 {
-                    b.Navigation("DocLegales");
+                    b.Navigation("DocExpedientes");
+                });
+
+            modelBuilder.Entity("LegalSoft.Models.Localidad", b =>
+                {
+                    b.Navigation("Personas");
                 });
 #pragma warning restore 612, 618
         }

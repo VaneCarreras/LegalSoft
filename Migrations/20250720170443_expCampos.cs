@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LegalSoft.Migrations
 {
     /// <inheritdoc />
-    public partial class MigracionNva : Migration
+    public partial class expCampos : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -68,27 +68,25 @@ namespace LegalSoft.Migrations
                 columns: table => new
                 {
                     ContactoID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AreaSeleccionada = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Empleador = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Horas = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Situacion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Sueldo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Vinculo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Datos = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Datos2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Motivo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Detalle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Delito = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Tipo = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Contactos", x => x.ContactoID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Documentos",
-                columns: table => new
-                {
-                    DocumentoID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PersonaID = table.Column<int>(type: "int", nullable: false),
-                    Imagen = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    TipoImg = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NombreArchivo = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Documentos", x => x.DocumentoID);
                 });
 
             migrationBuilder.CreateTable(
@@ -97,8 +95,7 @@ namespace LegalSoft.Migrations
                 {
                     EquipoID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PersonaID = table.Column<int>(type: "int", nullable: false),
-                    NroLegajo = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    PersonaID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -106,21 +103,17 @@ namespace LegalSoft.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Personas",
+                name: "Localidades",
                 columns: table => new
                 {
-                    PersonaID = table.Column<int>(type: "int", nullable: false)
+                    LocalidadID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UsuarioID = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NroTipoDoc = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    NombreCompleto = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Direccion = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Telefono = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FechaNac = table.Column<DateOnly>(type: "date", nullable: false)
+                    LocalidadNombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Provincia = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Personas", x => x.PersonaID);
+                    table.PrimaryKey("PK_Localidades", x => x.LocalidadID);
                 });
 
             migrationBuilder.CreateTable(
@@ -230,6 +223,26 @@ namespace LegalSoft.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ImagenCliente",
+                columns: table => new
+                {
+                    ImagenClienteID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ClienteID = table.Column<int>(type: "int", nullable: false),
+                    Imagen = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImagenCliente", x => x.ImagenClienteID);
+                    table.ForeignKey(
+                        name: "FK_ImagenCliente_Clientes_ClienteID",
+                        column: x => x.ClienteID,
+                        principalTable: "Clientes",
+                        principalColumn: "ClienteID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Consultas",
                 columns: table => new
                 {
@@ -237,8 +250,12 @@ namespace LegalSoft.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ClienteID = table.Column<int>(type: "int", nullable: false),
                     EquipoID = table.Column<int>(type: "int", nullable: false),
+                    ClienteNombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EquipoNombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Motivo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Fecha = table.Column<DateOnly>(type: "date", nullable: false),
+                    EstadoConsulta = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -268,9 +285,12 @@ namespace LegalSoft.Migrations
                     Numero = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Caratula = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UltimoDecreto = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FechaInicio = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FechaFin = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LinkContenido = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    FechaInicio = table.Column<DateOnly>(type: "date", nullable: false),
+                    LinkContenido = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EstadoExpediente = table.Column<int>(type: "int", nullable: false),
+                    Area = table.Column<int>(type: "int", nullable: false),
+                    Dependencia = table.Column<int>(type: "int", nullable: false),
+                    Ubicacion = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -298,7 +318,8 @@ namespace LegalSoft.Migrations
                     EquipoID = table.Column<int>(type: "int", nullable: false),
                     FechaHora = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Motivo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RecordatorioAlert = table.Column<bool>(type: "bit", nullable: false)
+                    RecordatorioAlert = table.Column<bool>(type: "bit", nullable: false),
+                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -319,7 +340,8 @@ namespace LegalSoft.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ClienteID = table.Column<int>(type: "int", nullable: false),
                     EquipoID = table.Column<int>(type: "int", nullable: false),
-                    FechaHora = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    FechaHora = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Estado = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -339,10 +361,34 @@ namespace LegalSoft.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DocLegales",
+                name: "Personas",
                 columns: table => new
                 {
-                    DocLegalID = table.Column<int>(type: "int", nullable: false)
+                    PersonaID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UsuarioID = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LocalidadID = table.Column<int>(type: "int", nullable: true),
+                    NroTipoDoc = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NombreCompleto = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Direccion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Telefono = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FechaNac = table.Column<DateOnly>(type: "date", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Personas", x => x.PersonaID);
+                    table.ForeignKey(
+                        name: "FK_Personas_Localidades_LocalidadID",
+                        column: x => x.LocalidadID,
+                        principalTable: "Localidades",
+                        principalColumn: "LocalidadID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DocsExpediente",
+                columns: table => new
+                {
+                    DocID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ExpedienteID = table.Column<int>(type: "int", nullable: false),
                     Imagen = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
@@ -352,9 +398,9 @@ namespace LegalSoft.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DocLegales", x => x.DocLegalID);
+                    table.PrimaryKey("PK_DocsExpediente", x => x.DocID);
                     table.ForeignKey(
-                        name: "FK_DocLegales_Expedientes_ExpedienteID",
+                        name: "FK_DocsExpediente_Expedientes_ExpedienteID",
                         column: x => x.ExpedienteID,
                         principalTable: "Expedientes",
                         principalColumn: "ExpedienteID",
@@ -411,8 +457,8 @@ namespace LegalSoft.Migrations
                 column: "EquipoID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DocLegales_ExpedienteID",
-                table: "DocLegales",
+                name: "IX_DocsExpediente_ExpedienteID",
+                table: "DocsExpediente",
                 column: "ExpedienteID");
 
             migrationBuilder.CreateIndex(
@@ -426,9 +472,19 @@ namespace LegalSoft.Migrations
                 column: "EquipoID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ImagenCliente_ClienteID",
+                table: "ImagenCliente",
+                column: "ClienteID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Pendientes_EquipoID",
                 table: "Pendientes",
                 column: "EquipoID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Personas_LocalidadID",
+                table: "Personas",
+                column: "LocalidadID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Turnos_ClienteID",
@@ -466,10 +522,10 @@ namespace LegalSoft.Migrations
                 name: "Contactos");
 
             migrationBuilder.DropTable(
-                name: "DocLegales");
+                name: "DocsExpediente");
 
             migrationBuilder.DropTable(
-                name: "Documentos");
+                name: "ImagenCliente");
 
             migrationBuilder.DropTable(
                 name: "Pendientes");
@@ -488,6 +544,9 @@ namespace LegalSoft.Migrations
 
             migrationBuilder.DropTable(
                 name: "Expedientes");
+
+            migrationBuilder.DropTable(
+                name: "Localidades");
 
             migrationBuilder.DropTable(
                 name: "Clientes");

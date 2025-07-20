@@ -15,7 +15,7 @@ namespace LegalSoft.Models
         public string? Caratula { get; set; }
         public string? UltimoDecreto { get; set; }
         public DateOnly FechaInicio { get; set; }
-        public DateOnly FechaFin { get; set; }
+        // public DateOnly? FechaFin { get; set; }
         public string? LinkContenido { get; set; }
 
         public virtual Cliente? Cliente { get; set; }

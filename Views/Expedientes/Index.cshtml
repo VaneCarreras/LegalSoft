@@ -48,11 +48,9 @@
       <th>Cliente</th>
       <th class="ocultar-en-768px">Abogado</th>
       <th class="ocultar-en-768px">Inicio</th>
-      <th class="ocultar-en-768px">Fin</th>
       @* <th >Último Decreto</th> *@
       @* <th class="ocultar-en-768px">Docs</th> *@
       <th class="ocultar-en-550px">Link</th>
-      <th>Estado</th>
       <th>Área</th>
       <th>Dependencia</th>
       <th>Ubicación</th>
@@ -97,21 +95,21 @@
               <input type="date" id="FechaInicio" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
             </div>
             <div class="mb-3 col-6 ">
-              <label for="NombreCompletoCliente" class="control-label labelModal">Cliente</label>
-              @Html.DropDownList("ClienteID", null, htmlAttributes: new { @class = "form-control inputModalTexto", style = "cursor:pointer;text-align: justify;padding-top: 3px; text-transform:uppercase"})
+              <label for="NombreCompletoCliente" class="form-label">Cliente</label>
+              @Html.DropDownList("ClienteID", null, htmlAttributes: new { @class = "form-control"})
             </div>
 
             <div class=" mb-3 col-6">
-              <label for="NombreCompletoEquipo" class="control-label labelModal">Abogado</label>
-              @Html.DropDownList("EquipoID", null, htmlAttributes: new { @class = "form-control inputModalTexto", style = "cursor:pointer;text-align: justify;padding-top: 3px; text-transform:uppercase"})
+              <label for="NombreCompletoEquipo" class="form-label">Abogado</label>
+              @Html.DropDownList("EquipoID", null, htmlAttributes: new { @class = "form-control"})
             </div>
 
             
 
-            <div class="mb-3 col-6">
+            @* <div class="mb-3 col-6">
               <label for="FechaFin" class="form-label">Fecha de Fin</label>
               <input type="date" id="FechaFin" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-            </div>
+            </div> *@
 
             
 
@@ -125,10 +123,10 @@
              <input type="text" class="form-control" id="LinkContenido"  placeholder="Copiar link SAC">
             </div>
 
-            <div class="mb-3 col-6">
+            @* <div class="mb-3 col-6">
               <label for="EstadoExpediente" class="form-label">Estado</label>
               @Html.DropDownList("EstadoExpediente", null, htmlAttributes: new { @class = "form-control" })
-            </div>
+            </div> *@
             <div class="mb-3 col-6">
               <label for="Area" class="form-label">Área</label>
               @Html.DropDownList("Area", null, htmlAttributes: new { @class = "form-control" })
@@ -234,8 +232,10 @@ function ListadoExpedientes(){
                 contenidoTabla += `
                 <tr>
                        
-                        <td>${expediente.caratula}</td> 
-                
+                <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${expediente.caratula}">
+  ${expediente.caratula}
+</td>
+
                 
                 <td>${expediente.nombreCompletoCliente}</td>
                         <td>${expediente.nombreCompletoEquipo}</td>
@@ -243,11 +243,9 @@ function ListadoExpedientes(){
 
 
                         <td>${expediente.fechaInicio}</td>
-                            <td>${expediente.fechaFin}</td>
 
                             <td><a href='  ${expediente.linkContenido}  ' target='_blank' style='text-decoration: underline; color: orange;'> ${expediente.linkContenido} </a></td>
 
-                        <td>${expediente.estadoExpedienteString}</td>
                                                 <td>${expediente.areaString}</td>
                         <td>${expediente.dependenciaString}</td>
                         <td>${expediente.ubicacionString}</td>
@@ -306,10 +304,8 @@ function LimpiarModal(){
     document.getElementById("UltimoDecreto").value = ""; 
 
     document.getElementById("FechaInicio").value = ""; 
-        document.getElementById("FechaFin").value = ""; 
     document.getElementById("LinkContenido").value = ""; 
 
-        document.getElementById("EstadoExpediente").value = 0;
                 document.getElementById("Area").value = 0;
         document.getElementById("Dependencia").value = 0;
         document.getElementById("Ubicacion").value = 0;
@@ -348,12 +344,12 @@ function AbrirModalEditar(ExpedienteID){
             // document.getElementById("Numero").value = expediente.numero;
             document.getElementById("Caratula").value = expediente.caratula;
                         document.getElementById("FechaInicio").value = expediente.fechaInicio;
-            document.getElementById("FechaFin").value = expediente.fechaFin;
+            @* document.getElementById("FechaFin").value = expediente.fechaFin; *@
 
             document.getElementById("UltimoDecreto").value = expediente.ultimoDecreto;
             document.getElementById("LinkContenido").value = expediente.linkContenido;
 
-            document.getElementById("EstadoExpediente").value = expediente.estadoExpediente;
+            @* document.getElementById("EstadoExpediente").value = expediente.estadoExpediente; *@
                         document.getElementById("Area").value = expediente.area;
             document.getElementById("Dependencia").value = expediente.dependencia;
             document.getElementById("Ubicacion").value = expediente.ubicacion;
@@ -385,10 +381,8 @@ function GuardarRegistro() {
         let caratula =        document.getElementById("Caratula").value;
         let ultimoDecreto =        document.getElementById("UltimoDecreto").value;
     let fechaInicio =        document.getElementById("FechaInicio").value;
-        let fechaFin =        document.getElementById("FechaFin").value;
         let linkContenido =        document.getElementById("LinkContenido").value;
 
-    let estadoExpediente = document.getElementById("EstadoExpediente").value;
         let area = document.getElementById("Area").value;
     let dependencia = document.getElementById("Dependencia").value;
     let ubicacion = document.getElementById("Ubicacion").value;
@@ -407,9 +401,7 @@ function GuardarRegistro() {
                 caratula: caratula,
                 ultimoDecreto: ultimoDecreto,
                 fechaInicio: fechaInicio,
-                fechaFin: fechaFin,
                 linkContenido: linkContenido,
-                estadoExpediente: estadoExpediente,
                                 area: area,
                 dependencia: dependencia,
                 ubicacion: ubicacion,
@@ -440,9 +432,7 @@ function GuardarRegistro() {
                 caratula: caratula,
                 ultimoDecreto: ultimoDecreto,
                 fechaInicio: fechaInicio,
-                fechaFin: fechaFin,
                 linkContenido: linkContenido,
-                estadoExpediente: estadoExpediente,
                                 area: area,
                 dependencia: dependencia,
                 ubicacion: ubicacion,
@@ -492,16 +482,16 @@ function BuscarExpediente() {
                 contenidoTabla += `
                 <tr>
                 
-                        <td>${expediente.caratula}</td>
+<td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${expediente.caratula}">
+  ${expediente.caratula}
+</td>
                         <td>${expediente.nombreCompletoCliente}</td>
                         <td>${expediente.nombreCompletoEquipo}</td>
                         
                         <td>${expediente.fechaInicio}</td>
-                            <td>${expediente.fechaFin}</td>
 
                             <td><a href=' ${expediente.linkContenido} ' target='_blank' style='text-decoration: underline; color: orange;'>  ${expediente.linkContenido} </a></td>
 
-                        <td>${expediente.estadoExpedienteString}</td>
                                                 <td>${expediente.areaString}</td>
                         <td>${expediente.dependenciaString}</td>
                         <td>${expediente.ubicacionString}</td>
