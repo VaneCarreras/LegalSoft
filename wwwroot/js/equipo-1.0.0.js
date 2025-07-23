@@ -6,9 +6,11 @@ window.onload = function() {
 };
 
 
-function CargarLocalidades() {
+
+
+function CargarLocalidades(valorSeleccionado = null) {
     $.ajax({
-        url: '../../Equipos/ObtenerLocalidades', 
+        url: '../../Equipos/ObtenerLocalidades',
         type: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -16,17 +18,25 @@ function CargarLocalidades() {
 
             var select = $('#LocalidadID');
             select.empty();
-            select.append(`<option value="">Seleccione una localidad</option>`);
+            select.append('<option value="" disabled>SELECCIONAR</option>');
 
             $.each(data, function (index, localidad) {
                 select.append(`<option value="${localidad.localidadID}">${localidad.localidadNombre}</option>`);
             });
+
+            // Si hay un valor seleccionado, lo seteás después de llenar las opciones
+            if (valorSeleccionado !== null) {
+                select.val(valorSeleccionado.toString()).change();
+            }
         },
         error: function () {
             console.log("Error al cargar localidades.");
         }
     });
 }
+
+
+
 function ListadoEquipos(){
  
     $.ajax({
@@ -95,7 +105,7 @@ function LimpiarModal(){
     document.getElementById("Direccion").value = ""; 
     document.getElementById("Telefono").value = ""; 
     document.getElementById("FechaNac").value = "";
-            document.getElementById("LocalidadID").value = 0; 
+            document.getElementById("LocalidadID").value = ""; 
  
 
 
@@ -103,6 +113,8 @@ function LimpiarModal(){
 
 function NuevoRegistro(){
     $("#ModalTitulo").text("Nuevo Empleado");
+    LimpiarModal();
+
 }
 
 function AbrirModalEditar(EquipoID){
@@ -121,7 +133,6 @@ function AbrirModalEditar(EquipoID){
         // la respuesta es pasada como argumento a la función
         success: function (vistaEquipo) {
             let equipo = vistaEquipo[0];
-
             document.getElementById("EquipoID").value = equipo.equipoID;
             $("#ModalTitulo").text("Editar Empleado");
             document.getElementById("NombreCompleto").value = equipo.nombreCompleto;
@@ -129,7 +140,8 @@ function AbrirModalEditar(EquipoID){
             document.getElementById("Direccion").value = equipo.direccion;
             document.getElementById("Telefono").value = equipo.telefono;
             document.getElementById("FechaNac").value = equipo.fechaNac;
-    document.getElementById("LocalidadID").value = equipo.localidadID; 
+
+            CargarLocalidades(equipo.localidadID);
 
             $("#ModalEquipos").modal("show");
 

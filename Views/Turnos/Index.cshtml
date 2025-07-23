@@ -47,15 +47,13 @@
             <div class="row">
               <div class="mb-3 col-6">
                 <label for="ClienteID" class="form-label">Cliente</label>
-                <select class="form-control" id="ClienteID">
-                  <option value="">Nombre Cliente</option>
+                <select class="form-control form-select" id="ClienteID">
                 </select>
               </div>
 
               <div class="mb-3 col-6">
                 <label for="EquipoID" class="form-label">Equipo</label>
-                <select class="form-control" id="EquipoID">
-                  <option value="">Empleado</option>
+                <select class="form-control form-select" id="EquipoID">
                 </select>
               </div>
 
@@ -65,7 +63,9 @@
               </div>
               <div class="mb-3 col-6">
                 <label class="form-label">Estado</label>
-                <select id="Estado" class="form-control">
+                <select id="Estado" class="form-control form-select">
+        <option value="" disabled selected>SELECCIONAR</option>
+
                   <option value="0">Vacante</option>
                   <option value="1">Asistido</option>
                   <option value="2">Suspendido</option>
@@ -164,7 +164,7 @@
             const clienteSelect = document.getElementById('ClienteID');
             console.log('Clientes recibidos:', data); // 👈 agrega esto
 
-            clienteSelect.innerHTML = '<option value="">Nombre Cliente</option>';
+      clienteSelect.innerHTML = '<option value="" disabled selected>SELECCIONAR</option>';
             data.forEach(cliente => {
               const option = document.createElement('option');
               option.value = cliente.clienteID;
@@ -180,7 +180,7 @@
           .then(response => response.json())
           .then(data => {
             const equipoSelect = document.getElementById('EquipoID');
-            equipoSelect.innerHTML = '<option value="">Abogado</option>';
+      equipoSelect.innerHTML = '<option value="" disabled selected>SELECCIONAR</option>';
             data.forEach(equipo => {
               const option = document.createElement('option');
               option.value = equipo.equipoID;

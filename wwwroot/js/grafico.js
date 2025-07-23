@@ -23,6 +23,9 @@ function initGrafico() {
 }
 
 function actualizarGraficoCircular() {
+
+    
+    
     let mesBuscar = $("#MesBuscar").val();
     let anioBuscar = $("#AnioBuscar").val();
 
@@ -35,13 +38,22 @@ function actualizarGraficoCircular() {
             anio: anioBuscar
         },
         success: function(respuestaDatos) {
+
+
+
+
             let labels = [];
             let data = [];
+
+                
             
             respuestaDatos.forEach(function (estado) {
+                
                 labels.push(estado.nombreEstado);
                 data.push(estado.cantidad);
             });
+
+           
 
             if (graficoCircular) {
                 graficoCircular.destroy();

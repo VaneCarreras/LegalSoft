@@ -119,7 +119,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Cargar equipos
 function cargarEquipos() {
-  $('#EquipoID').empty().append('<option value="">Abogado</option>');
+  $('#EquipoID').empty();
+    $('#EquipoID').append('<option value="" disabled selected>SELECCIONAR</option>');
+
   $.get('/Pendientes/GetEquipos', function (equipos) {
     equipos.forEach(function (e) {
       $('#EquipoID').append(`<option value="${e.equipoID}">${e.nombreCompleto}</option>`);

@@ -72,7 +72,7 @@ function LimpiarModal(){
         document.getElementById("Motivo").value = ""; 
 
     document.getElementById("Fecha").value = ""; 
-        document.getElementById("EstadoConsulta").value = 0;
+        document.getElementById("EstadoConsulta").value = "";
 
 
 
@@ -80,6 +80,7 @@ function LimpiarModal(){
 
 function NuevoRegistro(){
     $("#ModalTitulo").text("Nueva Consulta");
+    LimpiarModal();
 }
 
 function AbrirModalEditar(ConsultaID){

@@ -96,12 +96,12 @@
             </div>
             <div class="mb-3 col-6 ">
               <label for="NombreCompletoCliente" class="form-label">Cliente</label>
-              @Html.DropDownList("ClienteID", null, htmlAttributes: new { @class = "form-control"})
+              @Html.DropDownList("ClienteID", null, htmlAttributes: new { @class = "form-control form-select"})
             </div>
 
             <div class=" mb-3 col-6">
               <label for="NombreCompletoEquipo" class="form-label">Abogado</label>
-              @Html.DropDownList("EquipoID", null, htmlAttributes: new { @class = "form-control"})
+              @Html.DropDownList("EquipoID", null, htmlAttributes: new { @class = "form-control form-select"})
             </div>
 
             
@@ -120,7 +120,7 @@
 
             <div class="mb-3 col-6">
              <label for="LinkContenido" class="form-label">Link al Contenido</label>
-             <input type="text" class="form-control" id="LinkContenido"  placeholder="Copiar link SAC">
+             <input type="text" class="form-control" id="LinkContenido"  placeholder="COPIAR LINK SAC">
             </div>
 
             @* <div class="mb-3 col-6">
@@ -128,20 +128,46 @@
               @Html.DropDownList("EstadoExpediente", null, htmlAttributes: new { @class = "form-control" })
             </div> *@
             <div class="mb-3 col-6">
-              <label for="Area" class="form-label">Área</label>
-              @Html.DropDownList("Area", null, htmlAttributes: new { @class = "form-control" })
+                <label for="Area" class="form-label">Área</label>
+                <select id="Area" name="Area" class="form-select form-control">
+                  <option value="" disabled selected>SELECCIONAR</option>
+
+                  @foreach (var area in Enum.GetValues(typeof(Area)))
+                  {
+
+                    <option value="@((int)area)">@area</option>
+                  }
+                </select>
             </div>
+
             <div class="mb-3 col-6">
-              <label for="Dependencia" class="form-label">Dependencia</label>
-              @Html.DropDownList("Dependencia", null, htmlAttributes: new { @class = "form-control" })
+                <label for="Dependencia" class="form-label">Dependencia</label>
+                <select id="Dependencia" name="Dependencia" class="form-select form-control">
+                  <option value="" disabled selected>SELECCIONAR</option>
+
+                  @foreach (var dependencia in Enum.GetValues(typeof(Dependencia)))
+                  {
+
+                    <option value="@((int)dependencia)">@dependencia</option>
+                  }
+                </select>
             </div>
+
             <div class="mb-3 col-6">
-              <label for="Ubicacion" class="form-label">Ubicación</label>
-              @Html.DropDownList("Ubicacion", null, htmlAttributes: new { @class = "form-control" })
-            </div>
+                <label for="Ubicacion" class="form-label">Ubicación</label>
+                <select id="Ubicacion" name="Ubicacion" class="form-select form-control">
+                  <option value="" disabled selected>SELECCIONAR</option>
+
+                  @foreach (var ubicacion in Enum.GetValues(typeof(Ubicacion)))
+                  {
+
+                    <option value="@((int)ubicacion)">@ubicacion</option>
+                  }
+                </select>
+              </div>
             <div class="mb-3 col-12">
   <label for="UltimoDecreto" class="form-label">Ultimo Decreto</label>
-  <textarea class="form-control" id="UltimoDecreto" style=" height: 180px;" placeholder="Ultimo Decreto"></textarea>
+  <textarea class="form-control" id="UltimoDecreto" style=" height: 180px;" placeholder="ULTIMO DECRETO"></textarea>
 </div>
 
           </div>
@@ -306,9 +332,9 @@ function LimpiarModal(){
     document.getElementById("FechaInicio").value = ""; 
     document.getElementById("LinkContenido").value = ""; 
 
-                document.getElementById("Area").value = 0;
-        document.getElementById("Dependencia").value = 0;
-        document.getElementById("Ubicacion").value = 0;
+                document.getElementById("Area").value = "";
+        document.getElementById("Dependencia").value = "";
+        document.getElementById("Ubicacion").value = "";
 
 
 
@@ -317,6 +343,7 @@ function LimpiarModal(){
 
 function NuevoRegistro(){
     $("#ModalTitulo").text("Nuevo Expediente");
+    LimpiarModal();
 }
 
 function AbrirModalEditar(ExpedienteID){

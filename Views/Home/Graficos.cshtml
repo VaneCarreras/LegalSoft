@@ -33,8 +33,10 @@
                                     <!-- Selector para el tipo de estadística (Consultas, Expedientes, etc.) -->
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-12 mb-2">
                                         <label class="control-label">Estadísticas de:</label>
-                                        <select class="form-control" id="TipoGraficoID">
-                                            <option value="consultas" selected>Consultas</option>
+                                        <select class="form-control form-select" id="TipoGraficoID">
+                                                                                                                                    <option value="" disabled selected>SELECCIONAR</option>
+
+                                            <option value="consultas">Consultas</option>
                                             <option value="expedientes">Expedientes</option>
                                             <option value="turnos">Turnos</option>
                                             <option value="pendientes">Pendientes</option>
@@ -44,14 +46,16 @@
                                     <!-- Selector para el Mes -->
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-6 mb-2">
                                         <label class="control-label">Mes:</label>
-                                        <select class="form-control" id="MesBuscar">
+                                        <select class="form-control form-select" id="MesBuscar">
+                                                                                                                                    <option value="" disabled selected>SELECCIONAR</option>
+
                                             <option value="1">Enero</option>
                                             <option value="2">Febrero</option>
                                             <option value="3">Marzo</option>
                                             <option value="4">Abril</option>
                                             <option value="5">Mayo</option>
                                             <option value="6">Junio</option>
-                                            <option value="7" selected>Julio</option>
+                                            <option value="7">Julio</option>
                                             <option value="8">Agosto</option>
                                             <option value="9">Septiembre</option>
                                             <option value="10">Octubre</option>
@@ -63,9 +67,11 @@
                                     <!-- Selector para el Año -->
                                     <div class="col-lg-6 col-md-6 col-sm-6 col-6 mb-2">
                                         <label class="control-label">Año:</label>
-                                        <select class="form-control" id="AnioBuscar">
+                                        <select class="form-control form-select" id="AnioBuscar">
+                                                                                        <option value="" disabled selected>SELECCIONAR</option>
+
                                             <option value="2024">2024</option>
-                                                                                        <option value="2025" selected>2025</option>
+                                                                                        <option value="2025">2025</option>
 
                                         </select>
                                     </div>

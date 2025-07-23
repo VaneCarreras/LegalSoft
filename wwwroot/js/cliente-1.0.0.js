@@ -5,9 +5,9 @@ window.onload = function() {
     ListadoClientes();
 };
 
-function CargarLocalidades() {
+function CargarLocalidades(valorSeleccionado = null) {
     $.ajax({
-        url: '../../Clientes/ObtenerLocalidades', 
+        url: '../../Equipos/ObtenerLocalidades',
         type: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -15,17 +15,23 @@ function CargarLocalidades() {
 
             var select = $('#LocalidadID');
             select.empty();
-            select.append(`<option value="">Seleccione una localidad</option>`);
+            select.append('<option value="" disabled>SELECCIONAR</option>');
 
             $.each(data, function (index, localidad) {
                 select.append(`<option value="${localidad.localidadID}">${localidad.localidadNombre}</option>`);
             });
+
+            // Si hay un valor seleccionado, lo seteás después de llenar las opciones
+            if (valorSeleccionado !== null) {
+                select.val(valorSeleccionado.toString()).change();
+            }
         },
         error: function () {
             console.log("Error al cargar localidades.");
         }
     });
 }
+
 
 function ListadoClientes(){
  
@@ -99,7 +105,7 @@ function LimpiarModal(){
     document.getElementById("Direccion").value = ""; 
     document.getElementById("Telefono").value = ""; 
     document.getElementById("FechaNac").value = "";
-        document.getElementById("LocalidadID").value = 0; 
+        document.getElementById("LocalidadID").value = ""; 
  
 
 
@@ -107,6 +113,7 @@ function LimpiarModal(){
 
 function NuevoRegistro(){
     $("#ModalTitulo").text("Nuevo Cliente");
+    LimpiarModal();
 }
 
 function AbrirModalEditar(ClienteID){
@@ -133,7 +140,8 @@ function AbrirModalEditar(ClienteID){
             document.getElementById("Direccion").value = cliente.direccion;
             document.getElementById("Telefono").value = cliente.telefono;
             document.getElementById("FechaNac").value = cliente.fechaNac;
-    document.getElementById("LocalidadID").value = cliente.localidadID; 
+            CargarLocalidades(cliente.localidadID);
+
 
             $("#ModalClientes").modal("show");
 
@@ -202,6 +210,7 @@ function GuardarRegistro() {
     let fechaNac = document.getElementById("FechaNac").value;
     let localidadID = document.getElementById("LocalidadID").value;
 
+    
 
     if (clienteID == 0 || clienteID == "") {
         // Llamar al método de creación si ClienteID es 0 o está vacío
@@ -230,6 +239,9 @@ function GuardarRegistro() {
             }
         });
     } else {
+
+        
+
         // Llamar al método de edición si ClienteID es distinto de 0
         $.ajax({
             url: '../../Clientes/EditarCliente', // Llamar al nuevo método EditarCliente

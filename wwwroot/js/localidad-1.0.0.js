@@ -62,7 +62,7 @@ function LimpiarModal(){
     document.getElementById("LocalidadID").value = 0;
      
     document.getElementById("LocalidadNombre").value = ""; 
-        document.getElementById("Provincia").value = 0;
+        document.getElementById("Provincia").value = "";
 
 
 
@@ -70,6 +70,7 @@ function LimpiarModal(){
 
 function NuevoRegistro(){
     $("#ModalTitulo").text("Nueva Localidad");
+    LimpiarModal();
 }
 
 function AbrirModalEditar(LocalidadID){

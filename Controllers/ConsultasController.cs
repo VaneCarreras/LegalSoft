@@ -47,7 +47,7 @@ public class ConsultasController : Controller
 
     var clientesBuscar = clientesConNombre.ToList();
 
-    clientesConNombre.Add(new { ClienteID = 0, NombreCompleto = "[SELECCIONE...]" });
+    clientesConNombre.Add(new { ClienteID = 0, NombreCompleto = "SELECCIONAR" });
     ViewBag.ClienteID = new SelectList(clientesConNombre.OrderBy(c => c.NombreCompleto), "ClienteID", "NombreCompleto");
 
     clientesBuscar.Add(new { ClienteID = 0, NombreCompleto = "[TODOS]" });
@@ -68,7 +68,7 @@ public class ConsultasController : Controller
 
     var equiposBuscar = equiposConNombre.ToList();
 
-    equiposConNombre.Add(new { EquipoID = 0, NombreCompleto = "[SELECCIONE...]" });
+    equiposConNombre.Add(new { EquipoID = 0, NombreCompleto = "SELECCIONAR" });
     ViewBag.EquipoID = new SelectList(equiposConNombre.OrderBy(e => e.NombreCompleto), "EquipoID", "NombreCompleto");
 
     equiposBuscar.Add(new { EquipoID = 0, NombreCompleto = "[TODOS]" });
