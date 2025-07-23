@@ -33,7 +33,7 @@ function CargarLocalidades(valorSeleccionado = null) {
 }
 
 function ListadoClientes(pagina = 1) {
-    const pageSize = 10; // cantidad de clientes por página
+    const pageSize = 7; // cantidad de clientes por página
 
     $.ajax({
         url: '../../Clientes/ListadoClientes',
@@ -126,8 +126,11 @@ function AbrirModalEditar(ClienteID){
         dataType: 'json',
         // código a ejecutar si la petición es satisfactoria;
         // la respuesta es pasada como argumento a la función
-        success: function (vistaCliente) {
-            let cliente = vistaCliente[0];
+        
+
+            success: function (response) {
+    let cliente = response.clientes[0]; // ✅ Accedés al primer elemento del array "clientes"
+
 
             document.getElementById("ClienteID").value = cliente.clienteID;
             $("#ModalTitulo").text("Editar Cliente");

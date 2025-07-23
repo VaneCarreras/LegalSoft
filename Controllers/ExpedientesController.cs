@@ -112,7 +112,7 @@ public class ExpedientesController : Controller
         return View();
     }
 
-    public JsonResult ListadoExpedientes(int pagina = 1, int tamanioPagina = 10, int? id = null)
+    public JsonResult ListadoExpedientes(int pagina = 1, int tamanioPagina = 7, int? id = null)
     {
         // Obtener la lista de consultas
         var expedientes = _context.Expedientes.ToList();

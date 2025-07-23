@@ -2,7 +2,7 @@
 window.onload = ListadoConsultas();
 
 function ListadoConsultas(pagina = 1){
-     const pageSize = 10; // cantidad de clientes por página
+     const pageSize = 7; // cantidad de clientes por página
 
     $.ajax({
         // la URL para la petición
@@ -117,8 +117,11 @@ function AbrirModalEditar(ConsultaID){
         dataType: 'json',
         // código a ejecutar si la petición es satisfactoria;
         // la respuesta es pasada como argumento a la función
-        success: function (vistaConsulta) {
-            let consulta = vistaConsulta[0];
+        
+
+            success: function (response) {
+    let consulta = response.consultas[0]; // ✅ Accedés al primer elemento del array "clientes"
+
 
             document.getElementById("ConsultaID").value = consulta.consultaID;
             $("#ModalTitulo").text("Editar Consulta");

@@ -37,8 +37,7 @@ public JsonResult ObtenerLocalidades()
 
     return Json(localidades);
 }
-[HttpPost]
-public JsonResult ListadoClientes(int pagina = 1, int tamanioPagina = 10, int? id = null)
+public JsonResult ListadoClientes(int pagina = 1, int tamanioPagina = 7, int? id = null)
 {
     // Obtener todos los clientes
     var clientes = _context.Clientes.ToList();

@@ -87,7 +87,7 @@ public class ConsultasController : Controller
     return View();
 }
 
-    public JsonResult ListadoConsultas(int pagina = 1, int tamanioPagina = 10, int? id = null)
+    public JsonResult ListadoConsultas(int pagina = 1, int tamanioPagina = 7, int? id = null)
     {
         // Obtener la lista de consultas
         var consultas = _context.Consultas.ToList();
