@@ -112,7 +112,7 @@ public class ExpedientesController : Controller
         return View();
     }
 
-    public JsonResult ListadoExpedientes(int? id)
+    public JsonResult ListadoExpedientes(int pagina = 1, int tamanioPagina = 10, int? id = null)
     {
         // Obtener la lista de consultas
         var expedientes = _context.Expedientes.ToList();
@@ -165,8 +165,25 @@ public class ExpedientesController : Controller
             expedientesMostrar.Add(expedienteMostrar);
         }
 
-        return Json(expedientesMostrar);
-    }
+        // Ordenar por nombre
+        var expedientesOrdenados = expedientesMostrar.ToList();
+
+        // Calcular total de registros y páginas
+        var totalRegistros = expedientesOrdenados.Count();
+        var totalPaginas = (int)Math.Ceiling((double)totalRegistros / tamanioPagina);
+
+        // Obtener solo la página solicitada
+        var expedientesPaginados = expedientesOrdenados
+            .Skip((pagina - 1) * tamanioPagina)
+            .Take(tamanioPagina)
+            .ToList();
+
+        return Json(new
+        {
+            expedientes = expedientesPaginados,
+            totalPaginas = totalPaginas
+        });
+        }
 
 
 

@@ -65,6 +65,7 @@
   </tbody>
 </table>
 
+<div id="pagination-expedientes"></div>
 
 
 
@@ -229,25 +230,35 @@
 @section Scripts {
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script src="~/js/fotorama.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+        <script src="~/lib/jquery/dist/twbs-pagination.1.4.2.min.js"></script>
 
 <script>
 window.onload = ListadoExpedientes();
 
-function ListadoExpedientes(){
- 
+function ListadoExpedientes(pagina = 1){
+     const pageSize = 10; // cantidad de clientes por página
+
     $.ajax({
         // la URL para la petición
         url: '../../Expedientes/ListadoExpedientes',
         // la información a enviar
         // (también es posible utilizar una cadena de datos)
-        data: { },
+        data: { 
+            pagina: pagina,
+            tamanioPagina: pageSize
+        },
         // especifica si será una petición POST o GET
         type: 'POST',
         // el tipo de información que se espera de respuesta
         dataType: 'json',
         // código a ejecutar si la petición es satisfactoria;
         // la respuesta es pasada como argumento a la función
-        success: function (vistaExpediente) {
+        success: function (response) {
+
+            const vistaExpediente = response.expedientes;
+            const totalPaginas = response.totalPaginas;
 
             $("#ModalExpedientes").modal("hide");
             LimpiarModal();
@@ -306,6 +317,21 @@ function ListadoExpedientes(){
             });
 
             document.getElementById("tbody-expedientes").innerHTML = contenidoTabla;
+
+            // Si es la primera carga, configurar paginación
+            if (!$('#pagination-expedientes').data("twbs-pagination")) {
+                $('#pagination-expedientes').twbsPagination({
+                    totalPages: totalPaginas,
+                    visiblePages: 5,
+                    onPageClick: function (event, page) {
+                        ListadoExpedientes(page);
+                    },
+                    first: 'Primera',
+                    prev: '<span aria-hidden="true">&laquo;</span>',
+                    next: '<span aria-hidden="true">&raquo;</span>',
+                    last: 'Última'
+                });
+            }
 
         },
 

@@ -37,46 +37,62 @@ public JsonResult ObtenerLocalidades()
 
     return Json(localidades);
 }
+[HttpPost]
+public JsonResult ListadoClientes(int pagina = 1, int tamanioPagina = 10, int? id = null)
+{
+    // Obtener todos los clientes
+    var clientes = _context.Clientes.ToList();
 
-    public JsonResult ListadoClientes(int? id)
+    // Filtrar si se especifica un ID
+    if (id.HasValue)
     {
-        // Obtener la lista de clientes
-        var clientes = _context.Clientes.ToList();
-
-        // Filtrar por ID si es proporcionado
-        if (id.HasValue)
-        {
-            clientes = clientes.Where(c => c.ClienteID == id.Value).ToList();
-        }
-
-        // Crear una lista de clientes para mostrar, accediendo a la entidad Persona por PersonaID
-        List<VistaCliente> clientesMostrar = new List<VistaCliente>();
-        foreach (var cliente in clientes)
-        {
-            // Obtener la persona relacionada a través del PersonaID
-            var persona = _context.Personas.Include(p => p.Localidad).SingleOrDefault(p => p.PersonaID == cliente.PersonaID);
-
-            if (persona != null)
-            {
-                var clienteMostrar = new VistaCliente
-                {
-                    ClienteID = cliente.ClienteID,
-                    NombreCompleto = persona.NombreCompleto,
-                    NroTipoDoc = persona.NroTipoDoc,
-                    Direccion = persona.Direccion,
-                    Telefono = persona.Telefono,
-                    FechaNac = persona.FechaNac,
-LocalidadNombre = persona.Localidad?.LocalidadNombre,
-
-                };
-
-                clientesMostrar.Add(clienteMostrar);
-            }
-        }
-
-        // Ordenar por nombre completo antes de devolver
-        return Json(clientesMostrar.OrderBy(c => c.NombreCompleto).ToList());
+        clientes = clientes.Where(c => c.ClienteID == id.Value).ToList();
     }
+
+    // Lista que se va a mostrar
+    List<VistaCliente> clientesMostrar = new List<VistaCliente>();
+
+    foreach (var cliente in clientes)
+    {
+        var persona = _context.Personas
+            .Include(p => p.Localidad)
+            .SingleOrDefault(p => p.PersonaID == cliente.PersonaID);
+
+        if (persona != null)
+        {
+            clientesMostrar.Add(new VistaCliente
+            {
+                ClienteID = cliente.ClienteID,
+                NombreCompleto = persona.NombreCompleto,
+                NroTipoDoc = persona.NroTipoDoc,
+                Direccion = persona.Direccion,
+                Telefono = persona.Telefono,
+                FechaNac = persona.FechaNac,
+                LocalidadNombre = persona.Localidad?.LocalidadNombre
+            });
+        }
+    }
+
+    // Ordenar por nombre
+    var clientesOrdenados = clientesMostrar.OrderBy(c => c.NombreCompleto).ToList();
+
+    // Calcular total de registros y páginas
+    var totalRegistros = clientesOrdenados.Count();
+    var totalPaginas = (int)Math.Ceiling((double)totalRegistros / tamanioPagina);
+
+    // Obtener solo la página solicitada
+    var clientesPaginados = clientesOrdenados
+        .Skip((pagina - 1) * tamanioPagina)
+        .Take(tamanioPagina)
+        .ToList();
+
+    return Json(new
+    {
+        clientes = clientesPaginados,
+        totalPaginas = totalPaginas
+    });
+}
+
 
 
     public JsonResult BuscarClientes(string nombreCompleto, string nroTipoDoc)

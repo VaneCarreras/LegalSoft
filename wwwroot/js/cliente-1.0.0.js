@@ -32,70 +32,66 @@ function CargarLocalidades(valorSeleccionado = null) {
     });
 }
 
+function ListadoClientes(pagina = 1) {
+    const pageSize = 10; // cantidad de clientes por página
 
-function ListadoClientes(){
- 
     $.ajax({
-        // la URL para la petición
         url: '../../Clientes/ListadoClientes',
-        // la información a enviar
-        // (también es posible utilizar una cadena de datos)
-        data: { },
-        // especifica si será una petición POST o GET
         type: 'POST',
-        // el tipo de información que se espera de respuesta
         dataType: 'json',
-        // código a ejecutar si la petición es satisfactoria;
-        // la respuesta es pasada como argumento a la función
-        success: function (vistaCliente) {
+        data: {
+            pagina: pagina,
+            tamanioPagina: pageSize
+        },
+        success: function (response) {
+            // Suponiendo que response tiene: { clientes: [...], totalPaginas: N }
+
+            const vistaCliente = response.clientes;
+            const totalPaginas = response.totalPaginas;
 
             $("#ModalClientes").modal("hide");
             LimpiarModal();
-            let contenidoTabla = ``;
+            let contenidoTabla = '';
 
-            $.each(vistaCliente, function (index, cliente) {  
-                
+            $.each(vistaCliente, function (index, cliente) {
                 contenidoTabla += `
-                <tr>
+                    <tr>
                         <td>${cliente.nombreCompleto}</td>
                         <td>${cliente.nroTipoDoc}</td>
                         <td>${cliente.direccion}</td>
                         <td>${cliente.telefono}</td>
                         <td>${cliente.fechaNac}</td>
-                            <td>${cliente.localidadNombre}</td>
-
-
-
-                    <td class="text-center"><button type="button" onclick="BuscarImagenes(${cliente.clienteID})"  data-bs-toggle="modal" data-bs-target=".MostrarSubirImagenes" title="Mostrar Imagenes"><i class="fa-duotone fa-regular fa-images" style="color:rgb(54, 176, 89);"></i></button></td>
-
-
-                    <td class="text-center">
-                    <button type="button"  onclick="AbrirModalEditar(${cliente.clienteID})" title="Editar">
-                    <i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i>
-                    </button>
-                    </td>
-                    <td class="text-center">
-                    <button type="button"   onclick="EliminarRegistro(${cliente.clienteID})" title="Eliminar">
-                    <i class="fa-solid fa-poo" style="color: #820d19;"></i>
-                    </button>
-                    </td>
-                </tr>
-             `;
-
+                        <td>${cliente.localidadNombre}</td>
+                        <td class="text-center"><button type="button" onclick="BuscarImagenes(${cliente.clienteID})" data-bs-toggle="modal" data-bs-target=".MostrarSubirImagenes" title="Mostrar Imagenes"><i class="fa-duotone fa-regular fa-images" style="color:rgb(54, 176, 89);"></i></button></td>
+                        <td class="text-center"><button type="button" onclick="AbrirModalEditar(${cliente.clienteID})" title="Editar"><i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i></button></td>
+                        <td class="text-center"><button type="button" onclick="EliminarRegistro(${cliente.clienteID})" title="Eliminar"><i class="fa-solid fa-poo" style="color: #820d19;"></i></button></td>
+                    </tr>
+                `;
             });
 
             document.getElementById("tbody-clientes").innerHTML = contenidoTabla;
 
+            // Si es la primera carga, configurar paginación
+            if (!$('#pagination-clientes').data("twbs-pagination")) {
+                $('#pagination-clientes').twbsPagination({
+                    totalPages: totalPaginas,
+                    visiblePages: 5,
+                    onPageClick: function (event, page) {
+                        ListadoClientes(page);
+                    },
+                    first: 'Primera',
+                    prev: '<span aria-hidden="true">&laquo;</span>',
+                    next: '<span aria-hidden="true">&raquo;</span>',
+                    last: 'Última'
+                });
+            }
         },
-
-        // código a ejecutar si la petición falla;
-        // son pasados como argumentos a la función
-        // el objeto de la petición en crudo y código de estatus de la petición
         error: function (xhr, status) {
-            console.log('Disculpe, existió un problema al cargar el listado');
+            console.log('Error al cargar el listado de clientes');
         }
     });
 }
+
 
 function LimpiarModal(){
     document.getElementById("ClienteID").value = 0;

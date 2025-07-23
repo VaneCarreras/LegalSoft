@@ -87,54 +87,71 @@ public class ConsultasController : Controller
     return View();
 }
 
-public JsonResult ListadoConsultas(int? id)
-{
-    // Obtener la lista de consultas
-    var consultas = _context.Consultas.ToList();
-
-    // Filtrar por ID si es proporcionado
-    if (id.HasValue)
+    public JsonResult ListadoConsultas(int pagina = 1, int tamanioPagina = 10, int? id = null)
     {
-        consultas = consultas.Where(c => c.ConsultaID == id.Value).ToList();
-    }
+        // Obtener la lista de consultas
+        var consultas = _context.Consultas.ToList();
 
-    // Crear una lista de consultas para mostrar
-    List<VistaConsulta> consultasMostrar = new List<VistaConsulta>();
-
-    foreach (var consulta in consultas)
-    {
-        // Obtener el nombre completo del cliente
-        var clienteNombre = _context.Clientes
-            .Where(cli => cli.ClienteID == consulta.ClienteID)
-            .Join(_context.Personas, cli => cli.PersonaID, p => p.PersonaID, (cli, p) => p.NombreCompleto)
-            .FirstOrDefault() ?? "[Sin Cliente]";
-
-        // Obtener el nombre completo del equipo
-        var equipoNombre = _context.Equipos
-            .Where(eq => eq.EquipoID == consulta.EquipoID)
-            .Join(_context.Personas, eq => eq.PersonaID, p => p.PersonaID, (eq, p) => p.NombreCompleto)
-            .FirstOrDefault() ?? "[Sin Equipo]";
-
-        var consultaMostrar = new VistaConsulta
+        // Filtrar por ID si es proporcionado
+        if (id.HasValue)
         {
-            ConsultaID = consulta.ConsultaID,
-            ClienteID = consulta.ClienteID,
-            EquipoID = consulta.EquipoID,
-            Descripcion = consulta.Descripcion,
-                        Motivo = consulta.Motivo,
+            consultas = consultas.Where(c => c.ConsultaID == id.Value).ToList();
+        }
 
-            Fecha = consulta.Fecha,
-            NombreCompletoCliente = clienteNombre, // <-- Este campo ahora existe
-            NombreCompletoEquipo = equipoNombre,
-            EstadoConsulta = consulta.EstadoConsulta,
-            EstadoConsultaString = consulta.EstadoConsulta.ToString().ToUpper(),    // <-- Este campo ahora existe
-        };
+        // Crear una lista de consultas para mostrar
+        List<VistaConsulta> consultasMostrar = new List<VistaConsulta>();
 
-        consultasMostrar.Add(consultaMostrar);
+        foreach (var consulta in consultas)
+        {
+            // Obtener el nombre completo del cliente
+            var clienteNombre = _context.Clientes
+                .Where(cli => cli.ClienteID == consulta.ClienteID)
+                .Join(_context.Personas, cli => cli.PersonaID, p => p.PersonaID, (cli, p) => p.NombreCompleto)
+                .FirstOrDefault() ?? "[Sin Cliente]";
+
+            // Obtener el nombre completo del equipo
+            var equipoNombre = _context.Equipos
+                .Where(eq => eq.EquipoID == consulta.EquipoID)
+                .Join(_context.Personas, eq => eq.PersonaID, p => p.PersonaID, (eq, p) => p.NombreCompleto)
+                .FirstOrDefault() ?? "[Sin Equipo]";
+
+            var consultaMostrar = new VistaConsulta
+            {
+                ConsultaID = consulta.ConsultaID,
+                ClienteID = consulta.ClienteID,
+                EquipoID = consulta.EquipoID,
+                Descripcion = consulta.Descripcion,
+                Motivo = consulta.Motivo,
+
+                Fecha = consulta.Fecha,
+                NombreCompletoCliente = clienteNombre, // <-- Este campo ahora existe
+                NombreCompletoEquipo = equipoNombre,
+                EstadoConsulta = consulta.EstadoConsulta,
+                EstadoConsultaString = consulta.EstadoConsulta.ToString().ToUpper(),    // <-- Este campo ahora existe
+            };
+
+            consultasMostrar.Add(consultaMostrar);
+        }
+
+        // Ordenar por nombre
+        var consultasOrdenados = consultasMostrar.ToList();
+
+        // Calcular total de registros y páginas
+        var totalRegistros = consultasOrdenados.Count();
+        var totalPaginas = (int)Math.Ceiling((double)totalRegistros / tamanioPagina);
+
+        // Obtener solo la página solicitada
+        var consultasPaginados = consultasOrdenados
+            .Skip((pagina - 1) * tamanioPagina)
+            .Take(tamanioPagina)
+            .ToList();
+
+        return Json(new
+        {
+            consultas = consultasPaginados,
+            totalPaginas = totalPaginas
+        });
     }
-
-    return Json(consultasMostrar);
-}
 
 
 

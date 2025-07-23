@@ -1,22 +1,27 @@
 
 window.onload = ListadoConsultas();
 
-function ListadoConsultas(){
- 
+function ListadoConsultas(pagina = 1){
+     const pageSize = 10; // cantidad de clientes por página
+
     $.ajax({
         // la URL para la petición
         url: '../../Consultas/ListadoConsultas',
         // la información a enviar
         // (también es posible utilizar una cadena de datos)
-        data: { },
+        data: { 
+            pagina: pagina,
+            tamanioPagina: pageSize
+        },
         // especifica si será una petición POST o GET
         type: 'POST',
         // el tipo de información que se espera de respuesta
         dataType: 'json',
         // código a ejecutar si la petición es satisfactoria;
         // la respuesta es pasada como argumento a la función
-        success: function (vistaConsulta) {
-
+        success: function (response) {
+const vistaConsulta = response.consultas;
+            const totalPaginas = response.totalPaginas;
             $("#ModalConsultas").modal("hide");
             LimpiarModal();
             let contenidoTabla = ``;
@@ -49,6 +54,21 @@ function ListadoConsultas(){
             });
 
             document.getElementById("tbody-consultas").innerHTML = contenidoTabla;
+
+            // Si es la primera carga, configurar paginación
+            if (!$('#pagination-consultas').data("twbs-pagination")) {
+                $('#pagination-consultas').twbsPagination({
+                    totalPages: totalPaginas,
+                    visiblePages: 5,
+                    onPageClick: function (event, page) {
+                        ListadoConsultas(page);
+                    },
+                    first: 'Primera',
+                    prev: '<span aria-hidden="true">&laquo;</span>',
+                    next: '<span aria-hidden="true">&raquo;</span>',
+                    last: 'Última'
+                });
+            }
 
         },
 
