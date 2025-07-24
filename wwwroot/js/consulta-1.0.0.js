@@ -319,3 +319,4 @@ function EliminarRegistro(ConsultaID) {
         }
     });
 }
+
