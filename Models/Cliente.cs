@@ -19,7 +19,7 @@ namespace LegalSoft.Models
         public virtual ICollection<ImagenCliente>? ImagenesCliente {  get; set; }
 
 
-
+public bool Habilitado { get; set; }
    
 
 
@@ -38,6 +38,7 @@ namespace LegalSoft.Models
         public string? Base64 { get; set; }
         public List<string>? ImagenesClientes { get; set; }
             public List<SelectListItem>? Localidades { get; set; }
+public bool Habilitado { get; set; }
 
 
     }

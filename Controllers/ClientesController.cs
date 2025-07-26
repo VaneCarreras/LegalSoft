@@ -67,7 +67,8 @@ public JsonResult ListadoClientes(int pagina = 1, int tamanioPagina = 7, int? id
                 Direccion = persona.Direccion,
                 Telefono = persona.Telefono,
                 FechaNac = persona.FechaNac,
-                LocalidadNombre = persona.Localidad?.LocalidadNombre
+                LocalidadNombre = persona.Localidad?.LocalidadNombre,
+                Habilitado = cliente.Habilitado,
             });
         }
     }
@@ -122,7 +123,9 @@ public JsonResult ListadoClientes(int pagina = 1, int tamanioPagina = 7, int? id
                     Direccion = persona.Direccion,
                     Telefono = persona.Telefono,
                     FechaNac = persona.FechaNac,
-LocalidadNombre = persona.Localidad?.LocalidadNombre,
+                    LocalidadNombre = persona.Localidad?.LocalidadNombre,
+                Habilitado = cliente.Habilitado,
+
 
                 };
                 clientesMostrar.Add(clienteMostrar);
@@ -160,6 +163,8 @@ LocalidadNombre = persona.Localidad?.LocalidadNombre,
             var cliente = new Cliente
             {
                 PersonaID = persona.PersonaID,
+                                Habilitado = true,
+
             };
             _context.Add(cliente);
             _context.SaveChanges();
@@ -180,6 +185,28 @@ LocalidadNombre = persona.Localidad?.LocalidadNombre,
 
         return Json(true);
     }
+
+    [HttpPost]
+public JsonResult CambiarEstadoCliente(int ClienteID, bool habilitar)
+{
+    try
+    {
+        var cliente = _context.Clientes.Find(ClienteID);
+        if (cliente != null)
+        {
+            cliente.Habilitado = habilitar;
+            _context.SaveChanges();
+            return Json(new { success = true });
+        }
+
+        return Json(new { success = false, message = "Cliente no encontrado." });
+    }
+    catch (Exception ex)
+    {
+        return Json(new { success = false, message = ex.Message });
+    }
+}
+
 
     [HttpPost]
     public JsonResult EditarCliente(int ClienteID, string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateOnly fechaNac, int localidadID)

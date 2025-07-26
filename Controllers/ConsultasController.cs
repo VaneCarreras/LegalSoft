@@ -128,7 +128,7 @@ public class ConsultasController : Controller
                 EquipoID = consulta.EquipoID,
                 Descripcion = consulta.Descripcion,
                 Motivo = consulta.Motivo,
-
+Habilitado = consulta.Habilitado,
                 Fecha = consulta.Fecha,
                 NombreCompletoCliente = clienteNombre, // <-- Este campo ahora existe
                 NombreCompletoEquipo = equipoNombre,
@@ -191,7 +191,7 @@ public JsonResult BuscarConsultas(string NombreCompletoClienteBuscar, string Nom
             EquipoID = consulta.EquipoID,
             Descripcion = consulta.Descripcion,
                         Motivo = consulta.Motivo,
-
+Habilitado = consulta.Habilitado,
             Fecha = consulta.Fecha,
             NombreCompletoCliente = clienteNombre,
             NombreCompletoEquipo = equipoNombre,
@@ -243,6 +243,7 @@ public JsonResult BuscarConsultas(string NombreCompletoClienteBuscar, string Nom
                 Descripcion = descripcion,
                 Motivo = motivo,
                 EstadoConsulta = estadoConsulta,
+                Habilitado = true,
             };
             _context.Add(consulta);
             _context.SaveChanges();
@@ -312,7 +313,28 @@ public JsonResult EditarConsulta(int consultaID, int clienteID, int equipoID, Da
         return Json(true);
     }
 
-    
+    [HttpPost]
+public JsonResult CambiarEstadoConsulta(int ConsultaID, bool habilitar)
+{
+    try
+    {
+        var consulta = _context.Consultas.Find(ConsultaID);
+        if (consulta != null)
+        {
+            consulta.Habilitado = habilitar;
+            _context.SaveChanges();
+            return Json(new { success = true });
+        }
+
+        return Json(new { success = false, message = "Consulta no encontrado." });
+    }
+    catch (Exception ex)
+    {
+        return Json(new { success = false, message = ex.Message });
+    }
+}
+
+
 }
 
 

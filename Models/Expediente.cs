@@ -25,6 +25,7 @@ namespace LegalSoft.Models
         public Area Area { get; set; }
         public Dependencia Dependencia { get; set; }
         public Ubicacion Ubicacion { get; set; }
+public bool Habilitado { get; set; }
 
 
     }
@@ -80,5 +81,7 @@ namespace LegalSoft.Models
         public string? DependenciaString { get; set; }
         public Ubicacion Ubicacion { get; set; }
         public string? UbicacionString { get; set; }
+        public bool Habilitado { get; set; }
+
     }
 }

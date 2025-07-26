@@ -54,20 +54,31 @@ function ListadoClientes(pagina = 1) {
             let contenidoTabla = '';
 
             $.each(vistaCliente, function (index, cliente) {
-                contenidoTabla += `
-                    <tr>
-                        <td>${cliente.nombreCompleto}</td>
-                        <td>${cliente.nroTipoDoc}</td>
-                        <td>${cliente.direccion}</td>
-                        <td>${cliente.telefono}</td>
-                        <td>${cliente.fechaNac}</td>
-                        <td>${cliente.localidadNombre}</td>
-                        <td class="text-center"><button type="button" onclick="BuscarImagenes(${cliente.clienteID})" data-bs-toggle="modal" data-bs-target=".MostrarSubirImagenes" title="Mostrar Imagenes"><i class="fa-duotone fa-regular fa-images" style="color:rgb(54, 176, 89);"></i></button></td>
-                        <td class="text-center"><button type="button" onclick="AbrirModalEditar(${cliente.clienteID})" title="Editar"><i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i></button></td>
-                        <td class="text-center"><button type="button" onclick="EliminarRegistro(${cliente.clienteID})" title="Eliminar"><i class="fa-solid fa-poo" style="color: #820d19;"></i></button></td>
-                    </tr>
-                `;
-            });
+
+
+    const icono = cliente.habilitado 
+        ? '<i class="fa-solid fa-user-slash" style="color: #820d19;"></i>' 
+        : '<i class="fa-solid fa-user-check" style="color: #0a7c2c;"></i>';
+    const tituloBoton = cliente.habilitado ? 'Deshabilitar' : 'Habilitar';
+const claseFila = cliente.habilitado ? '' : 'fila-deshabilitada';
+
+    contenidoTabla += `
+        <tr>
+            <td class="${claseFila}">${cliente.nombreCompleto}</td>
+            <td class="${claseFila}">${cliente.nroTipoDoc}</td>
+            <td class="${claseFila}">${cliente.direccion}</td>
+            <td class="${claseFila}">${cliente.telefono}</td>
+            <td class="${claseFila}">${cliente.fechaNac}</td>
+            <td class="${claseFila}">${cliente.localidadNombre}</td>
+            <td class="text-center"><button type="button" onclick="BuscarImagenes(${cliente.clienteID})" data-bs-toggle="modal" data-bs-target=".MostrarSubirImagenes" title="Mostrar Imagenes"><i class="fa-duotone fa-regular fa-images" style="color:rgb(54, 176, 89);"></i></button></td>
+            <td class="text-center"><button type="button" onclick="AbrirModalEditar(${cliente.clienteID})" title="Editar"><i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i></button></td>
+<td class="text-center"><button type="button" onclick="DeshabilitarHabilitarCliente(${cliente.clienteID}, ${cliente.habilitado})" title="${tituloBoton}">${icono}</button></td>
+
+
+            </tr>
+    `;
+});
+
 
             document.getElementById("tbody-clientes").innerHTML = contenidoTabla;
 
@@ -322,28 +333,29 @@ function BuscarCliente() {
             let contenidoTabla = ``;
 
             $.each(vistaCliente, function (index, cliente) {
-                contenidoTabla += `
-                <tr>
-                    <td>${cliente.nombreCompleto}</td>
-                    <td>${cliente.nroTipoDoc}</td>
-                    <td>${cliente.direccion}</td>
-                    <td>${cliente.telefono}</td>
-                    <td>${cliente.fechaNac}</td>
-                        <td>${cliente.localidadNombre}</td> 
+             
+    const icono = cliente.habilitado 
+        ? '<i class="fa-solid fa-user-slash" style="color: #820d19;"></i>' 
+        : '<i class="fa-solid fa-user-check" style="color: #0a7c2c;"></i>';
+    const tituloBoton = cliente.habilitado ? 'Deshabilitar' : 'Habilitar';
+const claseFila = cliente.habilitado ? '' : 'fila-deshabilitada';
 
-                    <td class="text-center">
-                        <button type="button" onclick="AbrirModalEditar(${cliente.clienteID})">
-                            <i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i>
-                        </button>
-                    </td>
-                    <td class="text-center">
-                        <button type="button" onclick="EliminarRegistro(${cliente.clienteID})">
-                            <i class="fa-solid fa-poo" style="color: #820d19;"></i>
-                        </button>
-                    </td>
-                </tr>
-             `;
-            });
+    contenidoTabla += `
+        <tr>
+            <td class="${claseFila}">${cliente.nombreCompleto}</td>
+            <td class="${claseFila}">${cliente.nroTipoDoc}</td>
+            <td class="${claseFila}">${cliente.direccion}</td>
+            <td class="${claseFila}">${cliente.telefono}</td>
+            <td class="${claseFila}">${cliente.fechaNac}</td>
+            <td class="${claseFila}">${cliente.localidadNombre}</td>
+            <td class="text-center"><button type="button" onclick="BuscarImagenes(${cliente.clienteID})" data-bs-toggle="modal" data-bs-target=".MostrarSubirImagenes" title="Mostrar Imagenes"><i class="fa-duotone fa-regular fa-images" style="color:rgb(54, 176, 89);"></i></button></td>
+            <td class="text-center"><button type="button" onclick="AbrirModalEditar(${cliente.clienteID})" title="Editar"><i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i></button></td>
+<td class="text-center"><button type="button" onclick="DeshabilitarHabilitarCliente(${cliente.clienteID}, ${cliente.habilitado})" title="${tituloBoton}">${icono}</button></td>
+
+
+            </tr>
+    `;
+});
             // Actualizar el contenido de la tabla
             document.getElementById("tbody-clientes").innerHTML = contenidoTabla;
         },
@@ -394,6 +406,45 @@ function EliminarRegistro(ClienteID) {
     });
 }
 
+function DeshabilitarHabilitarCliente(ClienteID, estaHabilitado) {
+    const accion = estaHabilitado ? 'deshabilitar' : 'habilitar';
+    const mensaje = `¿Seguro de ${accion} este cliente?`;
+
+    Swal.fire({
+        title: mensaje,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: `Sí, ${accion}`
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '../../Clientes/CambiarEstadoCliente',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    clienteID: ClienteID,
+                    habilitar: !estaHabilitado
+                },
+                success: function () {
+                    Swal.fire({
+                        title: `Cliente ${accion}do correctamente`,
+                        icon: 'success'
+                    });
+                    ListadoClientes(); // Recarga la tabla
+                },
+                error: function () {
+                    Swal.fire({
+                        title: 'Error',
+                        text: `No se pudo ${accion} el cliente.`,
+                        icon: 'error'
+                    });
+                }
+            });
+        }
+    });
+}
 
 
 //*****************************//************************************************************************//*************************//

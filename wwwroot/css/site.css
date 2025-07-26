@@ -312,3 +312,6 @@ input.btn:hover {
     /* overflow-y: auto; Añade scroll si el contenido del menú es largo */
   }
 }
+.fila-deshabilitada {
+    opacity: 0.7; /* Opcional: para dar un efecto de "inactivo" */
+}

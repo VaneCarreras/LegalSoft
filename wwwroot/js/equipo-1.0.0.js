@@ -57,27 +57,27 @@ function ListadoEquipos(){
             LimpiarModal();
             let contenidoTabla = ``;
 
-            $.each(vistaEquipo, function (index, equipo) {  
+            $.each(vistaEquipo, function (index, equipo) {
+                
+                const icono = equipo.habilitado 
+        ? '<i class="fa-solid fa-user-slash" style="color: #820d19;"></i>' 
+        : '<i class="fa-solid fa-user-check" style="color: #0a7c2c;"></i>';
+    const tituloBoton = equipo.habilitado ? 'Deshabilitar' : 'Habilitar';
+const claseFila = equipo.habilitado ? '' : 'fila-deshabilitada';
                 
                 contenidoTabla += `
                 <tr>
-                        <td>${equipo.nombreCompleto}</td>
-                        <td>${equipo.nroTipoDoc}</td>
-                        <td>${equipo.direccion}</td>
-                        <td>${equipo.telefono}</td>
-                        <td>${equipo.fechaNac}</td>
-                                                    <td>${equipo.localidadNombre}</td>
+                        <td class="${claseFila}">${equipo.nombreCompleto}</td>
+                        <td class="${claseFila}">${equipo.nroTipoDoc}</td>
+                        <td class="${claseFila}">${equipo.direccion}</td>
+                        <td class="${claseFila}">${equipo.telefono}</td>
+                        <td class="${claseFila}">${equipo.fechaNac}</td>
+                                                    <td class="${claseFila}">${equipo.localidadNombre}</td>
 
-                    <td class="text-center">
-                    <button type="button"  onclick="AbrirModalEditar(${equipo.equipoID})" title="Editar">
-                    <i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i>
-                    </button>
-                    </td>
-                    <td class="text-center">
-                    <button type="button"   onclick="EliminarRegistro(${equipo.equipoID})" title="Eliminar">
-                    <i class="fa-solid fa-poo" style="color: #820d19;"></i>
-                    </button>
-                    </td>
+                    
+            <td class="text-center"><button type="button" onclick="AbrirModalEditar(${equipo.equipoID})" title="Editar"><i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i></button></td>
+<td class="text-center"><button type="button" onclick="DeshabilitarHabilitarEquipo(${equipo.equipoID}, ${equipo.habilitado})" title="${tituloBoton}">${icono}</button></td>
+
                 </tr>
              `;
 
@@ -318,25 +318,24 @@ function BuscarEquipo() {
             let contenidoTabla = ``;
 
             $.each(vistaEquipo, function (index, equipo) {
+const icono = equipo.habilitado 
+        ? '<i class="fa-solid fa-user-slash" style="color: #820d19;"></i>' 
+        : '<i class="fa-solid fa-user-check" style="color: #0a7c2c;"></i>';
+    const tituloBoton = equipo.habilitado ? 'Deshabilitar' : 'Habilitar';
+const claseFila = equipo.habilitado ? '' : 'fila-deshabilitada';
+
                 contenidoTabla += `
                 <tr>
-                    <td>${equipo.nombreCompleto}</td>
-                    <td>${equipo.nroTipoDoc}</td>
-                    <td>${equipo.direccion}</td>
-                    <td>${equipo.telefono}</td>
-                    <td>${equipo.fechaNac}</td>
-                                            <td>${equipo.localidadNombre}</td> 
+                    <td class="${claseFila}">${equipo.nombreCompleto}</td>
+                    <td class="${claseFila}">${equipo.nroTipoDoc}</td>
+                    <td class="${claseFila}">${equipo.direccion}</td>
+                    <td class="${claseFila}">${equipo.telefono}</td>
+                    <td class="${claseFila}">${equipo.fechaNac}</td>
+                                            <td class="${claseFila}">${equipo.localidadNombre}</td> 
 
-                    <td class="text-center">
-                        <button type="button" onclick="AbrirModalEditar(${equipo.equipoID})">
-                            <i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i>
-                        </button>
-                    </td>
-                    <td class="text-center">
-                        <button type="button" onclick="EliminarRegistro(${equipo.equipoID})">
-                            <i class="fa-solid fa-poo" style="color: #820d19;"></i>
-                        </button>
-                    </td>
+                    <td class="text-center"><button type="button" onclick="AbrirModalEditar(${equipo.equipoID})" title="Editar"><i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i></button></td>
+<td class="text-center"><button type="button" onclick="DeshabilitarHabilitarEquipo(${equipo.equipoID}, ${equipo.habilitado})" title="${tituloBoton}">${icono}</button></td>
+
                 </tr>
              `;
             });
@@ -382,6 +381,47 @@ function EliminarRegistro(EquipoID) {
                         title: "Error",
                         text: "Hubo un problema al eliminar el registro.",
                         icon: "error"
+                    });
+                }
+            });
+        }
+    });
+}
+
+
+function DeshabilitarHabilitarEquipo(EquipoID, estaHabilitado) {
+    const accion = estaHabilitado ? 'deshabilitar' : 'habilitar';
+    const mensaje = `¿Seguro de ${accion} este equipo?`;
+
+    Swal.fire({
+        title: mensaje,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: `Sí, ${accion}`
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '../../Equipos/CambiarEstadoEquipo',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    equipoID: EquipoID,
+                    habilitar: !estaHabilitado
+                },
+                success: function () {
+                    Swal.fire({
+                        title: `Equipo ${accion}do correctamente`,
+                        icon: 'success'
+                    });
+                    ListadoEquipos(); // Recarga la tabla
+                },
+                error: function () {
+                    Swal.fire({
+                        title: 'Error',
+                        text: `No se pudo ${accion} el equipo.`,
+                        icon: 'error'
                     });
                 }
             });

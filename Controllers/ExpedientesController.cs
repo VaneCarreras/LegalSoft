@@ -164,6 +164,7 @@ public class ExpedientesController : Controller
                 DependenciaString = expediente.Dependencia.ToString().ToUpper(),
                 Ubicacion = expediente.Ubicacion,
                 UbicacionString = expediente.Ubicacion.ToString().ToUpper(),    // <-- Este campo ahora existe
+                Habilitado = expediente.Habilitado
             };
 
             expedientesMostrar.Add(expedienteMostrar);
@@ -235,6 +236,7 @@ public class ExpedientesController : Controller
                 DependenciaString = expediente.Dependencia.ToString().ToUpper(),
                 Ubicacion = expediente.Ubicacion,
                 UbicacionString = expediente.Ubicacion.ToString().ToUpper(),    // <-- Este campo ahora existe
+                Habilitado = expediente.Habilitado,
             };
 
             expedientesMostrar.Add(expedienteMostrar);
@@ -283,9 +285,10 @@ public class ExpedientesController : Controller
                 FechaInicio = fechaInicio,
                 LinkContenido = linkContenido,
                 EstadoExpediente = estadoExpediente,
-                                Area = area,
+                Area = area,
                 Dependencia = dependencia,
                 Ubicacion = ubicacion,
+                Habilitado = true,
 
             };
             _context.Add(expediente);
@@ -600,6 +603,26 @@ table.AddCell(new PdfPCell(new Phrase((expediente.Expediente.Caratula ?? "").ToU
     return File(ms.ToArray(), "application/pdf", $"Expediente-{expedienteID}.pdf");
 }
 
+[HttpPost]
+public JsonResult CambiarEstadoExpediente(int ExpedienteID, bool habilitar)
+{
+    try
+    {
+        var expediente = _context.Expedientes.Find(ExpedienteID);
+        if (expediente != null)
+        {
+            expediente.Habilitado = habilitar;
+            _context.SaveChanges();
+            return Json(new { success = true });
+        }
+
+        return Json(new { success = false, message = "Expediente no encontrado." });
+    }
+    catch (Exception ex)
+    {
+        return Json(new { success = false, message = ex.Message });
+    }
+}
 
 
 }

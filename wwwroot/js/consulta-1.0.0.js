@@ -27,27 +27,26 @@ const vistaConsulta = response.consultas;
             let contenidoTabla = ``;
 
             $.each(vistaConsulta, function (index, consulta) {  
+
+                const icono = consulta.habilitado 
+        ? '<i class="fa-solid fa-user-slash" style="color: #820d19;"></i>' 
+        : '<i class="fa-solid fa-user-check" style="color: #0a7c2c;"></i>';
+    const tituloBoton = consulta.habilitado ? 'Deshabilitar' : 'Habilitar';
+const claseFila = consulta.habilitado ? '' : 'fila-deshabilitada';
                 
                 contenidoTabla += `
                 <tr>
-                        <td>${consulta.nombreCompletoCliente}</td>
-                        <td>${consulta.nombreCompletoEquipo}</td>
-                                                                        <td>${consulta.motivo}</td>
+                        <td class="${claseFila}">${consulta.nombreCompletoCliente}</td>
+                        <td class="${claseFila}">${consulta.nombreCompletoEquipo}</td>
+                                                                        <td class="${claseFila}">${consulta.motivo}</td>
 
 
-                        <td>${consulta.fecha}</td>
-                        <td>${consulta.estadoConsultaString}</td>
+                        <td class="${claseFila}">${consulta.fecha}</td>
+                        <td class="${claseFila}">${consulta.estadoConsultaString}</td>
 
-                    <td class="text-center">
-                    <button type="button"  onclick="AbrirModalEditar(${consulta.consultaID})" title="Editar" >
-                    <i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i>
-                    </button>
-                    </td>
-                    <td class="text-center">
-                    <button type="button"   onclick="EliminarRegistro(${consulta.consultaID})" title="Eliminar">
-                    <i class="fa-solid fa-poo" style="color: #820d19;"></i>
-                    </button>
-                    </td>
+                    <td class="text-center"><button type="button" onclick="AbrirModalEditar(${consulta.consultaID})" title="Editar"><i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i></button></td>
+<td class="text-center"><button type="button" onclick="DeshabilitarHabilitarConsulta(${consulta.consultaID}, ${consulta.habilitado})" title="${tituloBoton}">${icono}</button></td>
+
                 </tr>
              `;
 
@@ -249,26 +248,25 @@ function BuscarConsulta() {
             let contenidoTabla = ``;
 
             $.each(vistaConsulta, function (index, consulta) {
+                const icono = consulta.habilitado 
+        ? '<i class="fa-solid fa-user-slash" style="color: #820d19;"></i>' 
+        : '<i class="fa-solid fa-user-check" style="color: #0a7c2c;"></i>';
+    const tituloBoton = consulta.habilitado ? 'Deshabilitar' : 'Habilitar';
+const claseFila = consulta.habilitado ? '' : 'fila-deshabilitada';
                 contenidoTabla += `
                 <tr>
-                    <td>${consulta.nombreCompletoCliente}</td>
-                    <td>${consulta.nombreCompletoEquipo}</td>
-                    <td>${consulta.descripcion}</td>
-                                        <td>${consulta.motivo}</td>
+                    <td class="${claseFila}">${consulta.nombreCompletoCliente}</td>
+                    <td class="${claseFila}">${consulta.nombreCompletoEquipo}</td>
+                    <td class="${claseFila}">${consulta.descripcion}</td>
+                                        <td class="${claseFila}">${consulta.motivo}</td>
 
-                    <td>${consulta.fecha}</td>
-                                        <td>${consulta.estadoConsultaString}</td>
+                    <td class="${claseFila}">${consulta.fecha}</td>
+                                        <td class="${claseFila}">${consulta.estadoConsultaString}</td>
 
-                    <td class="text-center">
-                        <button type="button" onclick="AbrirModalEditar(${consulta.consultaID})">
-                            <i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i>
-                        </button>
-                    </td>
-                    <td class="text-center">
-                        <button type="button" onclick="EliminarRegistro(${consulta.consultaID})">
-                            <i class="fa-solid fa-poo" style="color: #820d19;"></i>
-                        </button>
-                    </td>
+                    <td class="text-center"><button type="button" onclick="AbrirModalEditar(${consulta.consultaID})" title="Editar"><i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i></button></td>
+<td class="text-center"><button type="button" onclick="DeshabilitarHabilitarConsulta(${consulta.consultaID}, ${consulta.habilitado})" title="${tituloBoton}">${icono}</button></td>
+
+                    
                 </tr>
              `;
             });
@@ -320,3 +318,42 @@ function EliminarRegistro(ConsultaID) {
     });
 }
 
+function DeshabilitarHabilitarConsulta(ConsultaID, estaHabilitado) {
+    const accion = estaHabilitado ? 'deshabilitar' : 'habilitar';
+    const mensaje = `¿Seguro de ${accion} este consulta?`;
+
+    Swal.fire({
+        title: mensaje,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: `Sí, ${accion}`
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '../../Consultas/CambiarEstadoConsulta',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    consultaID: ConsultaID,
+                    habilitar: !estaHabilitado
+                },
+                success: function () {
+                    Swal.fire({
+                        title: `Consulta ${accion}da correctamente`,
+                        icon: 'success'
+                    });
+                    ListadoConsultas(); // Recarga la tabla
+                },
+                error: function () {
+                    Swal.fire({
+                        title: 'Error',
+                        text: `No se pudo ${accion} el consulta.`,
+                        icon: 'error'
+                    });
+                }
+            });
+        }
+    });
+}

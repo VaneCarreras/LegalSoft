@@ -15,6 +15,7 @@ namespace LegalSoft.Models
        public virtual ICollection<Expediente>? Expedientes { get; set; }
        public virtual ICollection<Pendiente>? Pendientes { get; set; }
 
+public bool Habilitado { get; set; }
 
 
     }
@@ -31,6 +32,7 @@ namespace LegalSoft.Models
       public string? Telefono { get; set; }
       public DateOnly FechaNac { get; set; }
       // public List<SelectListItem>? Localidades { get; set; }
+public bool Habilitado { get; set; }
 
     }
 }

@@ -14,12 +14,14 @@ namespace LegalSoft.Models
       public string? ClienteNombre { get; set; }
       public string? EquipoNombre { get; set; }
       public string? Descripcion { get; set; }
-            public string? Motivo { get; set; }
+      public string? Motivo { get; set; }
 
       public DateOnly Fecha { get; set; }
       public virtual Cliente? Cliente { get; set; }
       public virtual Equipo? Equipo { get; set; }
-       public EstadoConsulta EstadoConsulta { get; set; }
+      public EstadoConsulta EstadoConsulta { get; set; }
+       public bool Habilitado { get; set; }
+
     }
 
    public enum EstadoConsulta
@@ -37,12 +39,14 @@ namespace LegalSoft.Models
       public string NombreCompletoEquipo { get; set; }
 
       public string? Descripcion { get; set; }
-            public string? Motivo { get; set; }
+      public string? Motivo { get; set; }
 
       public DateOnly Fecha { get; set; }
       public virtual Cliente? Cliente { get; set; }
       public virtual Equipo? Equipo { get; set; }
       public EstadoConsulta EstadoConsulta { get; set; }
       public string? EstadoConsultaString { get; set; }
+      public bool Habilitado { get; set; }
+
    }
 }

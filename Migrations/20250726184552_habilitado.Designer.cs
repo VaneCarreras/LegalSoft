@@ -4,6 +4,7 @@ using LegalSoft.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LegalSoft.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250726184552_habilitado")]
+    partial class habilitado
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,9 +72,6 @@ namespace LegalSoft.Migrations
 
                     b.Property<DateOnly>("Fecha")
                         .HasColumnType("date");
-
-                    b.Property<bool>("Habilitado")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Motivo")
                         .HasColumnType("nvarchar(max)");
@@ -180,9 +180,6 @@ namespace LegalSoft.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EquipoID"));
 
-                    b.Property<bool>("Habilitado")
-                        .HasColumnType("bit");
-
                     b.Property<int>("PersonaID")
                         .HasColumnType("int");
 
@@ -219,9 +216,6 @@ namespace LegalSoft.Migrations
 
                     b.Property<DateOnly>("FechaInicio")
                         .HasColumnType("date");
-
-                    b.Property<bool>("Habilitado")
-                        .HasColumnType("bit");
 
                     b.Property<string>("LinkContenido")
                         .HasColumnType("nvarchar(max)");

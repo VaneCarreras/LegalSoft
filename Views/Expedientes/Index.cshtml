@@ -264,28 +264,33 @@ function ListadoExpedientes(pagina = 1){
             LimpiarModal();
             let contenidoTabla = ``;
 
-            $.each(vistaExpediente, function (index, expediente) {  
+            $.each(vistaExpediente, function (index, expediente) { 
+                const icono = expediente.habilitado 
+        ? '<i class="fa-solid fa-user-slash" style="color: #820d19;"></i>' 
+        : '<i class="fa-solid fa-user-check" style="color: #0a7c2c;"></i>';
+    const tituloBoton = expediente.habilitado ? 'Deshabilitar' : 'Habilitar';
+const claseFila = expediente.habilitado ? '' : 'fila-deshabilitada'; 
                 
                 contenidoTabla += `
                 <tr>
                        
-                <td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${expediente.caratula}">
+                <td  class="${claseFila}" style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${expediente.caratula}">
   ${expediente.caratula}
 </td>
 
                 
-                <td>${expediente.nombreCompletoCliente}</td>
-                        <td>${expediente.nombreCompletoEquipo}</td>
+                <td class="${claseFila}">${expediente.nombreCompletoCliente}</td>
+                        <td class="${claseFila}">${expediente.nombreCompletoEquipo}</td>
                         
 
 
-                        <td>${expediente.fechaInicio}</td>
+                        <td class="${claseFila}">${expediente.fechaInicio}</td>
 
-                            <td><a href='  ${expediente.linkContenido}  ' target='_blank' style='text-decoration: underline; color: orange;'> ${expediente.linkContenido} </a></td>
+                            <td class="${claseFila}"><a href='  ${expediente.linkContenido}  ' target='_blank' style='text-decoration: underline; color: orange;'> ${expediente.linkContenido} </a></td>
 
-                                                <td>${expediente.areaString}</td>
-                        <td>${expediente.dependenciaString}</td>
-                        <td>${expediente.ubicacionString}</td>
+                                                <td class="${claseFila}">${expediente.areaString}</td>
+                        <td class="${claseFila}">${expediente.dependenciaString}</td>
+                        <td class="${claseFila}">${expediente.ubicacionString}</td>
 
 
 <td class="text-center">
@@ -301,16 +306,9 @@ function ListadoExpedientes(pagina = 1){
 
 
 
-                    <td class="text-center">
-                    <button type="button"  onclick="AbrirModalEditar(${expediente.expedienteID})" title="Editar" >
-                    <i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i>
-                    </button>
-                    </td>
-                    <td class="text-center">
-                    <button type="button"   onclick="EliminarRegistro(${expediente.expedienteID})" title="Eliminar">
-                    <i class="fa-solid fa-poo" style="color: #820d19;"></i>
-                    </button>
-                    </td>
+                    <td class="text-center"><button type="button" onclick="AbrirModalEditar(${expediente.expedienteID})" title="Editar"><i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i></button></td>
+<td class="text-center"><button type="button" onclick="DeshabilitarHabilitarExpediente(${expediente.expedienteID}, ${expediente.habilitado})" title="${tituloBoton}">${icono}</button></td>
+
                 </tr>
              `;
 
@@ -535,22 +533,28 @@ function BuscarExpediente() {
             let contenidoTabla = ``;
 
             $.each(vistaExpediente, function (index, expediente) {
+const icono = expediente.habilitado 
+        ? '<i class="fa-solid fa-user-slash" style="color: #820d19;"></i>' 
+        : '<i class="fa-solid fa-user-check" style="color: #0a7c2c;"></i>';
+    const tituloBoton = expediente.habilitado ? 'Deshabilitar' : 'Habilitar';
+const claseFila = expediente.habilitado ? '' : 'fila-deshabilitada'; 
+
                 contenidoTabla += `
                 <tr>
                 
-<td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${expediente.caratula}">
+<td  class="${claseFila}" style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${expediente.caratula}">
   ${expediente.caratula}
 </td>
-                        <td>${expediente.nombreCompletoCliente}</td>
-                        <td>${expediente.nombreCompletoEquipo}</td>
+                        <td class="${claseFila}">${expediente.nombreCompletoCliente}</td>
+                        <td class="${claseFila}">${expediente.nombreCompletoEquipo}</td>
                         
-                        <td>${expediente.fechaInicio}</td>
+                        <td class="${claseFila}">${expediente.fechaInicio}</td>
 
-                            <td><a href=' ${expediente.linkContenido} ' target='_blank' style='text-decoration: underline; color: orange;'>  ${expediente.linkContenido} </a></td>
+                            <td class="${claseFila}"><a href=' ${expediente.linkContenido} ' target='_blank' style='text-decoration: underline; color: orange;'>  ${expediente.linkContenido} </a></td>
 
-                                                <td>${expediente.areaString}</td>
-                        <td>${expediente.dependenciaString}</td>
-                        <td>${expediente.ubicacionString}</td>
+                                                <td class="${claseFila}">${expediente.areaString}</td>
+                        <td class="${claseFila}">${expediente.dependenciaString}</td>
+                        <td class="${claseFila}">${expediente.ubicacionString}</td>
 
 
 <td class="text-center">
@@ -563,16 +567,9 @@ function BuscarExpediente() {
 </td>
 
 
-                    <td class="text-center">
-                    <button type="button"  onclick="AbrirModalEditar(${expediente.expedienteID})" title="Editar" >
-                    <i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i>
-                    </button>
-                    </td>
-                    <td class="text-center">
-                    <button type="button"   onclick="EliminarRegistro(${expediente.expedienteID})" title="Eliminar">
-                    <i class="fa-solid fa-poo" style="color: #820d19;"></i>
-                    </button>
-                    </td>
+                    <td class="text-center"><button type="button" onclick="AbrirModalEditar(${expediente.expedienteID})" title="Editar"><i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i></button></td>
+<td class="text-center"><button type="button" onclick="DeshabilitarHabilitarExpediente(${expediente.expedienteID}, ${expediente.habilitado})" title="${tituloBoton}">${icono}</button></td>
+
                 </tr>
              `;
             });
@@ -623,6 +620,47 @@ function EliminarRegistro(ExpedienteID) {
         }
     });
 }
+
+function DeshabilitarHabilitarExpediente(ExpedienteID, estaHabilitado) {
+    const accion = estaHabilitado ? 'deshabilitar' : 'habilitar';
+    const mensaje = `¿Seguro de ${accion} este expediente?`;
+
+    Swal.fire({
+        title: mensaje,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: `Sí, ${accion}`
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: '../../Expedientes/CambiarEstadoExpediente',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    expedienteID: ExpedienteID,
+                    habilitar: !estaHabilitado
+                },
+                success: function () {
+                    Swal.fire({
+                        title: `Expediente ${accion}do correctamente`,
+                        icon: 'success'
+                    });
+                    ListadoExpedientes(); // Recarga la tabla
+                },
+                error: function () {
+                    Swal.fire({
+                        title: 'Error',
+                        text: `No se pudo ${accion} el expediente.`,
+                        icon: 'error'
+                    });
+                }
+            });
+        }
+    });
+}
+
 
 function GuardarDocumento() {
     console.log("Función GuardarDocumento iniciada");

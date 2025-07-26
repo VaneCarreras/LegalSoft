@@ -64,6 +64,7 @@ public JsonResult ObtenerLocalidades()
                     Telefono = persona.Telefono,
                     FechaNac = persona.FechaNac,
                     LocalidadNombre = persona.Localidad?.LocalidadNombre,
+                    Habilitado = equipo.Habilitado,
 
                 };
 
@@ -105,6 +106,7 @@ public JsonResult ObtenerLocalidades()
                     Telefono = persona.Telefono,
                     FechaNac = persona.FechaNac,
                     LocalidadNombre = persona.Localidad?.LocalidadNombre,
+                    Habilitado = equipo.Habilitado,
 
                 };
                 equiposMostrar.Add(equipoMostrar);
@@ -142,6 +144,8 @@ public JsonResult ObtenerLocalidades()
             var equipo = new Equipo
             {
                 PersonaID = persona.PersonaID,
+                                                Habilitado = true,
+
             };
             _context.Add(equipo);
             _context.SaveChanges();
@@ -162,6 +166,27 @@ public JsonResult ObtenerLocalidades()
 
         return Json(true);
     }
+
+    [HttpPost]
+public JsonResult CambiarEstadoEquipo(int EquipoID, bool habilitar)
+{
+    try
+    {
+        var equipo = _context.Equipos.Find(EquipoID);
+        if (equipo != null)
+        {
+            equipo.Habilitado = habilitar;
+            _context.SaveChanges();
+            return Json(new { success = true });
+        }
+
+        return Json(new { success = false, message = "Equipo no encontrado." });
+    }
+    catch (Exception ex)
+    {
+        return Json(new { success = false, message = ex.Message });
+    }
+}
 
 [HttpPost]
 public JsonResult EditarEquipo(int EquipoID, string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateOnly fechaNac, int localidadID)
