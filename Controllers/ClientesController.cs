@@ -26,18 +26,21 @@ return View();
     }
 
 
-[HttpGet]
-public JsonResult ObtenerLocalidades()
-{
-    var localidades = _context.Localidades
-        .Select(l => new {
-            localidadID = l.LocalidadID,
-            localidadNombre = l.LocalidadNombre
-        }).ToList();
+    [HttpGet]
+    public JsonResult ObtenerLocalidades()
+    {
+        var localidades = _context.Localidades
+            .Select(l => new
+            {
+                localidadID = l.LocalidadID,
+                localidadNombre = l.LocalidadNombre
+            }).ToList();
 
-    return Json(localidades);
-}
-public JsonResult ListadoClientes(int pagina = 1, int tamanioPagina = 7, int? id = null)
+        return Json(localidades);
+    }
+[HttpPost]
+
+public JsonResult ListadoClientes(int pagina = 1, int tamanioPagina = 7, int? id = null, bool soloHabilitados = false)
 {
     // Obtener todos los clientes
     var clientes = _context.Clientes.ToList();
@@ -48,8 +51,13 @@ public JsonResult ListadoClientes(int pagina = 1, int tamanioPagina = 7, int? id
         clientes = clientes.Where(c => c.ClienteID == id.Value).ToList();
     }
 
-    // Lista que se va a mostrar
-    List<VistaCliente> clientesMostrar = new List<VistaCliente>();
+if (soloHabilitados)
+    {
+        clientes = clientes.Where(c => c.Habilitado).ToList();
+    }
+
+        // Lista que se va a mostrar
+        List<VistaCliente> clientesMostrar = new List<VistaCliente>();
 
     foreach (var cliente in clientes)
     {

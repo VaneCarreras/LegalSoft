@@ -32,14 +32,21 @@
   </button>
 </div>
 </div>
-
+<div class="row">
 <!-- Button trigger modal -->
-<div class="mb-2">
+<div class="mb-2 col-10">
   <button type="button" class="btn btn-secondary" onclick="NuevoRegistro()" data-bs-toggle="modal" data-bs-target="#ModalExpedientes">
     Nuevo Expediente
   </button>
 </div>
 
+<div class="form-check mb-2 col-2">
+  <input class="form-check-input" type="checkbox" id="chkSoloHabilitados" checked>
+  <label class="form-check-label" for="chkSoloHabilitados">
+    Mostrar solo habilitados
+  </label>
+</div>
+</div>
 <table class="table table-dark table-borderedless table-striped table-condensed">
   <thead>
     <tr>
@@ -234,11 +241,24 @@
 
         <script src="~/lib/jquery/dist/twbs-pagination.1.4.2.min.js"></script>
 
+        <script>
+        $(document).ready(function () {
+            // Carga inicial
+            ListadoExpedientes(1);
+
+            // Cuando se cambia el checkbox
+            document.getElementById("chkSoloHabilitados").addEventListener("change", function () {
+                ListadoExpedientes(1);
+            });
+        });
+    </script>
+
 <script>
 window.onload = ListadoExpedientes();
 
 function ListadoExpedientes(pagina = 1){
      const pageSize = 7; // cantidad de clientes por página
+        const soloHabilitados = document.getElementById("chkSoloHabilitados").checked;
 
     $.ajax({
         // la URL para la petición
@@ -247,7 +267,8 @@ function ListadoExpedientes(pagina = 1){
         // (también es posible utilizar una cadena de datos)
         data: { 
             pagina: pagina,
-            tamanioPagina: pageSize
+            tamanioPagina: pageSize,
+            soloHabilitados: soloHabilitados
         },
         // especifica si será una petición POST o GET
         type: 'POST',

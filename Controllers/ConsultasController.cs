@@ -92,8 +92,9 @@ public class ConsultasController : Controller
 
     return View();
 }
+[HttpPost]
 
-    public JsonResult ListadoConsultas(int pagina = 1, int tamanioPagina = 7, int? id = null)
+    public JsonResult ListadoConsultas(int pagina = 1, int tamanioPagina = 7, int? id = null, bool soloHabilitados = false)
     {
         // Obtener la lista de consultas
         var consultas = _context.Consultas.ToList();
@@ -103,7 +104,10 @@ public class ConsultasController : Controller
         {
             consultas = consultas.Where(c => c.ConsultaID == id.Value).ToList();
         }
-
+if (soloHabilitados)
+    {
+        consultas = consultas.Where(c => c.Habilitado).ToList();
+    }
         // Crear una lista de consultas para mostrar
         List<VistaConsulta> consultasMostrar = new List<VistaConsulta>();
 

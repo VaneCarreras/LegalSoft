@@ -115,8 +115,9 @@ public class ExpedientesController : Controller
 
         return View();
     }
+[HttpPost]
 
-    public JsonResult ListadoExpedientes(int pagina = 1, int tamanioPagina = 7, int? id = null)
+    public JsonResult ListadoExpedientes(int pagina = 1, int tamanioPagina = 7, int? id = null, bool soloHabilitados = false)
     {
         // Obtener la lista de consultas
         var expedientes = _context.Expedientes.ToList();
@@ -126,6 +127,11 @@ public class ExpedientesController : Controller
         {
             expedientes = expedientes.Where(c => c.ExpedienteID == id.Value).ToList();
         }
+
+        if (soloHabilitados)
+    {
+        expedientes = expedientes.Where(c => c.Habilitado).ToList();
+    }
 
         // Crear una lista de consultas para mostrar
         List<VistaExpediente> expedientesMostrar = new List<VistaExpediente>();

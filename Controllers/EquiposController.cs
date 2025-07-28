@@ -34,8 +34,9 @@ public JsonResult ObtenerLocalidades()
 
     return Json(localidades);
 }
+[HttpPost]
 
-    public JsonResult ListadoEquipos(int? id)
+    public JsonResult ListadoEquipos(int? id, bool soloHabilitados = false)
     {
         // Obtener la lista de clientes
         var equipos = _context.Equipos.ToList();
@@ -45,6 +46,11 @@ public JsonResult ObtenerLocalidades()
         {
             equipos = equipos.Where(e => e.EquipoID == id.Value).ToList();
         }
+
+        if (soloHabilitados)
+    {
+        equipos = equipos.Where(e => e.Habilitado).ToList();
+    }
 
         // Crear una lista de clientes para mostrar, accediendo a la entidad Persona por PersonaID
         List<VistaEquipo> equiposMostrar = new List<VistaEquipo>();

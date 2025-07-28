@@ -3,6 +3,7 @@ window.onload = ListadoConsultas();
 
 function ListadoConsultas(pagina = 1){
      const pageSize = 7; // cantidad de clientes por página
+        const soloHabilitados = document.getElementById("chkSoloHabilitados").checked;
 
     $.ajax({
         // la URL para la petición
@@ -11,7 +12,8 @@ function ListadoConsultas(pagina = 1){
         // (también es posible utilizar una cadena de datos)
         data: { 
             pagina: pagina,
-            tamanioPagina: pageSize
+            tamanioPagina: pageSize,
+            soloHabilitados: soloHabilitados
         },
         // especifica si será una petición POST o GET
         type: 'POST',

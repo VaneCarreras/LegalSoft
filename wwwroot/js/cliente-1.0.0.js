@@ -34,6 +34,8 @@ function CargarLocalidades(valorSeleccionado = null) {
 
 function ListadoClientes(pagina = 1) {
     const pageSize = 7; // cantidad de clientes por página
+        const soloHabilitados = document.getElementById("chkSoloHabilitados").checked;
+
 
     $.ajax({
         url: '../../Clientes/ListadoClientes',
@@ -41,7 +43,9 @@ function ListadoClientes(pagina = 1) {
         dataType: 'json',
         data: {
             pagina: pagina,
-            tamanioPagina: pageSize
+            tamanioPagina: pageSize,
+                soloHabilitados: soloHabilitados
+
         },
         success: function (response) {
             // Suponiendo que response tiene: { clientes: [...], totalPaginas: N }
@@ -82,7 +86,7 @@ const claseFila = cliente.habilitado ? '' : 'fila-deshabilitada';
 
             document.getElementById("tbody-clientes").innerHTML = contenidoTabla;
 
-            // Si es la primera carga, configurar paginación
+        // Si es la primera carga, configurar paginación
             if (!$('#pagination-clientes').data("twbs-pagination")) {
                 $('#pagination-clientes').twbsPagination({
                     totalPages: totalPaginas,
@@ -96,6 +100,7 @@ const claseFila = cliente.habilitado ? '' : 'fila-deshabilitada';
                     last: 'Última'
                 });
             }
+            
         },
         error: function (xhr, status) {
             console.log('Error al cargar el listado de clientes');

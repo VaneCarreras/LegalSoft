@@ -38,13 +38,18 @@ function CargarLocalidades(valorSeleccionado = null) {
 
 
 function ListadoEquipos(){
+            const soloHabilitados = document.getElementById("chkSoloHabilitados").checked;
+
  
     $.ajax({
         // la URL para la petición
         url: '../../Equipos/ListadoEquipos',
         // la información a enviar
         // (también es posible utilizar una cadena de datos)
-        data: { },
+        data: { 
+                            soloHabilitados: soloHabilitados
+
+        },
         // especifica si será una petición POST o GET
         type: 'POST',
         // el tipo de información que se espera de respuesta
