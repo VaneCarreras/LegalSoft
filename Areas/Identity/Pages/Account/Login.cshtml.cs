@@ -14,6 +14,12 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
+using System.Text.Encodings.Web;
+
+
+
 
 namespace LegalSoft.Areas.Identity.Pages.Account
 {
@@ -22,11 +28,23 @@ namespace LegalSoft.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
-        {
-            _signInManager = signInManager;
-            _logger = logger;
-        }
+        
+
+        private readonly UserManager<IdentityUser> _userManager;
+private readonly IEmailSender _emailSender;
+
+public LoginModel(
+    SignInManager<IdentityUser> signInManager,
+    UserManager<IdentityUser> userManager,
+    ILogger<LoginModel> logger,
+    IEmailSender emailSender)
+{
+    _signInManager = signInManager;
+    _userManager = userManager;
+    _logger = logger;
+    _emailSender = emailSender;
+}
+
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -102,39 +120,63 @@ namespace LegalSoft.Areas.Identity.Pages.Account
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+{
+    returnUrl ??= Url.Content("~/");
+
+    ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+    if (ModelState.IsValid)
+    {
+        var user = await _userManager.FindByEmailAsync(Input.Email);
+
+        if (user != null)
         {
-            returnUrl ??= Url.Content("~/");
-
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
-            if (ModelState.IsValid)
+            if (!await _userManager.IsEmailConfirmedAsync(user))
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
-                }
-                if (result.RequiresTwoFactor)
-                {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
-                }
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                var callbackUrl = Url.Page(
+                    "/Account/ConfirmEmail",
+                    pageHandler: null,
+                    values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                    protocol: Request.Scheme);
+
+                await _emailSender.SendEmailAsync(
+                    Input.Email,
+                    "Confirma tu cuenta",
+                    $"Por favor confirma tu cuenta haciendo clic <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>aquí</a>.");
+
+                ModelState.AddModelError(string.Empty, "Debes confirmar tu cuenta. Se ha reenviado el correo de confirmación.");
+                return Page();
             }
 
-            // If we got this far, something failed, redisplay form
+            var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+            if (result.Succeeded)
+            {
+                _logger.LogInformation("Usuario ingresó exitosamente.");
+                return LocalRedirect(returnUrl);
+            }
+            if (result.RequiresTwoFactor)
+            {
+                return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+            }
+            if (result.IsLockedOut)
+            {
+                _logger.LogWarning("Cuenta bloqueada.");
+                return RedirectToPage("./Lockout");
+            }
+
+            ModelState.AddModelError(string.Empty, "Intento de inicio de sesión inválido.");
             return Page();
         }
+
+        ModelState.AddModelError(string.Empty, "Usuario no encontrado.");
+        return Page();
+    }
+
+    // Si llegó aquí, algo falló
+    return Page();
+}
+
     }
 }
