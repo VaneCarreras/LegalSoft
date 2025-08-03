@@ -82,6 +82,8 @@ public IActionResult InicioSistema()
 
 
     //http://localhost:5025/Home/AsignarRol?email=sofia@gmail.com&rol=equipo
+    [Authorize(Roles = "Administrador")]
+
     public async Task<IActionResult> AsignarRol(string email, string rol)
     {
         var usuario = await _userManager.FindByEmailAsync(email);
@@ -91,7 +93,7 @@ public IActionResult InicioSistema()
             return Content($"No se encontró ningún usuario con el email {email}");
         }
 
-        
+
 
         await _userManager.AddToRoleAsync(usuario, rol);
 

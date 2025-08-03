@@ -216,21 +216,89 @@ function AbrirModalEditar(ClienteID){
 //     });    
 // }
 
+
+
 function GuardarRegistro() {
     let clienteID = document.getElementById("ClienteID").value;
-    let nombreCompleto = document.getElementById("NombreCompleto").value;
-    let nroTipoDoc = document.getElementById("NroTipoDoc").value;
-    let direccion = document.getElementById("Direccion").value;
-    let telefono = document.getElementById("Telefono").value;
+    let nombreCompleto = document.getElementById("NombreCompleto").value.trim();
+    let nroTipoDoc = document.getElementById("NroTipoDoc").value.trim();
+    let direccion = document.getElementById("Direccion").value.trim();
+    let telefono = document.getElementById("Telefono").value.trim();
     let fechaNac = document.getElementById("FechaNac").value;
     let localidadID = document.getElementById("LocalidadID").value;
 
+    // Expresiones regulares para validar
+const soloLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+    const dniRegex = /^\d{7,8}$/;
+    const telefonoRegex = /^[1-9]\d{6,9}$/;
+
+    // Validaciones
     
 
+    if (
+    nombreCompleto.length < 3 ||
+    !soloLetras.test(nombreCompleto)
+) {
+    alert("El nombre completo debe tener al menos 3 caracteres y solo contener letras.");
+    return;
+}
+
+    if (!dniRegex.test(nroTipoDoc)) {
+        alert("El DNI debe contener solo números, y tener 7 u 8 dígitos.");
+        return;
+    }
+
+    if (telefono === "" || !telefonoRegex.test(telefono)) {
+        alert("El teléfono debe contener solo números, sin 0 ni 15, mínimo 7 dígitos.");
+        return;
+    }
+
+    if (localidadID === "" || localidadID === "0") {
+        alert("Debe seleccionar una localidad.");
+        return;
+    }
+
+    if (fechaNac === "") {
+        alert("Debe ingresar una fecha de nacimiento.");
+        return;
+    }
+
+    if (direccion.length < 5) {
+    alert("La dirección debe tener al menos 5 caracteres.");
+    return;
+}
+
+
+    // Validación de fecha lógica
+    let hoy = new Date();
+    let fechaNacimiento = new Date(fechaNac);
+    let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+    let mes = hoy.getMonth() - fechaNacimiento.getMonth();
+
+    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
+        edad--;
+    }
+
+    if (fechaNacimiento > hoy) {
+        alert("La fecha de nacimiento no puede ser una fecha futura.");
+        return;
+    }
+
+    if (edad < 0 || edad > 120) {
+        alert("La fecha de nacimiento no es válida.");
+        return;
+    }
+
+    if (edad < 18) {
+        alert("El cliente debe tener al menos 18 años.");
+        return;
+    }
+
+    // Si pasa todas las validaciones, continuar con AJAX
     if (clienteID == 0 || clienteID == "") {
-        // Llamar al método de creación si ClienteID es 0 o está vacío
+        // Crear nuevo cliente
         $.ajax({
-            url: '../../Clientes/GuardarNuevoCliente', // Método para crear nuevo cliente
+            url: '../../Clientes/GuardarNuevoCliente',
             type: 'POST',
             data: {
                 nombreCompleto: nombreCompleto,
@@ -238,28 +306,24 @@ function GuardarRegistro() {
                 direccion: direccion,
                 telefono: telefono,
                 fechaNac: fechaNac,
-                    localidadID: localidadID
-
+                localidadID: localidadID
             },
             dataType: 'json',
             success: function (resultado) {
                 if (resultado != "") {
                     alert(resultado);
                 }
-                ListadoClientes(); // Refresca la lista de clientes
-                $("#ModalClientes").modal("hide"); // Cierra el modal
+                ListadoClientes();
+                $("#ModalClientes").modal("hide");
             },
             error: function (xhr, status) {
                 console.log('Error al guardar el nuevo cliente.');
             }
         });
     } else {
-
-        
-
-        // Llamar al método de edición si ClienteID es distinto de 0
+        // Editar cliente existente
         $.ajax({
-            url: '../../Clientes/EditarCliente', // Llamar al nuevo método EditarCliente
+            url: '../../Clientes/EditarCliente',
             type: 'POST',
             data: {
                 ClienteID: clienteID,
@@ -268,25 +332,23 @@ function GuardarRegistro() {
                 direccion: direccion,
                 telefono: telefono,
                 fechaNac: fechaNac,
-                    localidadID: localidadID
-
+                localidadID: localidadID
             },
-
             dataType: 'json',
             success: function (resultado) {
                 if (resultado != "") {
                     alert(resultado);
                 }
-                ListadoClientes(); // Refresca la lista de clientes
-                $("#ModalClientes").modal("hide"); // Cierra el modal
+                ListadoClientes();
+                $("#ModalClientes").modal("hide");
             },
-
             error: function (xhr, status) {
                 console.log('Error al actualizar el cliente.');
             }
         });
     }
 }
+
 
 
 // // function EliminarRegistro(ClienteID){

@@ -215,6 +215,71 @@ function GuardarRegistro() {
     let fechaNac = document.getElementById("FechaNac").value;
     let localidadID = document.getElementById("LocalidadID").value;
 
+    // Expresiones regulares para validar
+const soloLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+    const dniRegex = /^\d{7,8}$/;
+    const telefonoRegex = /^[1-9]\d{6,9}$/;
+
+    // Validaciones
+        if (
+    nombreCompleto.length < 3 ||
+    !soloLetras.test(nombreCompleto)
+) {
+    alert("El nombre completo debe tener al menos 3 caracteres y solo contener letras.");
+    return;
+}
+
+    if (!dniRegex.test(nroTipoDoc)) {
+        alert("El DNI debe contener solo números, y tener 7 u 8 dígitos.");
+        return;
+    }
+
+    if (telefono === "" || !telefonoRegex.test(telefono)) {
+        alert("El teléfono debe contener solo números, sin 0 ni 15, mínimo 7 dígitos.");
+        return;
+    }
+
+    if (localidadID === "" || localidadID === "0") {
+        alert("Debe seleccionar una localidad.");
+        return;
+    }
+
+    if (fechaNac === "") {
+        alert("Debe ingresar una fecha de nacimiento.");
+        return;
+    }
+
+    if (direccion.length < 5) {
+    alert("La dirección debe tener al menos 5 caracteres.");
+    return;
+}
+
+
+    // Validación de fecha lógica
+    let hoy = new Date();
+    let fechaNacimiento = new Date(fechaNac);
+    let edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+    let mes = hoy.getMonth() - fechaNacimiento.getMonth();
+
+    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNacimiento.getDate())) {
+        edad--;
+    }
+
+    if (fechaNacimiento > hoy) {
+        alert("La fecha de nacimiento no puede ser una fecha futura.");
+        return;
+    }
+
+    if (edad < 0 || edad > 120) {
+        alert("La fecha de nacimiento no es válida.");
+        return;
+    }
+
+    if (edad < 18) {
+        alert("El cliente debe tener al menos 18 años.");
+        return;
+    }
+
     if (equipoID == 0 || equipoID == "") {
         // Llamar al método de creación si ClienteID es 0 o está vacío
         $.ajax({

@@ -121,6 +121,21 @@ function GuardarRegistro() {
     let localidadNombre =        document.getElementById("LocalidadNombre").value; 
     let provincia = document.getElementById("Provincia").value;
 
+const letrasYNumeros = /^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]+$/;
+if (
+    localidadNombre.length < 3 ||
+    !letrasYNumeros.test(localidadNombre)
+) {
+    alert("El nombre de la localidad debe tener al menos 3 caracteres y solo contener letras y números.");
+    return;
+}
+
+if (provincia === "" || provincia === "0") {
+        alert("Debe seleccionar una provincia.");
+        return;
+    }
+
+
     if (localidadID == 0 || localidadID == "") {
         // Llamar al método de creación si ClienteID es 0 o está vacío
         $.ajax({

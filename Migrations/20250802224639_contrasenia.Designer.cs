@@ -4,6 +4,7 @@ using LegalSoft.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LegalSoft.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250802224639_contrasenia")]
+    partial class contrasenia
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -274,9 +277,7 @@ namespace LegalSoft.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LocalidadID"));
 
                     b.Property<string>("LocalidadNombre")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Provincia")
                         .HasColumnType("int");
@@ -326,27 +327,21 @@ namespace LegalSoft.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PersonaID"));
 
                     b.Property<string>("Direccion")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateOnly>("FechaNac")
                         .HasColumnType("date");
 
                     b.Property<int?>("LocalidadID")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("NombreCompleto")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NroTipoDoc")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Telefono")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UsuarioID")
@@ -665,9 +660,7 @@ namespace LegalSoft.Migrations
                 {
                     b.HasOne("LegalSoft.Models.Localidad", "Localidad")
                         .WithMany("Personas")
-                        .HasForeignKey("LocalidadID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LocalidadID");
 
                     b.Navigation("Localidad");
                 });
