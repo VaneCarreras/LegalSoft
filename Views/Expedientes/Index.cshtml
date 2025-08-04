@@ -728,6 +728,7 @@ function GuardarDocumento() {
     if (resultado.resultado === true || resultado === true) {
         Swal.fire("Documento guardado correctamente.");
         BuscarDocumentos(expedienteID);
+        BuscarDocumentosEliminar(expedienteID);
     } else {
         Swal.fire("No se pudo guardar el documento. " + (resultado.error ? resultado.error : ""));
     }
@@ -743,6 +744,7 @@ function GuardarDocumento() {
 
     reader.readAsDataURL(file);
 }
+
 
 function BuscarDocumentos(expedienteID) {
     $("#DocsExpediente").empty();
