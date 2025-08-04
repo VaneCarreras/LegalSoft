@@ -5,6 +5,35 @@ window.onload = function() {
     ListadoEquipos();
 };
 
+$(document).ready(function () {
+    $('#buscarNombre').on('input', function () {
+        const nombre = $(this).val().trim();
+        if (nombre.length > 0) {
+            $('#buscarDNI')
+                .prop('disabled', true)
+                .val('') // Limpiar el campo DNI
+                .attr('placeholder', 'Borrar nombre para habilitar');
+        } else {
+            $('#buscarDNI')
+                .prop('disabled', false)
+                .attr('placeholder', 'DNI...');
+        }
+    });
+
+    $('#buscarDNI').on('input', function () {
+        const dni = $(this).val().trim();
+        if (dni.length > 0) {
+            $('#buscarNombre')
+                .prop('disabled', true)
+                .val('') // Limpiar el campo nombre
+                .attr('placeholder', 'Borrar DNI para habilitar');
+        } else {
+            $('#buscarNombre')
+                .prop('disabled', false)
+                .attr('placeholder', 'Nombre...');
+        }
+    });
+});
 
 
 
@@ -370,6 +399,8 @@ function BuscarEquipo() {
     // Obtener los valores de búsqueda
     const nombreCompleto = $('#buscarNombre').val().trim();
     const nroTipoDoc = $('#buscarDNI').val().trim();
+
+    
 
     $.ajax({
         // URL para la petición

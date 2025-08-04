@@ -1,6 +1,39 @@
 
 window.onload = ListadoConsultas();
 
+
+
+
+$(document).ready(function () {
+    $('#NombreCompletoClienteBuscar').on('input', function () {
+        const nombre = $(this).val().trim();
+        if (nombre.length > 0) {
+            $('#NombreCompletoEquipoBuscar')
+                .prop('disabled', true)
+                .val('') // Limpiar el campo DNI
+                .attr('placeholder', 'Borrar cliente para habilitar');
+        } else {
+            $('#NombreCompletoEquipoBuscar')
+                .prop('disabled', false)
+                .attr('placeholder', 'Equipo...');
+        }
+    });
+
+    $('#NombreCompletoEquipoBuscar').on('input', function () {
+        const dni = $(this).val().trim();
+        if (dni.length > 0) {
+            $('#NombreCompletoClienteBuscar')
+                .prop('disabled', true)
+                .val('') // Limpiar el campo nombre
+                .attr('placeholder', 'Borrar equipo para habilitar');
+        } else {
+            $('#NombreCompletoClienteBuscar')
+                .prop('disabled', false)
+                .attr('placeholder', 'Cliente...');
+        }
+    });
+});
+
 function ListadoConsultas(pagina = 1){
      const pageSize = 7; // cantidad de clientes por página
         const soloHabilitados = document.getElementById("chkSoloHabilitados").checked;

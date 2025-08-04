@@ -256,6 +256,39 @@
 <script>
 window.onload = ListadoExpedientes();
 
+
+
+$(document).ready(function () {
+    $('#DniEquipoBuscar').on('input', function () {
+        const nombre = $(this).val().trim();
+        if (nombre.length > 0) {
+            $('#CaratulaBuscar')
+                .prop('disabled', true)
+                .val('') // Limpiar el campo DNI
+                .attr('placeholder', 'Borrar nombre para habilitar');
+        } else {
+            $('#CaratulaBuscar')
+                .prop('disabled', false)
+                .attr('placeholder', 'Caratula...');
+        }
+    });
+
+    $('#CaratulaBuscar').on('input', function () {
+        const dni = $(this).val().trim();
+        if (dni.length > 0) {
+            $('#DniEquipoBuscar')
+                .prop('disabled', true)
+                .val('') // Limpiar el campo nombre
+                .attr('placeholder', 'Borrar caratula para habilitar');
+        } else {
+            $('#DniEquipoBuscar')
+                .prop('disabled', false)
+                .attr('placeholder', 'Nombre...');
+        }
+    });
+});
+
+
 function ListadoExpedientes(pagina = 1){
      const pageSize = 7; // cantidad de clientes por página
         const soloHabilitados = document.getElementById("chkSoloHabilitados").checked;
