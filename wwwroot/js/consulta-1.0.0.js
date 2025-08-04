@@ -161,12 +161,18 @@ function AbrirModalEditar(ConsultaID){
             $("#ModalTitulo").text("Editar Consulta");
 
             document.getElementById("ClienteID").value = consulta.clienteID;
+                document.getElementById("ClienteID").disabled = true;
+
             document.getElementById("EquipoID").value = consulta.equipoID;
+                document.getElementById("EquipoID").disabled = true;
+
             
             document.getElementById("Descripcion").value = consulta.descripcion;
                         document.getElementById("Motivo").value = consulta.motivo; 
  
             document.getElementById("Fecha").value = consulta.fecha; 
+                document.getElementById("Fecha").disabled = true;
+
             document.getElementById("EstadoConsulta").value = consulta.estadoConsulta;
 
             $("#ModalConsultas").modal("show");
@@ -309,7 +315,6 @@ const claseFila = consulta.habilitado ? '' : 'fila-deshabilitada';
                 <tr>
                     <td class="${claseFila}">${consulta.nombreCompletoCliente}</td>
                     <td class="${claseFila}">${consulta.nombreCompletoEquipo}</td>
-                    <td class="${claseFila}">${consulta.descripcion}</td>
                                         <td class="${claseFila}">${consulta.motivo}</td>
 
                     <td class="${claseFila}">${consulta.fecha}</td>

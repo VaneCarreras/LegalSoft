@@ -253,14 +253,14 @@ public class ExpedientesController : Controller
         {
             expedientesMostrar = expedientesMostrar
                 .Where(x => x.NombreCompletoEquipo.ToLower().Contains(DniEquipoBuscar.ToLower()))
-                .ToList();
+                .OrderBy(e => e.FechaInicio).ToList();
         }
 
         if (!string.IsNullOrEmpty(CaratulaBuscar))
         {
             expedientesMostrar = expedientesMostrar
                 .Where(x => x.Caratula.ToLower().Contains(CaratulaBuscar.ToLower()))
-                .ToList();
+                .OrderBy(e => e.FechaInicio).ToList();
         }
 
         return Json(expedientesMostrar);

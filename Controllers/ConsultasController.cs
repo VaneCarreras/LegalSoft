@@ -211,14 +211,14 @@ Habilitado = consulta.Habilitado,
     {
         consultasMostrar = consultasMostrar
             .Where(x => x.NombreCompletoCliente.ToLower().Contains(NombreCompletoClienteBuscar.ToLower()))
-            .ToList();
+            .OrderBy(c => c.Fecha).ToList();
     }
 
     if (!string.IsNullOrEmpty(NombreCompletoEquipoBuscar))
     {
         consultasMostrar = consultasMostrar
             .Where(x => x.NombreCompletoEquipo.ToLower().Contains(NombreCompletoEquipoBuscar.ToLower()))
-            .ToList();
+            .OrderBy(c => c.Fecha).ToList();
     }
 
     return Json(consultasMostrar);
