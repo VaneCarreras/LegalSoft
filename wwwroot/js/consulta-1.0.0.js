@@ -148,84 +148,101 @@ function AbrirModalEditar(ConsultaID){
         }
     });
 }
-
-
-
 function GuardarRegistro() {
     let consultaID = document.getElementById("ConsultaID").value;
-    
-
-
-    let clienteID =        document.getElementById("ClienteID").value;
-    let equipoID =        document.getElementById("EquipoID").value;
-    // let nombreCompletoCliente =        document.getElementById("NombreCompletoCliente").value; 
-    // let nombreCompletoEquipo =        document.getElementById("NombreCompletoEquipo").value; 
-    let descripcion =        document.getElementById("Descripcion").value; 
-        let motivo =        document.getElementById("Motivo").value; 
-
-    let fecha =        document.getElementById("Fecha").value;
+    let clienteID = document.getElementById("ClienteID").value;
+    let equipoID = document.getElementById("EquipoID").value;
+    let descripcion = document.getElementById("Descripcion").value.trim();
+    let motivo = document.getElementById("Motivo").value.trim();
+    let fecha = document.getElementById("Fecha").value;
     let estadoConsulta = document.getElementById("EstadoConsulta").value;
 
-    if (consultaID == 0 || consultaID == "") {
-        // Llamar al método de creación si ClienteID es 0 o está vacío
-        $.ajax({
-            url: '../../Consultas/GuardarNuevaConsulta', // Método para crear nuevo cliente
-            type: 'POST',
-            data: {
-                // nombreCompletoCliente: nombreCompletoCliente,
-                // nombreCompletoEquipo: nombreCompletoEquipo,
-                clienteID: clienteID,
-                equipoID: equipoID,
-                descripcion: descripcion,
-                motivo: motivo,
-                fecha: fecha,
-                estadoConsulta: estadoConsulta,
+    // Validaciones
 
-            },
-            dataType: 'json',
-            success: function (resultado) {
-                if (resultado != "") {
-                    alert(resultado);
-                }
-                ListadoConsultas(); // Refresca la lista de clientes
-                $("#ModalConsultas").modal("hide"); // Cierra el modal
-            },
-            error: function (xhr, status) {
-                console.log('Error al guardar la nueva consulta.');
-            }
-        });
-    } else {
-        // Llamar al método de edición si ClienteID es distinto de 0
-        $.ajax({
-            url: '../../Consultas/EditarConsulta', // Llamar al nuevo método EditarCliente
-            type: 'POST',
-            data: {
-                consultaID: consultaID,
-                clienteID: clienteID,
-                equipoID: equipoID,
-                
-                descripcion: descripcion,
-                motivo: motivo,
-                fecha: fecha,
-                estadoConsulta: estadoConsulta,
-                
-            },
-
-            dataType: 'json',
-            success: function (resultado) {
-                if (resultado != "") {
-                    alert(resultado);
-                }
-                ListadoConsultas(); // Refresca la lista de clientes
-                $("#ModalConsultas").modal("hide"); // Cierra el modal
-            },
-
-            error: function (xhr, status) {
-                console.log('Error al actualizar la consulta.');
-            }
-        });
+    if (clienteID === "" || clienteID === "0") {
+        Swal.fire("Debe seleccionar un cliente.");
+        return;
     }
+
+    if (equipoID === "" || equipoID === "0") {
+        Swal.fire("Debe seleccionar un equipo.");
+        return;
+    }
+
+    if (descripcion.length < 5) {
+        Swal.fire("La descripción debe tener al menos 5 caracteres.");
+        return;
+    }
+
+    if (motivo.length < 5) {
+        Swal.fire("El motivo debe tener al menos 5 caracteres.");
+        return;
+    }
+
+    if (fecha === "") {
+        Swal.fire("Debe ingresar una fecha.");
+        return;
+    }
+
+    if (descripcion.length > 500) {
+    Swal.fire("La descripción no debe superar los 500 caracteres.");
+    return;
 }
+if (motivo.length > 50) {
+    Swal.fire("El motivo no debe superar los 50 caracteres.");
+    return;
+}
+
+
+    let hoy = new Date();
+    let fechaConsulta = new Date(fecha);
+
+    if (fechaConsulta > hoy) {
+        Swal.fire("La fecha no puede ser futura.");
+        return;
+    }
+
+    if (estadoConsulta === "" || estadoConsulta === "0") {
+        Swal.fire("Debe seleccionar un estado para la consulta.");
+        return;
+    }
+
+    // Si pasa todas las validaciones, continuar con AJAX
+
+    let url = consultaID == 0 || consultaID == "" ?
+        '../../Consultas/GuardarNuevaConsulta' :
+        '../../Consultas/EditarConsulta';
+
+    let data = {
+        consultaID: consultaID,
+        clienteID: clienteID,
+        equipoID: equipoID,
+        descripcion: descripcion,
+        motivo: motivo,
+        fecha: fecha,
+        estadoConsulta: estadoConsulta
+    };
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: data,
+        dataType: 'json',
+        success: function (resultado) {
+            if (resultado != "") {
+                alert(resultado);
+            }
+            ListadoConsultas();
+            $("#ModalConsultas").modal("hide");
+        },
+        error: function (xhr, status) {
+            console.log('Error al guardar la consulta.');
+        }
+    });
+}
+
+
+
 
 
 function BuscarConsulta() {

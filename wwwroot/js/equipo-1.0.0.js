@@ -225,32 +225,32 @@ const soloLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
     nombreCompleto.length < 3 ||
     !soloLetras.test(nombreCompleto)
 ) {
-    alert("El nombre completo debe tener al menos 3 caracteres y solo contener letras.");
+    Swal.fire("El nombre completo debe tener al menos 3 caracteres y solo contener letras.");
     return;
 }
 
     if (!dniRegex.test(nroTipoDoc)) {
-        alert("El DNI debe contener solo números, y tener 7 u 8 dígitos.");
+        Swal.fire("El DNI debe contener solo números, y tener 7 u 8 dígitos.");
         return;
     }
 
     if (telefono === "" || !telefonoRegex.test(telefono)) {
-        alert("El teléfono debe contener solo números, sin 0 ni 15, mínimo 7 dígitos.");
+        Swal.fire("El teléfono debe contener solo números, sin 0 ni 15, mínimo 7 dígitos.");
         return;
     }
 
     if (localidadID === "" || localidadID === "0") {
-        alert("Debe seleccionar una localidad.");
+        Swal.fire("Debe seleccionar una localidad.");
         return;
     }
 
     if (fechaNac === "") {
-        alert("Debe ingresar una fecha de nacimiento.");
+        Swal.fire("Debe ingresar una fecha de nacimiento.");
         return;
     }
 
     if (direccion.length < 5) {
-    alert("La dirección debe tener al menos 5 caracteres.");
+    Swal.fire("La dirección debe tener al menos 5 caracteres.");
     return;
 }
 
@@ -266,17 +266,17 @@ const soloLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
     }
 
     if (fechaNacimiento > hoy) {
-        alert("La fecha de nacimiento no puede ser una fecha futura.");
+        Swal.fire("La fecha de nacimiento no puede ser una fecha futura.");
         return;
     }
 
     if (edad < 0 || edad > 120) {
-        alert("La fecha de nacimiento no es válida.");
+        Swal.fire("La fecha de nacimiento no es válida.");
         return;
     }
 
     if (edad < 18) {
-        alert("El cliente debe tener al menos 18 años.");
+        Swal.fire("El cliente debe tener al menos 18 años.");
         return;
     }
 

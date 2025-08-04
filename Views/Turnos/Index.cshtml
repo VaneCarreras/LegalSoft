@@ -202,6 +202,35 @@
         Estado: $('#Estado').val()
       };
 
+      // Validaciones
+  if (!turno.ClienteID || turno.ClienteID === "0") {
+    Swal.fire('Falta el Cliente');
+    return;
+  }
+
+  if (!turno.EquipoID || turno.EquipoID === "0") {
+    Swal.fire('Falta el Equipo');
+    return;
+  }
+
+  if (!turno.FechaHora) {
+    Swal.fire('Falta la Fecha');
+    return;
+  }
+
+  const fechaTurno = new Date(turno.FechaHora);
+  const ahora = new Date();
+  if (fechaTurno < ahora) {
+    Swal.fire('La fecha debe ser actual o futura.');
+    return;
+  }
+
+  if (!turno.Estado) {
+    Swal.fire('Falta el Estado');
+    return;
+  }
+
+
       $.ajax({
         url: '/Turnos/SaveEvent',
         method: 'POST',

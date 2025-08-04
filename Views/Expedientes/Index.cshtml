@@ -239,7 +239,6 @@
     <script src="~/js/fotorama.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
-        <script src="~/lib/jquery/dist/twbs-pagination.1.4.2.min.js"></script>
 
         <script>
         $(document).ready(function () {
@@ -447,88 +446,101 @@ function AbrirModalEditar(ExpedienteID){
 
 function GuardarRegistro() {
     let expedienteID = document.getElementById("ExpedienteID").value;
-    
-
-
-    let clienteID =        document.getElementById("ClienteID").value;
-    let equipoID =        document.getElementById("EquipoID").value;
-    // let numero =        document.getElementById("Numero").value;
-        let caratula =        document.getElementById("Caratula").value;
-        let ultimoDecreto =        document.getElementById("UltimoDecreto").value;
-    let fechaInicio =        document.getElementById("FechaInicio").value;
-        let linkContenido =        document.getElementById("LinkContenido").value;
-
-        let area = document.getElementById("Area").value;
+    let clienteID = document.getElementById("ClienteID").value;
+    let equipoID = document.getElementById("EquipoID").value;
+    let caratula = document.getElementById("Caratula").value.trim();
+    let ultimoDecreto = document.getElementById("UltimoDecreto").value.trim();
+    let fechaInicio = document.getElementById("FechaInicio").value;
+    let linkContenido = document.getElementById("LinkContenido").value.trim();
+    let area = document.getElementById("Area").value;
     let dependencia = document.getElementById("Dependencia").value;
     let ubicacion = document.getElementById("Ubicacion").value;
 
+    // Expresión regular para validar URL
 
-    if (expedienteID == 0 || expedienteID == "") {
-        // Llamar al método de creación si ClienteID es 0 o está vacío
-        $.ajax({
-            url: '../../Expedientes/GuardarNuevoExpediente', // Método para crear nuevo cliente
-            type: 'POST',
-            data: {
-                // nombreCompletoCliente: nombreCompletoCliente,
-                // nombreCompletoEquipo: nombreCompletoEquipo,
-                clienteID: clienteID,
-                equipoID: equipoID,
-                caratula: caratula,
-                ultimoDecreto: ultimoDecreto,
-                fechaInicio: fechaInicio,
-                linkContenido: linkContenido,
-                                area: area,
-                dependencia: dependencia,
-                ubicacion: ubicacion,
-
-
-            },
-            dataType: 'json',
-            success: function (resultado) {
-                if (resultado != "") {
-                    alert(resultado);
-                }
-                ListadoExpedientes(); // Refresca la lista de clientes
-                $("#ModalExpedientes").modal("hide"); // Cierra el modal
-            },
-            error: function (xhr, status) {
-                console.log('Error al guardar el nuevo expediente.');
-            }
-        });
-    } else {
-        // Llamar al método de edición si ClienteID es distinto de 0
-        $.ajax({
-            url: '../../Expedientes/EditarExpediente', // Llamar al nuevo método EditarCliente
-            type: 'POST',
-            data: {
-                expedienteID: expedienteID,
-                clienteID: clienteID,
-                equipoID: equipoID,
-                caratula: caratula,
-                ultimoDecreto: ultimoDecreto,
-                fechaInicio: fechaInicio,
-                linkContenido: linkContenido,
-                                area: area,
-                dependencia: dependencia,
-                ubicacion: ubicacion,
-
-                
-            },
-
-            dataType: 'json',
-            success: function (resultado) {
-                if (resultado != "") {
-                    alert(resultado);
-                }
-                ListadoExpedientes(); // Refresca la lista de clientes
-                $("#ModalExpedientes").modal("hide"); // Cierra el modal
-            },
-
-            error: function (xhr, status) {
-                console.log('Error al actualizar el expediente.');
-            }
-        });
+    // 🟡 Validaciones
+    if (clienteID === "0" || clienteID === "") {
+        Swal.fire('Debe seleccionar un cliente.');
+        return;
     }
+
+    if (equipoID === "0" || equipoID === "") {
+        Swal.fire('Debe seleccionar un equipo.');
+        return;
+    }
+
+    if (caratula.length < 3) {
+        Swal.fire('La carátula debe tener al menos 3 caracteres.');
+        return;
+    }
+
+    if (ultimoDecreto.length < 3) {
+        Swal.fire('El último decreto debe tener al menos 3 caracteres.');
+        return;
+    }
+
+    if (!fechaInicio) {
+        Swal.fire('Debe ingresar una fecha de inicio.');
+        return;
+    }
+
+    let hoy = new Date();
+    let fechaExpediente = new Date(fechaInicio);
+
+    if (fechaExpediente > hoy) {
+        Swal.fire("La fecha no puede ser futura.");
+        return;
+    }
+
+    if (area === "0" || area === "") {
+        Swal.fire("Debe seleccionar un área.");
+        return;
+    }
+
+    if (dependencia === "0" || dependencia === "") {
+        Swal.fire("Debe seleccionar una dependencia.");
+        return;
+    }
+
+    if (ubicacion === "0" || ubicacion === "") {
+        Swal.fire("Debe seleccionar una ubicación.");
+        return;
+    }
+
+    // 🟢 Si pasa todas las validaciones, continuar con AJAX
+    const data = {
+        expedienteID: expedienteID,
+        clienteID: clienteID,
+        equipoID: equipoID,
+        caratula: caratula,
+        ultimoDecreto: ultimoDecreto,
+        fechaInicio: fechaInicio,
+        linkContenido: linkContenido,
+        area: area,
+        dependencia: dependencia,
+        ubicacion: ubicacion,
+    };
+
+    const url = (expedienteID == 0 || expedienteID == "")
+        ? '../../Expedientes/GuardarNuevoExpediente'
+        : '../../Expedientes/EditarExpediente';
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: data,
+        dataType: 'json',
+        success: function (resultado) {
+            if (resultado != "") {
+                alert(resultado);
+            }
+            ListadoExpedientes(); // Refresca la lista de expedientes
+            $("#ModalExpedientes").modal("hide"); // Cierra el modal
+        },
+        error: function (xhr, status) {
+            console.log('Error al guardar o actualizar el expediente.');
+        }
+    });
 }
 
 
@@ -690,7 +702,7 @@ function GuardarDocumento() {
     var file = input.files[0];
 
     if (!file) {
-        alert("Seleccioná un documento antes de guardar.");
+        Swal.fire("Seleccioná un documento antes de guardar.");
         return;
     }
 
@@ -712,10 +724,10 @@ function GuardarDocumento() {
             },
             success: function(resultado) {
     if (resultado.resultado === true || resultado === true) {
-        alert("Documento guardado correctamente.");
+        Swal.fire("Documento guardado correctamente.");
         BuscarDocumentos(expedienteID);
     } else {
-        alert("No se pudo guardar el documento. " + (resultado.error ? resultado.error : ""));
+        Swal.fire("No se pudo guardar el documento. " + (resultado.error ? resultado.error : ""));
     }
 
 
@@ -758,7 +770,7 @@ function BuscarDocumentos(expedienteID) {
 
         },
         error: function () {
-            alert("Ocurrió un error al buscar los documentos.");
+            Swal.fire("Ocurrió un error al buscar los documentos.");
         }
     });
 }
@@ -789,7 +801,7 @@ function BuscarDocumentosEliminar(expedienteID) {
 
         },
         error: function () {
-            alert("Ocurrió un error al cargar los documentos.");
+            Swal.fire("Ocurrió un error al cargar los documentos.");
         }
     });
 }
@@ -807,7 +819,7 @@ function EliminarDocumento(docID) {
             BuscarDocumentosEliminar(expedienteID);
         },
         error: function () {
-            alert("Ocurrió un error al eliminar el documento.");
+            Swal.fire("Ocurrió un error al eliminar el documento.");
         }
     });
 }
@@ -840,6 +852,9 @@ function ImprimirExpediente() {
       window.location.href = '/Expedientes/ImprimirExpediente?expedienteID=' + expedienteID;
     }
 </script>
+
+        <script src="~/lib/jquery/dist/twbs-pagination.1.4.2.min.js"></script>
+
 }
 
 </body>

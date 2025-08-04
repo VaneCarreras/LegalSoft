@@ -34,7 +34,7 @@ public class PendientesController : Controller
             motivo = p.Motivo,
             equipoID = p.EquipoID,
             recordatorio = p.RecordatorioAlert,
-                estado = p.Estado 
+            estado = p.Estado
 
         }).ToList();
 
@@ -42,19 +42,19 @@ public class PendientesController : Controller
     }
 
     [HttpPost]
-public JsonResult SavePendiente([FromBody] Pendiente pendiente)
-{
-    if (pendiente.PendienteID == 0)
+    public JsonResult SavePendiente([FromBody] Pendiente pendiente)
     {
-        _context.Pendientes.Add(pendiente);
+        if (pendiente.PendienteID == 0)
+        {
+            _context.Pendientes.Add(pendiente);
+        }
+        else
+        {
+            _context.Pendientes.Update(pendiente);
+        }
+        _context.SaveChanges();
+        return Json(new { success = true, id = pendiente.PendienteID });
     }
-    else
-    {
-        _context.Pendientes.Update(pendiente);
-    }
-    _context.SaveChanges();
-    return Json(new { success = true, id = pendiente.PendienteID });
-}
 
 
     // Eliminar pendiente
@@ -70,28 +70,31 @@ public JsonResult SavePendiente([FromBody] Pendiente pendiente)
     }
 
     public JsonResult GetEquipos()
-{
-    // Obtener personas
-    var personas = _context.Personas
-        .Select(p => new { p.PersonaID, p.NombreCompleto })
-        .ToList();
+    {
+        // Obtener personas
+        var personas = _context.Personas
+            .Select(p => new { p.PersonaID, p.NombreCompleto })
+            .ToList();
 
-    // Obtener clientes
-    var equipos = _context.Equipos
-        .Select(c => new { c.EquipoID, c.PersonaID })
-        .ToList();
+        // Obtener clientes
+        var equipos = _context.Equipos
+            .Select(c => new { c.EquipoID, c.PersonaID })
+            .ToList();
 
-    // Unir manualmente clientes con personas por PersonaID
-    var equiposConNombre = (from c in equipos
-                             join p in personas on c.PersonaID equals p.PersonaID
-                             select new
-                             {
-                                 EquipoID = c.EquipoID,
-                                 NombreCompleto = p.NombreCompleto
-                             })
-                             .OrderBy(c => c.NombreCompleto)
-                             .ToList();
+        // Unir manualmente clientes con personas por PersonaID
+        var equiposConNombre = (from c in equipos
+                                join p in personas on c.PersonaID equals p.PersonaID
+                                select new
+                                {
+                                    EquipoID = c.EquipoID,
+                                    NombreCompleto = p.NombreCompleto
+                                })
+                                 .OrderBy(c => c.NombreCompleto)
+                                 .ToList();
 
-    return Json(equiposConNombre);
-}
+        return Json(equiposConNombre);
+    }
+
+
+
 }

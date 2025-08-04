@@ -126,12 +126,12 @@ if (
     localidadNombre.length < 3 ||
     !letrasYNumeros.test(localidadNombre)
 ) {
-    alert("El nombre de la localidad debe tener al menos 3 caracteres y solo contener letras y números.");
+    Swal.fire("El nombre de la localidad debe tener al menos 3 caracteres y solo contener letras y números.");
     return;
 }
 
 if (provincia === "" || provincia === "0") {
-        alert("Debe seleccionar una provincia.");
+        Swal.fire("Debe seleccionar una provincia.");
         return;
     }
 
