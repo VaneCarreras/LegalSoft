@@ -80,7 +80,7 @@ const claseFila = equipo.habilitado ? '' : 'fila-deshabilitada';
                                                     <td class="${claseFila}">${equipo.localidadNombre}</td>
 
                     
-            <td class="text-center"><button type="button" onclick="AbrirModalEditar(${equipo.equipoID})" title="Editar"><i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i></button></td>
+            <td class="text-center"><button type="button" onclick="AbrirModalEditar(${equipo.equipoID})" title="Editar"><i class="fa-duotone fa-solid fa-angles-right" style="--fa-primary-color: #4969a2; --fa-secondary-color: #4969a2;"></i></button></td>
 <td class="text-center"><button type="button" onclick="DeshabilitarHabilitarEquipo(${equipo.equipoID}, ${equipo.habilitado})" title="${tituloBoton}">${icono}</button></td>
 
                 </tr>
@@ -403,7 +403,7 @@ const claseFila = equipo.habilitado ? '' : 'fila-deshabilitada';
                     <td class="${claseFila}">${equipo.fechaNac}</td>
                                             <td class="${claseFila}">${equipo.localidadNombre}</td> 
 
-                    <td class="text-center"><button type="button" onclick="AbrirModalEditar(${equipo.equipoID})" title="Editar"><i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i></button></td>
+                    <td class="text-center"><button type="button" onclick="AbrirModalEditar(${equipo.equipoID})" title="Editar"><i class="fa-duotone fa-solid fa-angles-right" style="--fa-primary-color: #4969a2; --fa-secondary-color: #4969a2;"></i></button></td>
 <td class="text-center"><button type="button" onclick="DeshabilitarHabilitarEquipo(${equipo.equipoID}, ${equipo.habilitado})" title="${tituloBoton}">${icono}</button></td>
 
                 </tr>

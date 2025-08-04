@@ -75,7 +75,7 @@ const claseFila = cliente.habilitado ? '' : 'fila-deshabilitada';
             <td class="${claseFila}">${cliente.fechaNac}</td>
             <td class="${claseFila}">${cliente.localidadNombre}</td>
             <td class="text-center"><button type="button" onclick="BuscarImagenes(${cliente.clienteID})" data-bs-toggle="modal" data-bs-target=".MostrarSubirImagenes" title="Mostrar Imagenes"><i class="fa-duotone fa-regular fa-images" style="color:rgb(54, 176, 89);"></i></button></td>
-            <td class="text-center"><button type="button" onclick="AbrirModalEditar(${cliente.clienteID})" title="Editar"><i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i></button></td>
+            <td class="text-center"><button type="button" onclick="AbrirModalEditar(${cliente.clienteID})" title="Editar"><i class="fa-duotone fa-solid fa-angles-right" style="--fa-primary-color: #4969a2; --fa-secondary-color: #4969a2;"></i></button></td>
 <td class="text-center"><button type="button" onclick="DeshabilitarHabilitarCliente(${cliente.clienteID}, ${cliente.habilitado})" title="${tituloBoton}">${icono}</button></td>
 
 
@@ -416,7 +416,7 @@ const claseFila = cliente.habilitado ? '' : 'fila-deshabilitada';
             <td class="${claseFila}">${cliente.fechaNac}</td>
             <td class="${claseFila}">${cliente.localidadNombre}</td>
             <td class="text-center"><button type="button" onclick="BuscarImagenes(${cliente.clienteID})" data-bs-toggle="modal" data-bs-target=".MostrarSubirImagenes" title="Mostrar Imagenes"><i class="fa-duotone fa-regular fa-images" style="color:rgb(54, 176, 89);"></i></button></td>
-            <td class="text-center"><button type="button" onclick="AbrirModalEditar(${cliente.clienteID})" title="Editar"><i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i></button></td>
+            <td class="text-center"><button type="button" onclick="AbrirModalEditar(${cliente.clienteID})" title="Editar"><i class="fa-duotone fa-solid fa-angles-right" style="--fa-primary-color: #4969a2; --fa-secondary-color: #4969a2;"></i></button></td>
 <td class="text-center"><button type="button" onclick="DeshabilitarHabilitarCliente(${cliente.clienteID}, ${cliente.habilitado})" title="${tituloBoton}">${icono}</button></td>
 
 

@@ -46,7 +46,8 @@ namespace LegalSoft.Models
    {
       Asesorada = 1,
       Judicializada,
-   Desestimada
+      Desestimada,
+   Iniciada
 }
    public class VistaConsulta
    {

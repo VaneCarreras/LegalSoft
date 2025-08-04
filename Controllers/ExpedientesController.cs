@@ -177,7 +177,7 @@ public class ExpedientesController : Controller
         }
 
         // Ordenar por nombre
-        var expedientesOrdenados = expedientesMostrar.ToList();
+        var expedientesOrdenados = expedientesMostrar.OrderBy(e => e.FechaInicio).ToList();
 
         // Calcular total de registros y páginas
         var totalRegistros = expedientesOrdenados.Count();
@@ -199,7 +199,7 @@ public class ExpedientesController : Controller
 
 
 
-    public JsonResult BuscarExpedientes(string DniClienteBuscar, string NroExpBuscar)
+    public JsonResult BuscarExpedientes(string DniEquipoBuscar, string CaratulaBuscar)
     {
         // Obtener la lista de consultas
         var expedientes = _context.Expedientes.ToList();
@@ -249,17 +249,17 @@ public class ExpedientesController : Controller
         }
 
         // Ahora sí, aplicar el filtro sobre consultasMostrar, que **sí tiene** NombreCompletoCliente y NombreCompletoEquipo
-        if (!string.IsNullOrEmpty(DniClienteBuscar))
+        if (!string.IsNullOrEmpty(DniEquipoBuscar))
         {
             expedientesMostrar = expedientesMostrar
-                .Where(x => x.NombreCompletoCliente.ToLower().Contains(DniClienteBuscar.ToLower()))
+                .Where(x => x.NombreCompletoEquipo.ToLower().Contains(DniEquipoBuscar.ToLower()))
                 .ToList();
         }
 
-        if (!string.IsNullOrEmpty(NroExpBuscar))
+        if (!string.IsNullOrEmpty(CaratulaBuscar))
         {
             expedientesMostrar = expedientesMostrar
-                .Where(x => x.Numero.ToLower().Contains(NroExpBuscar.ToLower()))
+                .Where(x => x.Caratula.ToLower().Contains(CaratulaBuscar.ToLower()))
                 .ToList();
         }
 

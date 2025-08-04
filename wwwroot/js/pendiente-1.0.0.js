@@ -122,6 +122,7 @@ document.addEventListener('DOMContentLoaded', function () {
     success: function (response) {
       if (response.success) {
         $('#ModalPendientes').modal('hide');
+    calendar.refetchEvents();
 
         if (pendiente.PendienteID === 0) {
           // Nuevo

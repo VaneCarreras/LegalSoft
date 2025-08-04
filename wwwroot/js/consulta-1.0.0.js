@@ -46,7 +46,7 @@ const claseFila = consulta.habilitado ? '' : 'fila-deshabilitada';
                         <td class="${claseFila}">${consulta.fecha}</td>
                         <td class="${claseFila}">${consulta.estadoConsultaString}</td>
 
-                    <td class="text-center"><button type="button" onclick="AbrirModalEditar(${consulta.consultaID})" title="Editar"><i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i></button></td>
+                    <td class="text-center"><button type="button" onclick="AbrirModalEditar(${consulta.consultaID})" title="Editar"><i class="fa-duotone fa-solid fa-angles-right" style="--fa-primary-color: #718cbaff; --fa-secondary-color: #4969a2;"></i></button></td>
 <td class="text-center"><button type="button" onclick="DeshabilitarHabilitarConsulta(${consulta.consultaID}, ${consulta.habilitado})" title="${tituloBoton}">${icono}</button></td>
 
                 </tr>
@@ -282,7 +282,7 @@ const claseFila = consulta.habilitado ? '' : 'fila-deshabilitada';
                     <td class="${claseFila}">${consulta.fecha}</td>
                                         <td class="${claseFila}">${consulta.estadoConsultaString}</td>
 
-                    <td class="text-center"><button type="button" onclick="AbrirModalEditar(${consulta.consultaID})" title="Editar"><i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i></button></td>
+                    <td class="text-center"><button type="button" onclick="AbrirModalEditar(${consulta.consultaID})" title="Editar"><i class="fa-duotone fa-solid fa-angles-right" style="--fa-primary-color: #4969a2; --fa-secondary-color: #4969a2;"></i></button></td>
 <td class="text-center"><button type="button" onclick="DeshabilitarHabilitarConsulta(${consulta.consultaID}, ${consulta.habilitado})" title="${tituloBoton}">${icono}</button></td>
 
                     

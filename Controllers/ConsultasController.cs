@@ -144,7 +144,7 @@ Habilitado = consulta.Habilitado,
         }
 
         // Ordenar por nombre
-        var consultasOrdenados = consultasMostrar.ToList();
+        var consultasOrdenados = consultasMostrar.OrderBy(c => c.Fecha).ToList();
 
         // Calcular total de registros y páginas
         var totalRegistros = consultasOrdenados.Count();

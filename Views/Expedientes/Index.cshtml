@@ -3,6 +3,7 @@
 }
 @* ///MODIFICAR TODO LOS EXP SERAN CON LISTA TB// *@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+<link href="~/Fotorama/fotorama.4.6.4.css" rel="stylesheet" />
 
 <body class="body2 fondoLogo">
 <div class="text-center m-4">
@@ -13,8 +14,8 @@
 
 <div class="row">
 <div class="mb-3 col-3">
-  <label for="DniClienteBuscar" class="form-label">Nombre Cliente</label>
-  <input type="text" id="DniClienteBuscar" class="form-control"/>
+  <label for="DniEquipoBuscar" class="form-label">Nombre Equipo</label>
+  <input type="text" id="DniEquipoBuscar" class="form-control"/>
 </div>
 <div class="mb-3 col-3">
   <button style="margin-top: 32px;" type="button" class="btn btn-secondary" onclick="BuscarExpediente()">
@@ -23,8 +24,8 @@
 </div>
 @* <div class="mb-3 col-1"></div> *@
 <div class="mb-3 col-3">
-  <label for="NroExpBuscar" class="form-label">Número</label>
-  <input type="text" id="NroExpBuscar" class="form-control"/>
+  <label for="CaratulaBuscar" class="form-label">Carátula</label>
+  <input type="text" id="CaratulaBuscar" class="form-control"/>
 </div>
 <div class="mb-3 col-3">
   <button style="margin-top: 32px;" type="button" class="btn btn-secondary" onclick="BuscarExpediente()">
@@ -236,8 +237,8 @@
 
 @section Scripts {
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
-    <script src="~/js/fotorama.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/fotorama.js"></script>
 
 
         <script>
@@ -326,7 +327,7 @@ const claseFila = expediente.habilitado ? '' : 'fila-deshabilitada';
 
 
 
-                    <td class="text-center"><button type="button" onclick="AbrirModalEditar(${expediente.expedienteID})" title="Editar"><i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i></button></td>
+                    <td class="text-center"><button type="button" onclick="AbrirModalEditar(${expediente.expedienteID})" title="Editar"><i class="fa-duotone fa-solid fa-angles-right" style="--fa-primary-color: #4969a2; --fa-secondary-color: #4969a2;"></i></button></td>
 <td class="text-center"><button type="button" onclick="DeshabilitarHabilitarExpediente(${expediente.expedienteID}, ${expediente.habilitado})" title="${tituloBoton}">${icono}</button></td>
 
                 </tr>
@@ -546,14 +547,14 @@ function GuardarRegistro() {
 
 function BuscarExpediente() {
     // Obtener los valores de búsqueda
-    const dniClienteBuscar = $('#DniClienteBuscar').val().trim();
-    const nroExpBuscar = $('#NroExpBuscar').val().trim();
+    const dniEquipoBuscar = $('#DniEquipoBuscar').val().trim();
+    const caratulaBuscar = $('#CaratulaBuscar').val().trim();
 
     $.ajax({
         // URL para la petición
         url: '../../Expedientes/BuscarExpedientes', // Asegúrate que esta URL es correcta
         // Datos a enviar
-        data: { dniClienteBuscar: dniClienteBuscar, nroExpBuscar: nroExpBuscar },
+        data: { dniEquipoBuscar: dniEquipoBuscar, caratulaBuscar: caratulaBuscar },
         // Especifica si será una petición POST o GET
         type: 'POST',
         // Tipo de información que se espera de respuesta
@@ -600,7 +601,7 @@ const claseFila = expediente.habilitado ? '' : 'fila-deshabilitada';
 </td>
 
 
-                    <td class="text-center"><button type="button" onclick="AbrirModalEditar(${expediente.expedienteID})" title="Editar"><i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i></button></td>
+                    <td class="text-center"><button type="button" onclick="AbrirModalEditar(${expediente.expedienteID})" title="Editar"><i class="fa-duotone fa-solid fa-angles-right" style="--fa-primary-color: #4969a2; --fa-secondary-color: #4969a2;"></i></button></td>
 <td class="text-center"><button type="button" onclick="DeshabilitarHabilitarExpediente(${expediente.expedienteID}, ${expediente.habilitado})" title="${tituloBoton}">${icono}</button></td>
 
                 </tr>
@@ -723,6 +724,7 @@ function GuardarDocumento() {
                 ExpedienteID: expedienteID
             },
             success: function(resultado) {
+
     if (resultado.resultado === true || resultado === true) {
         Swal.fire("Documento guardado correctamente.");
         BuscarDocumentos(expedienteID);

@@ -32,8 +32,7 @@ function ListadoLocalidades(){
 
                     <td class="text-center">
                     <button type="button"  onclick="AbrirModalEditar(${localidad.localidadID})" title="Editar" >
-                    <i class="fa-solid fa-pen-nib" style="color: #B300FC;"></i>
-                    </button>
+<i class="fa-duotone fa-solid fa-angles-right" style="--fa-primary-color: #4969a2; --fa-secondary-color: #4969a2;"></i>                    </button>
                     </td>
                     <td class="text-center">
                     <button type="button"   onclick="EliminarRegistro(${localidad.localidadID})" title="Eliminar">
