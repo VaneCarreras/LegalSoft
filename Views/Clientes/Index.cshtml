@@ -899,7 +899,6 @@ function DeshabilitarHabilitarCliente(ClienteID, estaHabilitado) {
                 if (resultado === true) {
                     Swal.fire("Imagen guardada correctamente.");
                     BuscarImagenes(clienteID);
-                    BuscarImagenesEliminar(clienteID);
                 } else {
                     Swal.fire("No se pudo guardar la imagen. ¿Ya hay 3?");
                 }

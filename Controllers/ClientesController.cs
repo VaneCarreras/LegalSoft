@@ -4,6 +4,9 @@ using LegalSoft.Data;
 // using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 
 namespace LegalSoft.Controllers;
 
@@ -294,42 +297,73 @@ public JsonResult CambiarEstadoCliente(int ClienteID, bool habilitar)
         return Json(listaImagenCliente);
     }
 
-    public JsonResult GuardarImagen(string ImagenAGuardar, int ClienteID)
+    
+
+public JsonResult GuardarImagen(string ImagenAGuardar, int ClienteID)
+{
+    var resultado = false;
+
+    try
     {
-        var resultado = false;
-
-        try
+        var cantidadImagenes = _context.ImagenCliente.Count(o => o.ClienteID == ClienteID);
+        if (cantidadImagenes < 3)
         {
-            var cantidadImagenes = (from o in _context.ImagenCliente where o.ClienteID == ClienteID select o).Count();
-            if (cantidadImagenes < 3)
+            if (!string.IsNullOrEmpty(ImagenAGuardar))
             {
-                if (ImagenAGuardar != null && ImagenAGuardar.Length > 0)
+                var base64Data = ImagenAGuardar.Split(',')[1];
+                byte[] imageBytes = Convert.FromBase64String(base64Data);
+
+                using (var ms = new MemoryStream(imageBytes))
+                using (var originalImage = Image.FromStream(ms))
                 {
-                    byte[] bytes = Convert.FromBase64String(ImagenAGuardar.Split(',')[1]);
+                    int maxWidth = 350;
+                    int maxHeight = 350;
 
-                    var imagenCli = new ImagenCliente
+                    // Escalar proporcionalmente
+                    double ratioX = (double)maxWidth / originalImage.Width;
+                    double ratioY = (double)maxHeight / originalImage.Height;
+                    double ratio = Math.Min(ratioX, ratioY);
+
+                    int newWidth = (int)(originalImage.Width * ratio);
+                    int newHeight = (int)(originalImage.Height * ratio);
+
+                    using (var resizedImage = new Bitmap(newWidth, newHeight))
+                    using (var graphics = Graphics.FromImage(resizedImage))
                     {
-                        Imagen = bytes,
-                        ClienteID = Convert.ToInt32(ClienteID)
-                    };
-                    _context.ImagenCliente.Add(imagenCli);
-                    _context.SaveChanges();
+                        graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                        graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                        graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
-                    resultado = true;
+                        graphics.DrawImage(originalImage, 0, 0, newWidth, newHeight);
+
+                        using (var resizedMs = new MemoryStream())
+                        {
+                            resizedImage.Save(resizedMs, ImageFormat.Jpeg); // o ImageFormat.Png
+                            byte[] resizedBytes = resizedMs.ToArray();
+
+                            var imagenCli = new ImagenCliente
+                            {
+                                Imagen = resizedBytes,
+                                ClienteID = ClienteID
+                            };
+
+                            _context.ImagenCliente.Add(imagenCli);
+                            _context.SaveChanges();
+
+                            resultado = true;
+                        }
+                    }
                 }
             }
-            else
-            {
-                resultado = false;
-            }
         }
-        catch (Exception ex)
-        {
-            resultado = false;
-        }
-
-        return Json(resultado);
     }
+    catch (Exception ex)
+    {
+        resultado = false;
+    }
+
+    return Json(resultado);
+}
 
     public JsonResult EliminarImagenCliente(int ImgClientesID)
     {
