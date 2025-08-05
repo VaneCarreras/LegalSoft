@@ -72,12 +72,12 @@ const claseFila = consulta.habilitado ? '' : 'fila-deshabilitada';
                 contenidoTabla += `
                 <tr>
                         <td class="${claseFila}">${consulta.nombreCompletoCliente}</td>
-                        <td class="${claseFila}">${consulta.nombreCompletoEquipo}</td>
+                        <td class="${claseFila} ocultar-en-768px">${consulta.nombreCompletoEquipo}</td>
                                                                         <td class="${claseFila}">${consulta.motivo}</td>
 
 
-                        <td class="${claseFila}">${consulta.fecha}</td>
-                        <td class="${claseFila}">${consulta.estadoConsultaString}</td>
+                        <td class="${claseFila} ocultar-en-768px">${consulta.fecha}</td>
+                        <td class="${claseFila} ocultar-en-768px">${consulta.estadoConsultaString}</td>
 
                     <td class="text-center"><button type="button" onclick="AbrirModalEditar(${consulta.consultaID})" title="Editar"><i class="fa-duotone fa-solid fa-angles-right" style="--fa-primary-color: #718cbaff; --fa-secondary-color: #4969a2;"></i></button></td>
 <td class="text-center"><button type="button" onclick="DeshabilitarHabilitarConsulta(${consulta.consultaID}, ${consulta.habilitado})" title="${tituloBoton}">${icono}</button></td>
@@ -269,7 +269,7 @@ if (motivo.length > 50) {
         dataType: 'json',
         success: function (resultado) {
             if (resultado != "") {
-                alert(resultado);
+                Swal.fire(resultado);
             }
             ListadoConsultas();
             $("#ModalConsultas").modal("hide");
@@ -316,11 +316,11 @@ const claseFila = consulta.habilitado ? '' : 'fila-deshabilitada';
                 contenidoTabla += `
                 <tr>
                     <td class="${claseFila}">${consulta.nombreCompletoCliente}</td>
-                    <td class="${claseFila}">${consulta.nombreCompletoEquipo}</td>
+                    <td class="${claseFila} ocultar-en-768px">${consulta.nombreCompletoEquipo}</td>
                                         <td class="${claseFila}">${consulta.motivo}</td>
 
-                    <td class="${claseFila}">${consulta.fecha}</td>
-                                        <td class="${claseFila}">${consulta.estadoConsultaString}</td>
+                    <td class="${claseFila} ocultar-en-768px">${consulta.fecha}</td>
+                                        <td class="${claseFila} ocultar-en-768px">${consulta.estadoConsultaString}</td>
 
                     <td class="text-center"><button type="button" onclick="AbrirModalEditar(${consulta.consultaID})" title="Editar"><i class="fa-duotone fa-solid fa-angles-right" style="--fa-primary-color: #4969a2; --fa-secondary-color: #4969a2;"></i></button></td>
 <td class="text-center"><button type="button" onclick="DeshabilitarHabilitarConsulta(${consulta.consultaID}, ${consulta.habilitado})" title="${tituloBoton}">${icono}</button></td>

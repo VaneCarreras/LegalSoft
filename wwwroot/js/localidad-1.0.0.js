@@ -149,7 +149,7 @@ if (provincia === "" || provincia === "0") {
             dataType: 'json',
             success: function (resultado) {
                 if (resultado != "") {
-                    alert(resultado);
+                    Swal.fire(resultado);
                 }
                 ListadoLocalidades(); // Refresca la lista de clientes
                 $("#ModalLocalidades").modal("hide"); // Cierra el modal
@@ -175,7 +175,7 @@ if (provincia === "" || provincia === "0") {
             dataType: 'json',
             success: function (resultado) {
                 if (resultado != "") {
-                    alert(resultado);
+                    Swal.fire(resultado);
                 }
                 ListadoLocalidades(); // Refresca la lista de clientes
                 $("#ModalLocalidades").modal("hide"); // Cierra el modal

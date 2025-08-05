@@ -218,12 +218,7 @@
     return;
   }
 
-  const fechaTurno = new Date(turno.FechaHora);
-  const ahora = new Date();
-  if (fechaTurno < ahora) {
-    Swal.fire('La fecha debe ser actual o futura.');
-    return;
-  }
+  
 
   if (!turno.Estado) {
     Swal.fire('Falta el Estado');

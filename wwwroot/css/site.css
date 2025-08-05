@@ -256,6 +256,7 @@ input.btn:hover {
       display: none;
   }
   
+  
 }
 
 
@@ -269,7 +270,7 @@ input.btn:hover {
 /* Para celulares */
 @media only screen and (max-width: 767px) {
   .calendar div {
-      font-size: 0.2em;
+      font-size: 0.1em;
   }
 }
 /* Para tablets (pantallas de entre 768px y 1024px) */
@@ -279,6 +280,17 @@ input.btn:hover {
       height: 300px;
       margin: auto;
   }
+  .chico{
+width: 90%; /* Reduzco el ancho para tablets */
+height: 600px;
+      margin: auto;
+  }
+  
+}
+
+.dimension{
+  height: 60vh;
+  margin-left: 18vh;
 }
 
 /* Para celulares (pantallas de hasta 767px) */
@@ -287,6 +299,18 @@ input.btn:hover {
       width: 20%; /* Reduzco aún más el ancho para celulares */
       height: 150px;
       margin: auto;
+  }
+  .chico{
+    width: 90%; /* Reduzco aún más el ancho para celulares */
+    height: 400px;
+      margin: auto;
+  }
+  .titulos1{
+    font-size: 24px;
+  }
+  .dimension{
+    height: 30vh;
+    margin-left: 6vh;
   }
 }
 

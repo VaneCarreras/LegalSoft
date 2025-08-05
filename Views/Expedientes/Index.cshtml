@@ -53,15 +53,15 @@
     <tr>
       @* <th class="ocultar-en-550px">Nro</th> *@
       <th>Carátula</th>
-      <th>Cliente</th>
+      <th class="ocultar-en-768px">Cliente</th>
       <th class="ocultar-en-768px">Abogado</th>
       <th class="ocultar-en-768px">Inicio</th>
       @* <th >Último Decreto</th> *@
       @* <th class="ocultar-en-768px">Docs</th> *@
-      <th class="ocultar-en-550px">Link</th>
-      <th>Área</th>
-      <th>Dependencia</th>
-      <th>Ubicación</th>
+      <th class="ocultar-en-768px">Link</th>
+      <th class="ocultar-en-768px">Área</th>
+      <th class="ocultar-en-768px">Dependencia</th>
+      <th class="ocultar-en-768px">Ubicación</th>
 
       <th style="width: 70px"></th>
       <th style="width: 70px"></th>
@@ -333,18 +333,18 @@ const claseFila = expediente.habilitado ? '' : 'fila-deshabilitada';
 </td>
 
                 
-                <td class="${claseFila}">${expediente.nombreCompletoCliente}</td>
-                        <td class="${claseFila}">${expediente.nombreCompletoEquipo}</td>
+                <td class="${claseFila} ocultar-en-768px">${expediente.nombreCompletoCliente}</td>
+                        <td class="${claseFila} ocultar-en-768px">${expediente.nombreCompletoEquipo}</td>
                         
 
 
-                        <td class="${claseFila}">${expediente.fechaInicio}</td>
+                        <td class="${claseFila} ocultar-en-768px">${expediente.fechaInicio}</td>
 
-                            <td class="${claseFila}"><a href='  ${expediente.linkContenido}  ' target='_blank' style='text-decoration: underline; color: orange;'> ${expediente.linkContenido} </a></td>
+                            <td class="${claseFila} ocultar-en-768px"><a href='  ${expediente.linkContenido}  ' target='_blank' style='text-decoration: underline; color: orange;'> ${expediente.linkContenido} </a></td>
 
-                                                <td class="${claseFila}">${expediente.areaString}</td>
-                        <td class="${claseFila}">${expediente.dependenciaString}</td>
-                        <td class="${claseFila}">${expediente.ubicacionString}</td>
+                                                <td class="${claseFila} ocultar-en-768px">${expediente.areaString}</td>
+                        <td class="${claseFila} ocultar-en-768px">${expediente.dependenciaString}</td>
+                        <td class="${claseFila} ocultar-en-768px">${expediente.ubicacionString}</td>
 
 
 <td class="text-center">
@@ -566,7 +566,7 @@ function GuardarRegistro() {
         dataType: 'json',
         success: function (resultado) {
             if (resultado != "") {
-                alert(resultado);
+                Swal.fire(resultado);
             }
             ListadoExpedientes(); // Refresca la lista de expedientes
             $("#ModalExpedientes").modal("hide"); // Cierra el modal
@@ -614,16 +614,16 @@ const claseFila = expediente.habilitado ? '' : 'fila-deshabilitada';
 <td  class="${claseFila}" style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${expediente.caratula}">
   ${expediente.caratula}
 </td>
-                        <td class="${claseFila}">${expediente.nombreCompletoCliente}</td>
-                        <td class="${claseFila}">${expediente.nombreCompletoEquipo}</td>
+                        <td class="${claseFila} ocultar-en-768px">${expediente.nombreCompletoCliente}</td>
+                        <td class="${claseFila} ocultar-en-768px">${expediente.nombreCompletoEquipo}</td>
                         
-                        <td class="${claseFila}">${expediente.fechaInicio}</td>
+                        <td class="${claseFila} ocultar-en-768px">${expediente.fechaInicio}</td>
 
-                            <td class="${claseFila}"><a href=' ${expediente.linkContenido} ' target='_blank' style='text-decoration: underline; color: orange;'>  ${expediente.linkContenido} </a></td>
+                            <td class="${claseFila} ocultar-en-768px"><a href=' ${expediente.linkContenido} ' target='_blank' style='text-decoration: underline; color: orange;'>  ${expediente.linkContenido} </a></td>
 
-                                                <td class="${claseFila}">${expediente.areaString}</td>
-                        <td class="${claseFila}">${expediente.dependenciaString}</td>
-                        <td class="${claseFila}">${expediente.ubicacionString}</td>
+                                                <td class="${claseFila} ocultar-en-768px">${expediente.areaString}</td>
+                        <td class="${claseFila} ocultar-en-768px">${expediente.dependenciaString}</td>
+                        <td class="${claseFila} ocultar-en-768px">${expediente.ubicacionString}</td>
 
 
 <td class="text-center">

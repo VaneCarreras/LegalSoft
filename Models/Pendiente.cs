@@ -28,7 +28,6 @@ public class Pendiente
         public int EquipoID { get; set; }
 
         [Required]
-        [FutureOrPresentDateP(ErrorMessage = "La fecha debe ser actual o futura.")]
         public DateTime FechaHora { get; set; }
 
         [Required]

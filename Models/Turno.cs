@@ -27,7 +27,6 @@ namespace LegalSoft.Models
 
         public int EquipoID { get; set; }
         [Required]
-        [FutureOrPresentDateT(ErrorMessage = "La fecha debe ser actual o futura.")]
         public DateTime FechaHora { get; set; }
         [Required]
         public EstadoTurno Estado { get; set; }

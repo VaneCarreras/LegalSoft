@@ -91,12 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return;
   }
 
-  const fechaIngresada = new Date(fechaHora);
-  const ahora = new Date();
-  if (fechaIngresada < ahora) {
-    Swal.fire('La fecha y hora deben ser iguales o posteriores a la actual.');
-    return;
-  }
+  
 
   if (!estado || estado.trim() === "") {
     Swal.fire('Debe seleccionar un estado.');

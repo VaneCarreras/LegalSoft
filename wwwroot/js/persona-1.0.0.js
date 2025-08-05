@@ -108,7 +108,7 @@ function GuardarRegistro(){
         success: function (resultado) {
 
             if(resultado != ""){
-                alert(resultado);
+                Swal.fire(resultado);
             }
             ListadoPersonas();
         },

@@ -87,12 +87,11 @@
       <li>
         <a class="dropdown-item" asp-area="" asp-controller="Turnos" asp-action="Index">Mis Turnos</a>
       </li>
-       @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador")){
 
       <li>
         <a class="dropdown-item" asp-area="" asp-controller="Pendientes" asp-action="Index">Mi Agenda</a>
       </li>
-      }
+      
     </ul>
   </li>
 }

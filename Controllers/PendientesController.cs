@@ -5,7 +5,7 @@ using LegalSoft.Data;
 using Microsoft.AspNetCore.Authorization;
 
 namespace LegalSoft.Controllers;
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Roles = "Administrador, Equipo")]
 
 public class PendientesController : Controller
 {

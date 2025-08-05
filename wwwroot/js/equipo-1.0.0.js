@@ -103,10 +103,10 @@ const claseFila = equipo.habilitado ? '' : 'fila-deshabilitada';
                 <tr>
                         <td class="${claseFila}">${equipo.nombreCompleto}</td>
                         <td class="${claseFila}">${equipo.nroTipoDoc}</td>
-                        <td class="${claseFila}">${equipo.direccion}</td>
-                        <td class="${claseFila}">${equipo.telefono}</td>
-                        <td class="${claseFila}">${equipo.fechaNac}</td>
-                                                    <td class="${claseFila}">${equipo.localidadNombre}</td>
+                        <td class="${claseFila} ocultar-en-768px">${equipo.direccion}</td>
+                        <td class="${claseFila} ocultar-en-768px">${equipo.telefono}</td>
+                        <td class="${claseFila} ocultar-en-768px">${equipo.fechaNac}</td>
+                                                    <td class="${claseFila} ocultar-en-768px">${equipo.localidadNombre}</td>
 
                     
             <td class="text-center"><button type="button" onclick="AbrirModalEditar(${equipo.equipoID})" title="Editar"><i class="fa-duotone fa-solid fa-angles-right" style="--fa-primary-color: #4969a2; --fa-secondary-color: #4969a2;"></i></button></td>
@@ -326,7 +326,7 @@ const soloLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
             dataType: 'json',
             success: function (resultado) {
                 if (resultado != "") {
-                    alert(resultado);
+                    Swal.fire(resultado);
                 }
                 ListadoEquipos(); // Refresca la lista
                 $("#ModalEquipos").modal("hide"); // Cierra el modal
@@ -354,7 +354,7 @@ const soloLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
             dataType: 'json',
             success: function (resultado) {
                 if (resultado != "") {
-                    alert(resultado);
+                    Swal.fire(resultado);
                 }
                 ListadoEquipos(); // Refresca la lista
                 $("#ModalEquipos").modal("hide"); // Cierra el modal
@@ -431,10 +431,10 @@ const claseFila = equipo.habilitado ? '' : 'fila-deshabilitada';
                 <tr>
                     <td class="${claseFila}">${equipo.nombreCompleto}</td>
                     <td class="${claseFila}">${equipo.nroTipoDoc}</td>
-                    <td class="${claseFila}">${equipo.direccion}</td>
-                    <td class="${claseFila}">${equipo.telefono}</td>
-                    <td class="${claseFila}">${equipo.fechaNac}</td>
-                                            <td class="${claseFila}">${equipo.localidadNombre}</td> 
+                    <td class="${claseFila} ocultar-en-768px">${equipo.direccion}</td>
+                    <td class="${claseFila} ocultar-en-768px">${equipo.telefono}</td>
+                    <td class="${claseFila} ocultar-en-768px">${equipo.fechaNac}</td>
+                                            <td class="${claseFila} ocultar-en-768px">${equipo.localidadNombre}</td> 
 
                     <td class="text-center"><button type="button" onclick="AbrirModalEditar(${equipo.equipoID})" title="Editar"><i class="fa-duotone fa-solid fa-angles-right" style="--fa-primary-color: #4969a2; --fa-secondary-color: #4969a2;"></i></button></td>
 <td class="text-center"><button type="button" onclick="DeshabilitarHabilitarEquipo(${equipo.equipoID}, ${equipo.habilitado})" title="${tituloBoton}">${icono}</button></td>
