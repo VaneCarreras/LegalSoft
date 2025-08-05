@@ -37,6 +37,8 @@ namespace LegalSoft.Models
 
     public enum EstadoTurno
     {
+                Asignado,
+
         Vacante,
         Asistido,
         Suspendido

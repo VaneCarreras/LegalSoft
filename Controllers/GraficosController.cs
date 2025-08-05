@@ -21,29 +21,42 @@ public class GraficosController : Controller
         List<object> resultado = new List<object>();
 
         if (tipo == "consultas")
-        {
-            var datos = _context.Consultas
-    .Where(c => c.Fecha.Month == mes && c.Fecha.Year == anio)
-    .GroupBy(c => c.EstadoConsulta)
-    .Select(g => new {
-        nombreEstado = g.Key.ToString(),  
-        cantidad = g.Count()
-    })
-    .ToList();
+{
+    var datos = (from consulta in _context.Consultas
+                 join equipo in _context.Equipos on consulta.EquipoID equals equipo.EquipoID
+                 join persona in _context.Personas on equipo.PersonaID equals persona.PersonaID
+                 where consulta.Fecha.Month == mes 
+                    && consulta.Fecha.Year == anio
+                    && consulta.Habilitado == true
+                 group consulta by new { persona.NombreCompleto } into g
+                 select new
+                 {
+                     nombreEstado = g.Key.NombreCompleto,
+                     cantidad = g.Count()
+                 })
+                 .ToList();
+
+
 
 
             resultado.AddRange(datos);
         }
         else if (tipo == "expedientes")
         {
-            var datos = _context.Expedientes
-    .Where(c => c.FechaInicio.Month == mes && c.FechaInicio.Year == anio)
-    .GroupBy(c => c.Ubicacion)
-    .Select(g => new {
-        nombreEstado = g.Key.ToString(),  // Convierte enum a string legible
-        cantidad = g.Count()
-    })
-    .ToList();
+          
+          
+    var datos = (from expediente in _context.Expedientes
+                 join equipo in _context.Equipos on expediente.EquipoID equals equipo.EquipoID
+                 join persona in _context.Personas on equipo.PersonaID equals persona.PersonaID
+                 where expediente.FechaInicio.Month == mes && expediente.FechaInicio.Year == anio && expediente.Habilitado == true
+
+                 group expediente by new { persona.NombreCompleto } into g
+                 select new
+                 {
+                     nombreEstado = g.Key.NombreCompleto,
+                     cantidad = g.Count()
+                 })
+                 .ToList();
 
 
             resultado.AddRange(datos);

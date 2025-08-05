@@ -44,6 +44,7 @@ namespace LegalSoft.Models
     [Required(ErrorMessage = "Debe seleccionar una ubicación.")]
     public Ubicacion Ubicacion { get; set; }
 
+
     public EstadoExpediente EstadoExpediente { get; set; }
 
     public virtual Cliente? Cliente { get; set; }
@@ -74,10 +75,13 @@ namespace LegalSoft.Models
         Cordoba,
       Santa_Fe
    }
-          public enum Ubicacion
-   {
-      Casillero= 1,
-      Despacho
+    public enum Ubicacion
+    {
+        Casillero = 1,
+        Despacho,
+        En_Letra,
+        Reservado,
+      Archivado
    }
 
     public class VistaExpediente

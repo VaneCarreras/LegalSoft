@@ -36,6 +36,7 @@ namespace LegalSoft.Models
         [EnumDataType(typeof(EstadoConsulta), ErrorMessage = "Estado de consulta inválido.")]
         public EstadoConsulta EstadoConsulta { get; set; }
 
+
         public virtual Cliente? Cliente { get; set; }
         public virtual Equipo? Equipo { get; set; }
 
@@ -44,10 +45,11 @@ namespace LegalSoft.Models
 
    public enum EstadoConsulta
    {
-      Asesorada = 1,
+         Iniciada = 1,
+
+      Asesorada,
       Judicializada,
-      Desestimada,
-   Iniciada
+      Desestimada
 }
    public class VistaConsulta
    {
