@@ -50,12 +50,12 @@ public class ConsultasController : Controller
     clientesConNombre.Add(new { ClienteID = 0, NombreCompleto = "[SELECCIONAR]" });
 
 
-        ViewBag.ClienteID = new SelectList(clientesConNombre.OrderBy(c => c.NombreCompleto), "ClienteID", "NombreCompleto");
+        ViewBag.ClienteID = new SelectList(clientesConNombre, "ClienteID", "NombreCompleto");
 
     clientesBuscar.Add(new { ClienteID = 0, NombreCompleto = "[TODOS]" });
 
 
-        ViewBag.NombreCompletoClienteBuscar = new SelectList(clientesBuscar.OrderBy(c => c.NombreCompleto), "ClienteID", "NombreCompleto");
+        ViewBag.NombreCompletoClienteBuscar = new SelectList(clientesBuscar, "ClienteID", "NombreCompleto");
 
 
         var equipos = _context.Equipos
@@ -74,11 +74,11 @@ public class ConsultasController : Controller
     equiposConNombre.Add(new { EquipoID = 0, NombreCompleto = "[SELECCIONAR]" });
 
 
-    ViewBag.EquipoID = new SelectList(equiposConNombre.OrderBy(e => e.NombreCompleto), "EquipoID", "NombreCompleto");
+    ViewBag.EquipoID = new SelectList(equiposConNombre, "EquipoID", "NombreCompleto");
     equiposBuscar.Add(new { EquipoID = 0, NombreCompleto = "[TODOS]" });
 
 
-    ViewBag.NombreCompletoEquipoBuscar = new SelectList(equiposBuscar.OrderBy(e => e.NombreCompleto), "EquipoID", "NombreCompleto");
+    ViewBag.NombreCompletoEquipoBuscar = new SelectList(equiposBuscar, "EquipoID", "NombreCompleto");
 
     ViewBag.EstadoConsulta = new SelectList(
     Enum.GetValues(typeof(EstadoConsulta))
@@ -163,16 +163,19 @@ Habilitado = consulta.Habilitado,
         });
     }
 
-
-
-
-public JsonResult BuscarConsultas(string NombreCompletoClienteBuscar, string NombreCompletoEquipoBuscar)
+[HttpPost]
+public JsonResult BuscarConsultas(string NombreCompletoClienteBuscar, string NombreCompletoEquipoBuscar, bool soloHabilitados= false)
 {
     // Obtener la lista de consultas
     var consultas = _context.Consultas.ToList();
+    
+    if (soloHabilitados)
+    {
+        consultas = consultas.Where(c => c.Habilitado).ToList();
+    }
 
     // Crear una lista de consultas para mostrar
-    List<VistaConsulta> consultasMostrar = new List<VistaConsulta>();
+        List<VistaConsulta> consultasMostrar = new List<VistaConsulta>();
 
     foreach (var consulta in consultas)
     {
@@ -211,15 +214,18 @@ Habilitado = consulta.Habilitado,
     {
         consultasMostrar = consultasMostrar
             .Where(x => x.NombreCompletoCliente.ToLower().Contains(NombreCompletoClienteBuscar.ToLower()))
-            .OrderBy(c => c.Fecha).ToList();
+             .ToList();
     }
 
     if (!string.IsNullOrEmpty(NombreCompletoEquipoBuscar))
     {
         consultasMostrar = consultasMostrar
             .Where(x => x.NombreCompletoEquipo.ToLower().Contains(NombreCompletoEquipoBuscar.ToLower()))
-            .OrderBy(c => c.Fecha).ToList();
+            .ToList();
     }
+
+    consultasMostrar = consultasMostrar.OrderBy(x => x.Fecha).ToList();
+
 
     return Json(consultasMostrar);
 }
@@ -227,7 +233,7 @@ Habilitado = consulta.Habilitado,
 
 
 
-
+[HttpPost]
     public JsonResult GuardarNuevaConsulta(int consultaID, int clienteID, int equipoID, DateOnly fecha, string? descripcion, string? motivo, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoConsulta estadoConsulta)
     {
 
@@ -272,7 +278,7 @@ Habilitado = consulta.Habilitado,
 
         return Json(error);
     }
-
+[HttpPost]
 public JsonResult EditarConsulta(int consultaID, int clienteID, int equipoID, DateOnly fecha, string? descripcion, string? motivo, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoConsulta estadoConsulta)
 {
     // Buscar el cliente por el ID proporcionado
@@ -307,7 +313,7 @@ public JsonResult EditarConsulta(int consultaID, int clienteID, int equipoID, Da
         return Json("Error: Consulta no encontrado");
     }
 }
-
+[HttpPost]
     public JsonResult EliminarConsulta(int consultaID)
     {
         var consulta = _context.Consultas.Find(consultaID);

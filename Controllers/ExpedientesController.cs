@@ -53,11 +53,11 @@ public class ExpedientesController : Controller
         clientesConNombre.Add(new { ClienteID = 0, NombreCompleto = "[SELECCIONAR]" });
 
 
-        ViewBag.ClienteID = new SelectList(clientesConNombre.OrderBy(c => c.NombreCompleto), "ClienteID", "NombreCompleto");
+        ViewBag.ClienteID = new SelectList(clientesConNombre, "ClienteID", "NombreCompleto");
         clientesBuscar.Add(new { ClienteID = 0, NombreCompleto = "[TODOS]" });
 
 
-        ViewBag.NombreCompletoClienteBuscar = new SelectList(clientesBuscar.OrderBy(c => c.NombreCompleto), "ClienteID", "NombreCompleto");
+        ViewBag.NombreCompletoClienteBuscar = new SelectList(clientesBuscar, "ClienteID", "NombreCompleto");
 
 
         var equipos = _context.Equipos
@@ -76,11 +76,11 @@ public class ExpedientesController : Controller
         equiposConNombre.Add(new { EquipoID = 0, NombreCompleto = "[SELECCIONAR]" });
 
 
-        ViewBag.EquipoID = new SelectList(equiposConNombre.OrderBy(e => e.NombreCompleto), "EquipoID", "NombreCompleto");
+        ViewBag.EquipoID = new SelectList(equiposConNombre, "EquipoID", "NombreCompleto");
         equiposBuscar.Add(new { EquipoID = 0, NombreCompleto = "[TODOS]" });
 
 
-        ViewBag.NombreCompletoEquipoBuscar = new SelectList(equiposBuscar.OrderBy(e => e.NombreCompleto), "EquipoID", "NombreCompleto");
+        ViewBag.NombreCompletoEquipoBuscar = new SelectList(equiposBuscar, "EquipoID", "NombreCompleto");
 
         ViewBag.EstadoExpediente = new SelectList(
         Enum.GetValues(typeof(EstadoExpediente))
@@ -177,7 +177,7 @@ public class ExpedientesController : Controller
         }
 
         // Ordenar por nombre
-        var expedientesOrdenados = expedientesMostrar.OrderBy(e => e.FechaInicio).ToList();
+        var expedientesOrdenados = expedientesMostrar.ToList();
 
         // Calcular total de registros y páginas
         var totalRegistros = expedientesOrdenados.Count();
@@ -187,6 +187,7 @@ public class ExpedientesController : Controller
         var expedientesPaginados = expedientesOrdenados
             .Skip((pagina - 1) * tamanioPagina)
             .Take(tamanioPagina)
+            .OrderBy(c => c.FechaInicio)
             .ToList();
 
         return Json(new
@@ -198,11 +199,17 @@ public class ExpedientesController : Controller
 
 
 
+[HttpPost]
 
-    public JsonResult BuscarExpedientes(string DniEquipoBuscar, string CaratulaBuscar)
+    public JsonResult BuscarExpedientes(string DniEquipoBuscar, string CaratulaBuscar, bool soloHabilitados =false)
     {
         // Obtener la lista de consultas
         var expedientes = _context.Expedientes.ToList();
+
+            if (soloHabilitados)
+    {
+        expedientes = expedientes.Where(e => e.Habilitado).ToList();
+    }
 
         // Crear una lista de consultas para mostrar
         List<VistaExpediente> expedientesMostrar = new List<VistaExpediente>();
@@ -253,15 +260,18 @@ public class ExpedientesController : Controller
         {
             expedientesMostrar = expedientesMostrar
                 .Where(x => x.NombreCompletoEquipo.ToLower().Contains(DniEquipoBuscar.ToLower()))
-                .OrderBy(e => e.FechaInicio).ToList();
+                .ToList();
         }
 
         if (!string.IsNullOrEmpty(CaratulaBuscar))
         {
             expedientesMostrar = expedientesMostrar
                 .Where(x => x.Caratula.ToLower().Contains(CaratulaBuscar.ToLower()))
-                .OrderBy(e => e.FechaInicio).ToList();
+                .ToList();
         }
+
+        expedientesMostrar = expedientesMostrar.OrderBy(x => x.FechaInicio).ToList();
+
 
         return Json(expedientesMostrar);
     }
@@ -269,6 +279,7 @@ public class ExpedientesController : Controller
 
 
 
+[HttpPost]
 
     public JsonResult GuardarNuevoExpediente(int expedienteID, int clienteID, int equipoID, DateOnly fechaInicio,  string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoExpediente estadoExpediente,  Area area, Dependencia dependencia, Ubicacion ubicacion, string? numero, string? caratula, string? ultimoDecreto, string? linkContenido)
     {
@@ -320,6 +331,7 @@ public class ExpedientesController : Controller
 
         return Json(error);
     }
+[HttpPost]
 
     public JsonResult EditarExpediente(int expedienteID, int clienteID, int equipoID, DateOnly fechaInicio,  string? numero, string? caratula, string? ultimoDecreto, string? linkContenido, string? nombreCompletoCliente, string? nombreCompletoEquipo, EstadoExpediente estadoExpediente, Area area, Dependencia dependencia, Ubicacion ubicacion)
     {
@@ -362,6 +374,7 @@ public class ExpedientesController : Controller
         }
     }
 
+[HttpPost]
     public JsonResult EliminarExpediente(int expedienteID)
     {
         var expediente = _context.Expedientes.Find(expedienteID);
@@ -371,7 +384,7 @@ public class ExpedientesController : Controller
         return Json(true);
     }
 
-
+[HttpGet]
     public JsonResult BuscarDocumentos(int ExpedienteID)
     {
             Console.WriteLine($"[BuscarDocumentos] ExpedienteID recibido: {ExpedienteID}");
@@ -398,62 +411,64 @@ public class ExpedientesController : Controller
         return Json(listaDocs);
     }
 
-public JsonResult GuardarDocumento(string DocumentoAGuardar, string NombreArchivo, int ExpedienteID)
-{
-    try
+[HttpPost]
+
+    public JsonResult GuardarDocumento(string DocumentoAGuardar, string NombreArchivo, int ExpedienteID)
     {
-        var cantidadDocs = _context.DocsExpediente.Count(d => d.ExpedienteID == ExpedienteID);
-        if (cantidadDocs >= 10)
-            return Json(new { resultado = false, error = "Límite de documentos alcanzado." });
-
-        if (string.IsNullOrEmpty(DocumentoAGuardar) || string.IsNullOrEmpty(NombreArchivo))
-            return Json(new { resultado = false, error = "Faltan datos para guardar." });
-
-        var parts = DocumentoAGuardar.Split(',');
-        if (parts.Length < 2)
-            return Json(new { resultado = false, error = "Formato Base64 inválido." });
-
-        byte[] archivoBytes;
         try
         {
-            archivoBytes = Convert.FromBase64String(parts[1]);
-        }
-        catch (FormatException fe)
-        {
-            return Json(new { resultado = false, error = "Error formato Base64: " + fe.Message });
-        }
+            var cantidadDocs = _context.DocsExpediente.Count(d => d.ExpedienteID == ExpedienteID);
+            if (cantidadDocs >= 10)
+                return Json(new { resultado = false, error = "Límite de documentos alcanzado." });
 
-        var nuevoDoc = new DocsExpediente
-        {
-            ExpedienteID = ExpedienteID,
-            Imagen = archivoBytes,
-            NombreArchivo = NombreArchivo,
-            TipoImg = Path.GetExtension(NombreArchivo)?.ToLower(),
-            Descripcion = null
-        };
+            if (string.IsNullOrEmpty(DocumentoAGuardar) || string.IsNullOrEmpty(NombreArchivo))
+                return Json(new { resultado = false, error = "Faltan datos para guardar." });
 
-        try
-        {
-            _context.DocsExpediente.Add(nuevoDoc);
-            _context.SaveChanges();
+            var parts = DocumentoAGuardar.Split(',');
+            if (parts.Length < 2)
+                return Json(new { resultado = false, error = "Formato Base64 inválido." });
+
+            byte[] archivoBytes;
+            try
+            {
+                archivoBytes = Convert.FromBase64String(parts[1]);
+            }
+            catch (FormatException fe)
+            {
+                return Json(new { resultado = false, error = "Error formato Base64: " + fe.Message });
+            }
+
+            var nuevoDoc = new DocsExpediente
+            {
+                ExpedienteID = ExpedienteID,
+                Imagen = archivoBytes,
+                NombreArchivo = NombreArchivo,
+                TipoImg = Path.GetExtension(NombreArchivo)?.ToLower(),
+                Descripcion = null
+            };
+
+            try
+            {
+                _context.DocsExpediente.Add(nuevoDoc);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                var errorMsg = "Error guardando en base: " + ex.Message;
+                if (ex.InnerException != null)
+                {
+                    errorMsg += " | Inner: " + ex.InnerException.Message;
+                }
+                return Json(new { resultado = false, error = errorMsg });
+            }
+
+            return Json(new { resultado = true });
         }
         catch (Exception ex)
         {
-            var errorMsg = "Error guardando en base: " + ex.Message;
-            if (ex.InnerException != null)
-            {
-                errorMsg += " | Inner: " + ex.InnerException.Message;
-            }
-            return Json(new { resultado = false, error = errorMsg });
+            return Json(new { resultado = false, error = "Error inesperado: " + ex.Message });
         }
-
-        return Json(new { resultado = true });
     }
-    catch (Exception ex)
-    {
-        return Json(new { resultado = false, error = "Error inesperado: " + ex.Message });
-    }
-}
 
 [HttpPost]
 public JsonResult EliminarDocumento(int DocID)

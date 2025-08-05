@@ -580,6 +580,8 @@ function GuardarRegistro() {
 
 function BuscarExpediente() {
     // Obtener los valores de búsqueda
+            const soloHabilitados = document.getElementById("chkSoloHabilitados").checked;
+
     const dniEquipoBuscar = $('#DniEquipoBuscar').val().trim();
     const caratulaBuscar = $('#CaratulaBuscar').val().trim();
 
@@ -587,7 +589,7 @@ function BuscarExpediente() {
         // URL para la petición
         url: '../../Expedientes/BuscarExpedientes', // Asegúrate que esta URL es correcta
         // Datos a enviar
-        data: { dniEquipoBuscar: dniEquipoBuscar, caratulaBuscar: caratulaBuscar },
+        data: { dniEquipoBuscar: dniEquipoBuscar, caratulaBuscar: caratulaBuscar, soloHabilitados: soloHabilitados },
         // Especifica si será una petición POST o GET
         type: 'POST',
         // Tipo de información que se espera de respuesta

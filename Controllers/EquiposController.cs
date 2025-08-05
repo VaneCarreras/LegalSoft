@@ -82,10 +82,20 @@ public JsonResult ObtenerLocalidades()
         return Json(equiposMostrar.OrderBy(e => e.NombreCompleto).ToList());
     }
 
+[HttpPost]
 
-    public JsonResult BuscarEquipos(string nombreCompleto, string nroTipoDoc)
+    public JsonResult BuscarEquipos(string nombreCompleto, string nroTipoDoc, bool soloHabilitados= false)
     {
         var personas = _context.Personas.Include(p => p.Localidad).ToList();
+        
+
+       if (soloHabilitados)
+{
+    personas = personas
+        .Where(p => _context.Equipos.Any(e => e.PersonaID == p.PersonaID && e.Habilitado))
+        .ToList();
+}
+
 
         if (!string.IsNullOrEmpty(nombreCompleto))
         {
@@ -122,6 +132,7 @@ public JsonResult ObtenerLocalidades()
         return Json(equiposMostrar);
     }
 
+[HttpPost]
 
     public JsonResult GuardarNuevoEquipo(string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateOnly fechaNac, int localidadID, string localidadNombre)
     {
@@ -163,6 +174,7 @@ public JsonResult ObtenerLocalidades()
 
         return Json(resultado);
     }
+[HttpPost]
 
     public JsonResult EliminarEquipo(int EquipoID)
     {

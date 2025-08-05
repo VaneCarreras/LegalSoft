@@ -105,10 +105,18 @@ if (soloHabilitados)
 }
 
 
+[HttpPost]
 
-    public JsonResult BuscarClientes(string nombreCompleto, string nroTipoDoc)
+    public JsonResult BuscarClientes(string nombreCompleto, string nroTipoDoc, bool soloHabilitados= false)
     {
         var personas = _context.Personas.Include(p => p.Localidad).ToList();
+        if (soloHabilitados)
+{
+    personas = personas
+        .Where(p => _context.Clientes.Any(c => c.PersonaID == p.PersonaID && c.Habilitado))
+        .ToList();
+}
+
 
         if (!string.IsNullOrEmpty(nombreCompleto))
         {
@@ -146,6 +154,7 @@ if (soloHabilitados)
         return Json(clientesMostrar);
     }
 
+[HttpPost]
 
     public JsonResult GuardarNuevoCliente(string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateOnly fechaNac, int localidadID, string localidadNombre)
     {
@@ -187,6 +196,7 @@ if (soloHabilitados)
 
         return Json(resultado);
     }
+[HttpPost]
 
     public JsonResult EliminarCliente(int ClienteID)
     {
@@ -275,7 +285,7 @@ public JsonResult CambiarEstadoCliente(int ClienteID, bool habilitar)
 
 
 
-
+[HttpGet]
     public JsonResult BuscarImagenes(int ClienteID)
     {
         List<VistaImagenCliente> listaImagenCliente = new List<VistaImagenCliente>();
@@ -298,6 +308,7 @@ public JsonResult CambiarEstadoCliente(int ClienteID, bool habilitar)
     }
 
     
+[HttpPost]
 
 public JsonResult GuardarImagen(string ImagenAGuardar, int ClienteID)
 {
@@ -364,6 +375,7 @@ public JsonResult GuardarImagen(string ImagenAGuardar, int ClienteID)
 
     return Json(resultado);
 }
+[HttpPost]
 
     public JsonResult EliminarImagenCliente(int ImgClientesID)
     {

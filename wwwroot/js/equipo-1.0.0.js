@@ -397,6 +397,8 @@ const soloLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
 
 function BuscarEquipo() {
     // Obtener los valores de búsqueda
+                const soloHabilitados = document.getElementById("chkSoloHabilitados").checked;
+
     const nombreCompleto = $('#buscarNombre').val().trim();
     const nroTipoDoc = $('#buscarDNI').val().trim();
 
@@ -406,7 +408,7 @@ function BuscarEquipo() {
         // URL para la petición
         url: '../../Equipos/BuscarEquipos', // Asegúrate que esta URL es correcta
         // Datos a enviar
-        data: { nombreCompleto: nombreCompleto, nroTipoDoc: nroTipoDoc },
+        data: { nombreCompleto: nombreCompleto, nroTipoDoc: nroTipoDoc, soloHabilitados: soloHabilitados },
         // Especifica si será una petición POST o GET
         type: 'POST',
         // Tipo de información que se espera de respuesta

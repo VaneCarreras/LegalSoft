@@ -286,6 +286,8 @@ if (motivo.length > 50) {
 
 function BuscarConsulta() {
     // Obtener los valores de búsqueda
+            const soloHabilitados = document.getElementById("chkSoloHabilitados").checked;
+
     const nombreCompletoClienteBuscar = $('#NombreCompletoClienteBuscar').val().trim();
     const nombreCompletoEquipoBuscar = $('#NombreCompletoEquipoBuscar').val().trim();
 
@@ -293,7 +295,7 @@ function BuscarConsulta() {
         // URL para la petición
         url: '../../Consultas/BuscarConsultas', // Asegúrate que esta URL es correcta
         // Datos a enviar
-        data: { nombreCompletoClienteBuscar: nombreCompletoClienteBuscar, nombreCompletoEquipoBuscar: nombreCompletoEquipoBuscar },
+        data: { nombreCompletoClienteBuscar: nombreCompletoClienteBuscar, nombreCompletoEquipoBuscar: nombreCompletoEquipoBuscar, soloHabilitados: soloHabilitados },
         // Especifica si será una petición POST o GET
         type: 'POST',
         // Tipo de información que se espera de respuesta
