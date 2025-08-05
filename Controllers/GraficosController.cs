@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LegalSoft.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LegalSoft.Controllers;
+    [Authorize(Roles = "Administrador")]
 
 public class GraficosController : Controller
 {

@@ -1,11 +1,12 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using LegalSoft.Models;
-// using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace LegalSoft.Controllers;
 // [Authorize]
+    [Authorize(Roles = "Administrador")]
 
 public class RecordatoriosController : Controller
 {

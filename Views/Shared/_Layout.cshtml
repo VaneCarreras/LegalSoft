@@ -62,11 +62,12 @@
       <li>
         <a class="dropdown-item" asp-area="" asp-controller="Consultas" asp-action="Index">Mis Atenciones</a>
       </li>
-       @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador")){
 
       <li>
         <a class="dropdown-item" asp-area="" asp-controller="Expedientes" asp-action="Index">Mis Expedientes</a>
       </li>
+             @if (User.Identity.IsAuthenticated && User.IsInRole("Administrador")){
+
       <li>
         <a class="dropdown-item" asp-area="" asp-controller="Localidades" asp-action="Index">Cargar Localidad</a>
       </li>

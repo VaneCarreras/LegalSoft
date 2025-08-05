@@ -1,13 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using LegalSoft.Models;
 using LegalSoft.Data;
-// using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace LegalSoft.Controllers;
 
 // [Authorize]
+    [Authorize(Roles = "Administrador, Equipo")]
+
 public class PersonasController : Controller
 {
     private ApplicationDbContext _context;
@@ -56,8 +58,8 @@ public class PersonasController : Controller
     {
         int error = 0;
 
-        if(error == 0)
-        {        
+        if (error == 0)
+        {
             if (personaID == 0)
             {
                 //4- GUARDAR LA PERSONA ------------
@@ -85,12 +87,12 @@ public class PersonasController : Controller
                     personaEditar.NombreCompleto = nombreCompleto;
                     personaEditar.Direccion = direccion;
                     personaEditar.Telefono = telefono;
-                    personaEditar.FechaNac  = fechaNac;
+                    personaEditar.FechaNac = fechaNac;
                     _context.SaveChanges();
                 }
 
 
-                
+
             }
         }
 

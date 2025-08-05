@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using LegalSoft.Models;
 using LegalSoft.Data;
-// using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing;
@@ -10,7 +10,8 @@ using System.IO;
 
 namespace LegalSoft.Controllers;
 
-// [Authorize]
+    [Authorize(Roles = "Administrador, Equipo")]
+
 public class ClientesController : Controller
 {
 
@@ -23,9 +24,9 @@ public class ClientesController : Controller
     }
     public IActionResult Index()
     {
-        
 
-return View();
+
+        return View();
     }
 
 
@@ -41,81 +42,81 @@ return View();
 
         return Json(localidades);
     }
-[HttpPost]
+    [HttpPost]
 
-public JsonResult ListadoClientes(int pagina = 1, int tamanioPagina = 7, int? id = null, bool soloHabilitados = false)
-{
-    // Obtener todos los clientes
-    var clientes = _context.Clientes.ToList();
-
-    // Filtrar si se especifica un ID
-    if (id.HasValue)
+    public JsonResult ListadoClientes(int pagina = 1, int tamanioPagina = 7, int? id = null, bool soloHabilitados = false)
     {
-        clientes = clientes.Where(c => c.ClienteID == id.Value).ToList();
-    }
+        // Obtener todos los clientes
+        var clientes = _context.Clientes.ToList();
 
-if (soloHabilitados)
-    {
-        clientes = clientes.Where(c => c.Habilitado).ToList();
-    }
+        // Filtrar si se especifica un ID
+        if (id.HasValue)
+        {
+            clientes = clientes.Where(c => c.ClienteID == id.Value).ToList();
+        }
+
+        if (soloHabilitados)
+        {
+            clientes = clientes.Where(c => c.Habilitado).ToList();
+        }
 
         // Lista que se va a mostrar
         List<VistaCliente> clientesMostrar = new List<VistaCliente>();
 
-    foreach (var cliente in clientes)
-    {
-        var persona = _context.Personas
-            .Include(p => p.Localidad)
-            .SingleOrDefault(p => p.PersonaID == cliente.PersonaID);
-
-        if (persona != null)
+        foreach (var cliente in clientes)
         {
-            clientesMostrar.Add(new VistaCliente
+            var persona = _context.Personas
+                .Include(p => p.Localidad)
+                .SingleOrDefault(p => p.PersonaID == cliente.PersonaID);
+
+            if (persona != null)
             {
-                ClienteID = cliente.ClienteID,
-                NombreCompleto = persona.NombreCompleto,
-                NroTipoDoc = persona.NroTipoDoc,
-                Direccion = persona.Direccion,
-                Telefono = persona.Telefono,
-                FechaNac = persona.FechaNac,
-                LocalidadNombre = persona.Localidad?.LocalidadNombre,
-                Habilitado = cliente.Habilitado,
-            });
+                clientesMostrar.Add(new VistaCliente
+                {
+                    ClienteID = cliente.ClienteID,
+                    NombreCompleto = persona.NombreCompleto,
+                    NroTipoDoc = persona.NroTipoDoc,
+                    Direccion = persona.Direccion,
+                    Telefono = persona.Telefono,
+                    FechaNac = persona.FechaNac,
+                    LocalidadNombre = persona.Localidad?.LocalidadNombre,
+                    Habilitado = cliente.Habilitado,
+                });
+            }
         }
+
+        // Ordenar por nombre
+        var clientesOrdenados = clientesMostrar.OrderBy(c => c.NombreCompleto).ToList();
+
+        // Calcular total de registros y páginas
+        var totalRegistros = clientesOrdenados.Count();
+        var totalPaginas = (int)Math.Ceiling((double)totalRegistros / tamanioPagina);
+
+        // Obtener solo la página solicitada
+        var clientesPaginados = clientesOrdenados
+            .Skip((pagina - 1) * tamanioPagina)
+            .Take(tamanioPagina)
+            .ToList();
+
+        return Json(new
+        {
+            clientes = clientesPaginados,
+            totalPaginas = totalPaginas
+        });
     }
 
-    // Ordenar por nombre
-    var clientesOrdenados = clientesMostrar.OrderBy(c => c.NombreCompleto).ToList();
 
-    // Calcular total de registros y páginas
-    var totalRegistros = clientesOrdenados.Count();
-    var totalPaginas = (int)Math.Ceiling((double)totalRegistros / tamanioPagina);
+    [HttpPost]
 
-    // Obtener solo la página solicitada
-    var clientesPaginados = clientesOrdenados
-        .Skip((pagina - 1) * tamanioPagina)
-        .Take(tamanioPagina)
-        .ToList();
-
-    return Json(new
-    {
-        clientes = clientesPaginados,
-        totalPaginas = totalPaginas
-    });
-}
-
-
-[HttpPost]
-
-    public JsonResult BuscarClientes(string nombreCompleto, string nroTipoDoc, bool soloHabilitados= false)
+    public JsonResult BuscarClientes(string nombreCompleto, string nroTipoDoc, bool soloHabilitados = false)
     {
         var personas = _context.Personas.Include(p => p.Localidad).ToList();
         if (soloHabilitados)
-{
-    personas = personas
-        .Where(p => _context.Clientes.Any(c => c.PersonaID == p.PersonaID && c.Habilitado))
-        .ToList();
-}
+        {
+            personas = personas
+                .Where(p => _context.Clientes.Any(c => c.PersonaID == p.PersonaID && c.Habilitado))
+                .ToList();
+        }
 
 
         if (!string.IsNullOrEmpty(nombreCompleto))
@@ -143,7 +144,7 @@ if (soloHabilitados)
                     Telefono = persona.Telefono,
                     FechaNac = persona.FechaNac,
                     LocalidadNombre = persona.Localidad?.LocalidadNombre,
-                Habilitado = cliente.Habilitado,
+                    Habilitado = cliente.Habilitado,
 
 
                 };
@@ -154,7 +155,7 @@ if (soloHabilitados)
         return Json(clientesMostrar);
     }
 
-[HttpPost]
+    [HttpPost]
 
     public JsonResult GuardarNuevoCliente(string nroTipoDoc, string nombreCompleto, string direccion, string telefono, DateOnly fechaNac, int localidadID, string localidadNombre)
     {
@@ -183,7 +184,7 @@ if (soloHabilitados)
             var cliente = new Cliente
             {
                 PersonaID = persona.PersonaID,
-                                Habilitado = true,
+                Habilitado = true,
 
             };
             _context.Add(cliente);
@@ -196,7 +197,7 @@ if (soloHabilitados)
 
         return Json(resultado);
     }
-[HttpPost]
+    [HttpPost]
 
     public JsonResult EliminarCliente(int ClienteID)
     {
@@ -208,25 +209,25 @@ if (soloHabilitados)
     }
 
     [HttpPost]
-public JsonResult CambiarEstadoCliente(int ClienteID, bool habilitar)
-{
-    try
+    public JsonResult CambiarEstadoCliente(int ClienteID, bool habilitar)
     {
-        var cliente = _context.Clientes.Find(ClienteID);
-        if (cliente != null)
+        try
         {
-            cliente.Habilitado = habilitar;
-            _context.SaveChanges();
-            return Json(new { success = true });
-        }
+            var cliente = _context.Clientes.Find(ClienteID);
+            if (cliente != null)
+            {
+                cliente.Habilitado = habilitar;
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
 
-        return Json(new { success = false, message = "Cliente no encontrado." });
+            return Json(new { success = false, message = "Cliente no encontrado." });
+        }
+        catch (Exception ex)
+        {
+            return Json(new { success = false, message = ex.Message });
+        }
     }
-    catch (Exception ex)
-    {
-        return Json(new { success = false, message = ex.Message });
-    }
-}
 
 
     [HttpPost]
@@ -285,7 +286,7 @@ public JsonResult CambiarEstadoCliente(int ClienteID, bool habilitar)
 
 
 
-[HttpGet]
+    [HttpGet]
     public JsonResult BuscarImagenes(int ClienteID)
     {
         List<VistaImagenCliente> listaImagenCliente = new List<VistaImagenCliente>();
@@ -307,75 +308,75 @@ public JsonResult CambiarEstadoCliente(int ClienteID, bool habilitar)
         return Json(listaImagenCliente);
     }
 
-    
-[HttpPost]
 
-public JsonResult GuardarImagen(string ImagenAGuardar, int ClienteID)
-{
-    var resultado = false;
+    [HttpPost]
 
-    try
+    public JsonResult GuardarImagen(string ImagenAGuardar, int ClienteID)
     {
-        var cantidadImagenes = _context.ImagenCliente.Count(o => o.ClienteID == ClienteID);
-        if (cantidadImagenes < 3)
+        var resultado = false;
+
+        try
         {
-            if (!string.IsNullOrEmpty(ImagenAGuardar))
+            var cantidadImagenes = _context.ImagenCliente.Count(o => o.ClienteID == ClienteID);
+            if (cantidadImagenes < 3)
             {
-                var base64Data = ImagenAGuardar.Split(',')[1];
-                byte[] imageBytes = Convert.FromBase64String(base64Data);
-
-                using (var ms = new MemoryStream(imageBytes))
-                using (var originalImage = Image.FromStream(ms))
+                if (!string.IsNullOrEmpty(ImagenAGuardar))
                 {
-                    int maxWidth = 350;
-                    int maxHeight = 350;
+                    var base64Data = ImagenAGuardar.Split(',')[1];
+                    byte[] imageBytes = Convert.FromBase64String(base64Data);
 
-                    // Escalar proporcionalmente
-                    double ratioX = (double)maxWidth / originalImage.Width;
-                    double ratioY = (double)maxHeight / originalImage.Height;
-                    double ratio = Math.Min(ratioX, ratioY);
-
-                    int newWidth = (int)(originalImage.Width * ratio);
-                    int newHeight = (int)(originalImage.Height * ratio);
-
-                    using (var resizedImage = new Bitmap(newWidth, newHeight))
-                    using (var graphics = Graphics.FromImage(resizedImage))
+                    using (var ms = new MemoryStream(imageBytes))
+                    using (var originalImage = Image.FromStream(ms))
                     {
-                        graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                        graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                        graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                        int maxWidth = 350;
+                        int maxHeight = 350;
 
-                        graphics.DrawImage(originalImage, 0, 0, newWidth, newHeight);
+                        // Escalar proporcionalmente
+                        double ratioX = (double)maxWidth / originalImage.Width;
+                        double ratioY = (double)maxHeight / originalImage.Height;
+                        double ratio = Math.Min(ratioX, ratioY);
 
-                        using (var resizedMs = new MemoryStream())
+                        int newWidth = (int)(originalImage.Width * ratio);
+                        int newHeight = (int)(originalImage.Height * ratio);
+
+                        using (var resizedImage = new Bitmap(newWidth, newHeight))
+                        using (var graphics = Graphics.FromImage(resizedImage))
                         {
-                            resizedImage.Save(resizedMs, ImageFormat.Jpeg); // o ImageFormat.Png
-                            byte[] resizedBytes = resizedMs.ToArray();
+                            graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                            graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                            graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
-                            var imagenCli = new ImagenCliente
+                            graphics.DrawImage(originalImage, 0, 0, newWidth, newHeight);
+
+                            using (var resizedMs = new MemoryStream())
                             {
-                                Imagen = resizedBytes,
-                                ClienteID = ClienteID
-                            };
+                                resizedImage.Save(resizedMs, ImageFormat.Jpeg); // o ImageFormat.Png
+                                byte[] resizedBytes = resizedMs.ToArray();
 
-                            _context.ImagenCliente.Add(imagenCli);
-                            _context.SaveChanges();
+                                var imagenCli = new ImagenCliente
+                                {
+                                    Imagen = resizedBytes,
+                                    ClienteID = ClienteID
+                                };
 
-                            resultado = true;
+                                _context.ImagenCliente.Add(imagenCli);
+                                _context.SaveChanges();
+
+                                resultado = true;
+                            }
                         }
                     }
                 }
             }
         }
-    }
-    catch (Exception ex)
-    {
-        resultado = false;
-    }
+        catch (Exception ex)
+        {
+            resultado = false;
+        }
 
-    return Json(resultado);
-}
-[HttpPost]
+        return Json(resultado);
+    }
+    [HttpPost]
 
     public JsonResult EliminarImagenCliente(int ImgClientesID)
     {

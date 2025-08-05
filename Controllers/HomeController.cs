@@ -47,6 +47,7 @@ public IActionResult InicioSistema()
         await CrearRol();
         return View();
     }
+    [Authorize(Roles = "Administrador")]
 
     public async Task<JsonResult> CrearRol(){
         var clienteRolExiste = _context.Roles.Where(r => r.Name == "Cliente").SingleOrDefault();

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 namespace LegalSoft.Controllers;
 
 [Authorize]
+    [Authorize(Roles = "Administrador, Equipo")]
 
 public class ExpedientesController : Controller
 {

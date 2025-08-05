@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using LegalSoft.Models;
 using Microsoft.EntityFrameworkCore;
 using LegalSoft.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LegalSoft.Controllers;
+    [Authorize(Roles = "Administrador")]
 
 public class PendientesController : Controller
 {

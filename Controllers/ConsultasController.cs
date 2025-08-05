@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 namespace LegalSoft.Controllers;
 
 [Authorize]
+    [Authorize(Roles = "Administrador, Equipo")]
 
 public class ConsultasController : Controller
 {
