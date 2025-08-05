@@ -14,7 +14,7 @@
 
 <div class="row">
 <div class="mb-3 col-3">
-  <label for="DniEquipoBuscar" class="form-label">Nombre Equipo</label>
+  <label for="DniEquipoBuscar" class="form-label">Equipo</label>
   <input type="text" id="DniEquipoBuscar" class="form-control"/>
 </div>
 <div class="mb-3 col-3">
@@ -35,12 +35,17 @@
 </div>
 <div class="row">
 <!-- Button trigger modal -->
-<div class="mb-2 col-10">
+<div class="mb-2 col-8">
   <button type="button" class="btn btn-secondary" onclick="NuevoRegistro()" data-bs-toggle="modal" data-bs-target="#ModalExpedientes">
     Nuevo Expediente
   </button>
 </div>
-
+<div class="form-check mb-2 col-2">
+  <input class="form-check-input" type="checkbox" id="chkSoloDespacho">
+  <label class="form-check-label" for="chkSoloDespacho">
+    Mostrar solo despacho
+  </label>
+</div>
 <div class="form-check mb-2 col-2">
   <input class="form-check-input" type="checkbox" id="chkSoloHabilitados" checked>
   <label class="form-check-label" for="chkSoloHabilitados">
@@ -241,17 +246,18 @@
     <script src="~/js/fotorama.js"></script>
 
 
-        <script>
-        $(document).ready(function () {
-            // Carga inicial
-            ListadoExpedientes(1);
+<script>
+    $(document).ready(function () {
+        // Carga inicial
+        ListadoExpedientes(1);
 
-            // Cuando se cambia el checkbox
-            document.getElementById("chkSoloHabilitados").addEventListener("change", function () {
-                ListadoExpedientes(1);
-            });
+        // Cuando cambie cualquiera de los checkboxes
+        $('#chkSoloHabilitados, #chkSoloDespacho').on('change', function () {
+            ListadoExpedientes(1);
         });
-    </script>
+    });
+</script>
+
 
 <script>
 window.onload = ListadoExpedientes();
@@ -292,6 +298,7 @@ $(document).ready(function () {
 function ListadoExpedientes(pagina = 1){
      const pageSize = 7; // cantidad de clientes por página
         const soloHabilitados = document.getElementById("chkSoloHabilitados").checked;
+        const soloDespacho = document.getElementById("chkSoloDespacho").checked;
 
     $.ajax({
         // la URL para la petición
@@ -301,7 +308,8 @@ function ListadoExpedientes(pagina = 1){
         data: { 
             pagina: pagina,
             tamanioPagina: pageSize,
-            soloHabilitados: soloHabilitados
+            soloHabilitados: soloHabilitados,
+            soloDespacho: soloDespacho
         },
         // especifica si será una petición POST o GET
         type: 'POST',
@@ -581,6 +589,7 @@ function GuardarRegistro() {
 function BuscarExpediente() {
     // Obtener los valores de búsqueda
             const soloHabilitados = document.getElementById("chkSoloHabilitados").checked;
+            const soloDespacho = document.getElementById("chkSoloDespacho").checked;
 
     const dniEquipoBuscar = $('#DniEquipoBuscar').val().trim();
     const caratulaBuscar = $('#CaratulaBuscar').val().trim();
@@ -589,7 +598,7 @@ function BuscarExpediente() {
         // URL para la petición
         url: '../../Expedientes/BuscarExpedientes', // Asegúrate que esta URL es correcta
         // Datos a enviar
-        data: { dniEquipoBuscar: dniEquipoBuscar, caratulaBuscar: caratulaBuscar, soloHabilitados: soloHabilitados },
+        data: { dniEquipoBuscar: dniEquipoBuscar, caratulaBuscar: caratulaBuscar, soloHabilitados: soloHabilitados, soloDespacho: soloDespacho },
         // Especifica si será una petición POST o GET
         type: 'POST',
         // Tipo de información que se espera de respuesta

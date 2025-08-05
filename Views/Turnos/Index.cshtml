@@ -29,7 +29,7 @@
       <hr class="">
     </div>
     <div class="chico col-10" id="calendar">
-<h6 class="text-center">Verde: Vacante --- Rojo: Asistido --- Amarillo: Suspendido</p>
+<h6 class="text-center">Azul: Asignado --- Rojo: Asistido --- Amarillo: Suspendido --- Verde: Vacante</p>
 
     </div>
   </div>
@@ -66,9 +66,12 @@
                 <select id="Estado" class="form-control form-select">
         <option value="" disabled selected>SELECCIONAR</option>
 
-                  <option value="0">Vacante</option>
+
+                  <option value="0">Asignado</option>
                   <option value="1">Asistido</option>
                   <option value="2">Suspendido</option>
+                                            <option value="3">Vacante</option>
+
                 </select>
               </div>
             </div>
@@ -111,12 +114,16 @@
           let color = '#007bff'; // Azul por defecto
 
           if (estado === 0) {
-            color = 'green'; // vacante
+            color = 'blue'; // asignado
           } else if (estado === 1) {
             color = 'red'; // asistido
           }
           else if (estado === 2) {
             color = 'yellow'; // suspendido
+          }
+
+          else if (estado === 3) {
+            color = 'green'; // vacante
           }
 
           const dotEl = document.createElement('span');

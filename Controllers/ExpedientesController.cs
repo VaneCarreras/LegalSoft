@@ -51,7 +51,6 @@ public class ExpedientesController : Controller
                                  }).ToList();
 
         var clientesBuscar = clientesConNombre.ToList();
-        clientesConNombre.Add(new { ClienteID = 0, NombreCompleto = "[SELECCIONAR]" });
 
 
         ViewBag.ClienteID = new SelectList(clientesConNombre, "ClienteID", "NombreCompleto");
@@ -74,7 +73,6 @@ public class ExpedientesController : Controller
                                 }).ToList();
 
         var equiposBuscar = equiposConNombre.ToList();
-        equiposConNombre.Add(new { EquipoID = 0, NombreCompleto = "[SELECCIONAR]" });
 
 
         ViewBag.EquipoID = new SelectList(equiposConNombre, "EquipoID", "NombreCompleto");
@@ -118,7 +116,7 @@ public class ExpedientesController : Controller
     }
 [HttpPost]
 
-    public JsonResult ListadoExpedientes(int pagina = 1, int tamanioPagina = 7, int? id = null, bool soloHabilitados = false)
+    public JsonResult ListadoExpedientes(int pagina = 1, int tamanioPagina = 7, int? id = null, bool soloHabilitados = false, bool soloDespacho = false)
     {
         // Obtener la lista de consultas
         var expedientes = _context.Expedientes.ToList();
@@ -132,6 +130,10 @@ public class ExpedientesController : Controller
         if (soloHabilitados)
     {
         expedientes = expedientes.Where(c => c.Habilitado).ToList();
+    }
+         if (soloDespacho)
+    {
+        expedientes = expedientes.Where(c => c.Ubicacion == Ubicacion.Despacho).ToList();
     }
 
         // Crear una lista de consultas para mostrar
@@ -202,7 +204,7 @@ public class ExpedientesController : Controller
 
 [HttpPost]
 
-    public JsonResult BuscarExpedientes(string DniEquipoBuscar, string CaratulaBuscar, bool soloHabilitados =false)
+    public JsonResult BuscarExpedientes(string DniEquipoBuscar, string CaratulaBuscar, bool soloHabilitados =false, bool soloDespacho = true)
     {
         // Obtener la lista de consultas
         var expedientes = _context.Expedientes.ToList();
@@ -211,7 +213,10 @@ public class ExpedientesController : Controller
     {
         expedientes = expedientes.Where(e => e.Habilitado).ToList();
     }
-
+        if (soloDespacho)
+    {
+        expedientes = expedientes.Where(e => e.Ubicacion == Ubicacion.Despacho).ToList();
+    }
         // Crear una lista de consultas para mostrar
         List<VistaExpediente> expedientesMostrar = new List<VistaExpediente>();
 

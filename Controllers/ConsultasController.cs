@@ -48,7 +48,6 @@ public class ConsultasController : Controller
 
     var clientesBuscar = clientesConNombre.ToList();
 
-    clientesConNombre.Add(new { ClienteID = 0, NombreCompleto = "[SELECCIONAR]" });
 
 
         ViewBag.ClienteID = new SelectList(clientesConNombre, "ClienteID", "NombreCompleto");
@@ -72,7 +71,6 @@ public class ConsultasController : Controller
                             }).ToList();
 
     var equiposBuscar = equiposConNombre.ToList();
-    equiposConNombre.Add(new { EquipoID = 0, NombreCompleto = "[SELECCIONAR]" });
 
 
     ViewBag.EquipoID = new SelectList(equiposConNombre, "EquipoID", "NombreCompleto");
